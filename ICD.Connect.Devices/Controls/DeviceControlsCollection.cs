@@ -68,6 +68,20 @@ namespace ICD.Connect.Devices.Controls
 			}
 		}
 
+		public bool TryGetControl(int id, out IDeviceControl control)
+		{
+			m_DeviceControlsSection.Enter();
+
+			try
+			{
+				return m_DeviceControls.TryGetValue(id, out control);
+			}
+			finally
+			{
+				m_DeviceControlsSection.Leave();
+			}
+		}
+
 		public bool Remove(int id)
 		{
 			return m_DeviceControlsSection.Execute(() => m_DeviceControls.Remove(id));
