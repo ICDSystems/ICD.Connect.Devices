@@ -8,17 +8,18 @@ using ICD.Connect.Settings.Core;
 
 namespace ICD.Connect.Devices.Extensions
 {
-
 	public sealed class CoreDeviceCollection : AbstractOriginatorCollection<IDevice>
 	{
-		public CoreDeviceCollection() : base()
+		public CoreDeviceCollection()
 		{
 		}
 
-		public CoreDeviceCollection(IEnumerable<IDevice> children) : base(children)
+		public CoreDeviceCollection(IEnumerable<IDevice> children)
+			: base(children)
 		{
 		}
 	}
+
 	/// <summary>
 	/// Extension methods for ICores.
 	/// </summary>
