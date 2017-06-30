@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using ICD.Common.Properties;
 using System.Linq;
 using ICD.Connect.Devices.Controls;
 using ICD.Connect.Settings;
@@ -32,12 +33,24 @@ namespace ICD.Connect.Devices.Extensions
 		/// Gets the control with the given device and control ids.
 		/// </summary>
 		/// <param name="extends"></param>
-		/// <param name="device"></param>
-		/// <param name="control"></param>
+		/// <param name="deviceId"></param>
+		/// <param name="controlId"></param>
 		/// <returns></returns>
-		public static IDeviceControl GetControl(this ICore extends, int device, int control)
+		[NotNull]
+		public static IDeviceControl GetControl(this ICore extends, int deviceId, int controlId)
 		{
-			return extends.GetDevices()[device].Controls[control];
+			if (extends == null)
+				throw new ArgumentNullException("extends");
+
+			IDevice device;
+			if (!extends.GetDevices().TryGetChild(deviceId, out device))
+				throw new KeyNotFoundException(string.Format("No device with id {0}", deviceId));
+
+			IDeviceControl control;
+			if (!device.Controls.TryGetControl(controlId, out control))
+				throw new KeyNotFoundException(string.Format("{0} does not contain a control with id {1}", device, controlId));
+
+			return control;
 		}
 
 		/// <summary>
@@ -47,9 +60,13 @@ namespace ICD.Connect.Devices.Extensions
 		/// <param name="device"></param>
 		/// <param name="control"></param>
 		/// <returns></returns>
+		[NotNull]
 		public static T GetControl<T>(this ICore extends, int device, int control)
 			where T : IDeviceControl
 		{
+			if (extends == null)
+				throw new ArgumentNullException("extends");
+
 			IDeviceControl output = extends.GetControl(device, control);
 			if (output is T)
 				return (T)output;
