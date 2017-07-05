@@ -84,6 +84,15 @@ namespace ICD.Connect.Devices.Controls
 			Dispose(true);
 		}
 
+		/// <summary>
+		/// Gets the string representation for this instance.
+		/// </summary>
+		/// <returns></returns>
+		public override string ToString()
+		{
+			return string.Format("{0}(Id={1}, Parent={2})", GetType().Name, Id, Parent.Id);
+		}
+
 		#endregion
 
 		#region Private Methods
