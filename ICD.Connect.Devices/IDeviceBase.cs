@@ -2,6 +2,7 @@
 using ICD.Common.EventArguments;
 using ICD.Common.Properties;
 using ICD.Common.Utils;
+using ICD.Connect.Devices.Controls;
 using ICD.Connect.Settings;
 
 namespace ICD.Connect.Devices
@@ -19,5 +20,11 @@ namespace ICD.Connect.Devices
 		/// </summary>
 		[PublicAPI]
 		bool IsOnline { get; }
+
+		/// <summary>
+		/// Gets the controls for this device.
+		/// </summary>
+		[PublicAPI]
+		DeviceControlsCollection Controls { get; }
 	}
 }

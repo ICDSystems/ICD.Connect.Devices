@@ -5,6 +5,7 @@ using ICD.Common.Services.Logging;
 using ICD.Common.Utils.Extensions;
 using ICD.Connect.API.Commands;
 using ICD.Connect.API.Nodes;
+using ICD.Connect.Devices.Controls;
 using ICD.Connect.Settings;
 
 namespace ICD.Connect.Devices
@@ -54,11 +55,24 @@ namespace ICD.Connect.Devices
 
 		#endregion
 
+		private readonly DeviceControlsCollection m_Controls;
+
+		#region Properties
+
+		/// <summary>
+		/// Gets the controls for this device.
+		/// </summary>
+		public DeviceControlsCollection Controls { get { return m_Controls; } }
+
+		#endregion
+
 		/// <summary>
 		/// Constructor.
 		/// </summary>
 		protected AbstractDeviceBase()
 		{
+			m_Controls = new DeviceControlsCollection();
+
 			Name = GetType().Name;
 			UpdateCachedOnlineStatus();
 		}
@@ -71,6 +85,8 @@ namespace ICD.Connect.Devices
 		protected override void DisposeFinal(bool disposing)
 		{
 			OnIsOnlineStateChanged = null;
+
+			Controls.Dispose();
 
 			base.DisposeFinal(disposing);
 		}
@@ -99,7 +115,7 @@ namespace ICD.Connect.Devices
 		/// <returns></returns>
 		public virtual IEnumerable<IConsoleNodeBase> GetConsoleNodes()
 		{
-			yield break;
+			yield return ConsoleNodeGroup.IndexNodeMap("Controls", Controls);
 		}
 
 		/// <summary>
