@@ -2,7 +2,7 @@
 
 namespace ICD.Connect.Settings
 {
-	public abstract class AbstractDeviceBaseSettings : AbstractSettings
+	public abstract class AbstractDeviceBaseSettings : AbstractSettings, IDeviceBaseSettings
 	{
 		public const string DEVICE_ELEMENT = "DeviceBase";
 
