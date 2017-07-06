@@ -2,9 +2,9 @@
 
 namespace ICD.Connect.Settings
 {
-	public abstract class AbstractDeviceSettings : AbstractDeviceBaseSettings
+	public abstract class AbstractDeviceBaseSettings : AbstractSettings
 	{
-		public const string DEVICE_ELEMENT = "Device";
+		public const string DEVICE_ELEMENT = "DeviceBase";
 
 		/// <summary>
 		/// Gets the xml element.
@@ -30,7 +30,7 @@ namespace ICD.Connect.Settings
 		/// <param name="xml"></param>
 		protected static void ParseXml(AbstractDeviceSettings instance, string xml)
 		{
-			AbstractDeviceBaseSettings.ParseXml(instance, xml);
+			AbstractSettings.ParseXml(instance, xml);
 		}
 	}
 }
