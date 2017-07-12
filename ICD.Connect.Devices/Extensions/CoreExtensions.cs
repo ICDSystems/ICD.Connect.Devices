@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using ICD.Common.Properties;
 using System.Linq;
+using ICD.Common.Properties;
 using ICD.Connect.Devices.Controls;
 using ICD.Connect.Settings;
 using ICD.Connect.Settings.Core;
