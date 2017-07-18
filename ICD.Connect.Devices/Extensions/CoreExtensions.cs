@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using ICD.Common.Properties;
 using ICD.Connect.Devices.Controls;
 using ICD.Connect.Settings;
@@ -8,28 +7,11 @@ using ICD.Connect.Settings.Core;
 
 namespace ICD.Connect.Devices.Extensions
 {
-	public sealed class CoreDeviceCollection : AbstractOriginatorCollection<IDevice>
-	{
-		public CoreDeviceCollection()
-		{
-		}
-
-		public CoreDeviceCollection(IEnumerable<IDevice> children)
-			: base(children)
-		{
-		}
-	}
-
 	/// <summary>
 	/// Extension methods for ICores.
 	/// </summary>
 	public static class CoreExtensions
 	{
-		public static CoreDeviceCollection GetDevices(this ICore core)
-		{
-			return new CoreDeviceCollection(core.Originators.OfType<IDevice>());
-		} 
-
 		/// <summary>
 		/// Gets the control with the given device and control ids.
 		/// </summary>
@@ -43,13 +25,17 @@ namespace ICD.Connect.Devices.Extensions
 			if (extends == null)
 				throw new ArgumentNullException("extends");
 
-			IDevice device;
-			if (!extends.GetDevices().TryGetChild(deviceId, out device))
+			IOriginator originator;
+			if (!extends.Originators.TryGetChild(deviceId, out originator))
 				throw new KeyNotFoundException(string.Format("No device with id {0}", deviceId));
+
+			IDeviceBase device = originator as IDeviceBase;
+			if (device == null)
+				throw new KeyNotFoundException(string.Format("{0} is not of type {1}", originator, typeof(IDeviceBase).Name));
 
 			IDeviceControl control;
 			if (!device.Controls.TryGetControl(controlId, out control))
-				throw new KeyNotFoundException(string.Format("{0} does not contain a control with id {1}", device, controlId));
+				throw new KeyNotFoundException(string.Format("{0} does not contain a control with id {1}", originator, controlId));
 
 			return control;
 		}
