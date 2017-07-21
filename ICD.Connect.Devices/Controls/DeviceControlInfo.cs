@@ -38,6 +38,11 @@
 		{
 		}
 
+		public override string ToString()
+		{
+			return string.Format("{0}(DeviceId={1}, ControlId={2})", GetType().Name, DeviceId, ControlId);
+		}
+
 		#region Equality
 
 		/// <summary>
