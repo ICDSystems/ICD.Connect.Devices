@@ -97,11 +97,11 @@ namespace ICD.Connect.Devices.Controls
 		/// </summary>
 		/// <typeparam name="T"></typeparam>
 		/// <returns></returns>
-		[CanBeNull]
+		[NotNull]
 		public T GetControl<T>()
 			where T : IDeviceControl
 		{
-			return GetControls<T>().FirstOrDefault();
+			return GetControls<T>().First();
 		}
 
 		/// <summary>
@@ -121,6 +121,7 @@ namespace ICD.Connect.Devices.Controls
 		/// <typeparam name="T"></typeparam>
 		/// <param name="id"></param>
 		/// <returns></returns>
+		[NotNull]
 		public T GetControl<T>(int id)
 			where T : IDeviceControl
 		{
