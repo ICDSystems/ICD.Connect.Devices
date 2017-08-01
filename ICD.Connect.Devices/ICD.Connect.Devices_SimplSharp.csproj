@@ -70,6 +70,8 @@
   <ItemGroup>
     <Compile Include="AbstractDeviceBaseSettings.cs" />
     <Compile Include="AbstractDeviceSettings.cs" />
+    <Compile Include="Controls\AbstractPowerDeviceControl.cs" />
+    <Compile Include="Controls\IPowerDeviceControl.cs" />
     <Compile Include="DeviceAction.cs" />
     <Compile Include="Extensions\CoreExtensions.cs" />
     <Compile Include="Extensions\DeviceFactoryExtensions.cs" />
