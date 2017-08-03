@@ -16,6 +16,21 @@ namespace ICD.Connect.Devices.Extensions
 		/// Gets the control with the given device and control ids.
 		/// </summary>
 		/// <param name="extends"></param>
+		/// <param name="controlInfo"></param>
+		/// <returns></returns>
+		[NotNull]
+		public static IDeviceControl GetControl(this ICore extends, DeviceControlInfo controlInfo)
+		{
+			if (extends == null)
+				throw new ArgumentNullException("extends");
+
+			return extends.GetControl(controlInfo.DeviceId, controlInfo.ControlId);
+		}
+
+		/// <summary>
+		/// Gets the control with the given device and control ids.
+		/// </summary>
+		/// <param name="extends"></param>
 		/// <param name="deviceId"></param>
 		/// <param name="controlId"></param>
 		/// <returns></returns>
@@ -38,6 +53,22 @@ namespace ICD.Connect.Devices.Extensions
 				throw new KeyNotFoundException(string.Format("{0} does not contain a control with id {1}", originator, controlId));
 
 			return control;
+		}
+
+		/// <summary>
+		/// Gets the control with the given device and control ids.
+		/// </summary>
+		/// <param name="extends"></param>
+		/// <param name="controlInfo"></param>
+		/// <returns></returns>
+		[NotNull]
+		public static T GetControl<T>(this ICore extends, DeviceControlInfo controlInfo)
+			where T : IDeviceControl
+		{
+			if (extends == null)
+				throw new ArgumentNullException("extends");
+
+			return extends.GetControl<T>(controlInfo.DeviceId, controlInfo.ControlId);
 		}
 
 		/// <summary>
