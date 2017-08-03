@@ -4,13 +4,6 @@ namespace ICD.Connect.Settings
 {
 	public abstract class AbstractDeviceBaseSettings : AbstractSettings, IDeviceBaseSettings
 	{
-		public const string DEVICE_ELEMENT = "DeviceBase";
-
-		/// <summary>
-		/// Gets the xml element.
-		/// </summary>
-		protected override string Element { get { return DEVICE_ELEMENT; } }
-
 		/// <summary>
 		/// Returns the collection of ids that the settings will depend on.
 		/// For example, to instantiate an IR Port from settings, the device the physical port
@@ -28,7 +21,7 @@ namespace ICD.Connect.Settings
 		/// </summary>
 		/// <param name="instance"></param>
 		/// <param name="xml"></param>
-		protected static void ParseXml(AbstractDeviceSettings instance, string xml)
+		protected static void ParseXml(AbstractDeviceBaseSettings instance, string xml)
 		{
 			AbstractSettings.ParseXml(instance, xml);
 		}
