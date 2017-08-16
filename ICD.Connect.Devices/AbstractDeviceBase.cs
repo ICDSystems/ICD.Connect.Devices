@@ -115,7 +115,7 @@ namespace ICD.Connect.Devices
 		/// <returns></returns>
 		public virtual IEnumerable<IConsoleNodeBase> GetConsoleNodes()
 		{
-			yield return ConsoleNodeGroup.IndexNodeMap("Controls", Controls);
+			yield return ConsoleNodeGroup.KeyNodeMap("Controls", Controls, c => (uint)c.Id);
 		}
 
 		/// <summary>
