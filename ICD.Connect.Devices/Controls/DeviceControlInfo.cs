@@ -29,15 +29,6 @@
 			m_ControlId = controlId;
 		}
 
-		/// <summary>
-		/// Constructor.
-		/// </summary>
-		/// <param name="control"></param>
-		public DeviceControlInfo(IDeviceControl control)
-			: this(control.Parent.Id, control.Id)
-		{
-		}
-
 		public override string ToString()
 		{
 			return string.Format("{0}(DeviceId={1}, ControlId={2})", GetType().Name, DeviceId, ControlId);

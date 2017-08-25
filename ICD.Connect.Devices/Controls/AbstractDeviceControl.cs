@@ -39,6 +39,11 @@ namespace ICD.Connect.Devices.Controls
 		public virtual string Name { get { return null; } }
 
 		/// <summary>
+		/// Gets the parent and control id info.
+		/// </summary>
+		public DeviceControlInfo DeviceControlInfo { get { return new DeviceControlInfo(Parent.Id, Id); } }
+
+		/// <summary>
 		/// Gets the name of the node.
 		/// </summary>
 		public virtual string ConsoleName { get { return Name; } }

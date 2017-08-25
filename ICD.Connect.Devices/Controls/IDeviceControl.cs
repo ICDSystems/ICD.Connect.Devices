@@ -28,6 +28,11 @@ namespace ICD.Connect.Devices.Controls
 		/// </summary>
 		[PublicAPI]
 		string Name { get; }
+
+		/// <summary>
+		/// Gets the parent and control id info.
+		/// </summary>
+		DeviceControlInfo DeviceControlInfo { get; }
 	}
 
 	public static class DeviceControlExtensions
