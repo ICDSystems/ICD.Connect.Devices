@@ -1,6 +1,4 @@
-﻿using ICD.Connect.Settings;
-
-namespace ICD.Connect.Devices
+﻿namespace ICD.Connect.Devices
 {
 	/// <summary>
 	/// Base class for devices.
