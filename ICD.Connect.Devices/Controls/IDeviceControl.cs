@@ -16,7 +16,7 @@ namespace ICD.Connect.Devices.Controls
 		/// <summary>
 		/// Gets the parent device for this control.
 		/// </summary>
-		IDevice Parent { get; }
+		IDeviceBase Parent { get; }
 
 		/// <summary>
 		/// Gets the id for this control.

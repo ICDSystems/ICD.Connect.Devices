@@ -10,7 +10,7 @@ namespace ICD.Connect.Devices.Controls
 	/// </summary>
 	/// <typeparam name="T"></typeparam>
 	public abstract class AbstractDeviceControl<T> : IDeviceControl
-		where T : IDevice
+		where T : IDeviceBase
 	{
 		private readonly T m_Parent;
 		private readonly int m_Id;
@@ -20,7 +20,7 @@ namespace ICD.Connect.Devices.Controls
 		/// <summary>
 		/// Gets the parent device for this control.
 		/// </summary>
-		IDevice IDeviceControl.Parent { get { return Parent; } }
+		IDeviceBase IDeviceControl.Parent { get { return Parent; } }
 
 		/// <summary>
 		/// Gets the id for this control.
