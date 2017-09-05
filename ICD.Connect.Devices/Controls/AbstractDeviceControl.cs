@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using ICD.Common.Properties;
+using ICD.Common.Services.Logging;
 using ICD.Connect.API.Commands;
 using ICD.Connect.API.Nodes;
 
@@ -57,6 +58,11 @@ namespace ICD.Connect.Devices.Controls
 		/// Returns true if this instance has been disposed.
 		/// </summary>
 		public bool IsDisposed { get; private set; }
+
+		/// <summary>
+		/// Gets the logger for the control.
+		/// </summary>
+		public ILoggerService Logger { get { return Parent.Logger; } }
 
 		#endregion
 
