@@ -1,4 +1,6 @@
-﻿namespace ICD.Connect.Devices.Controls
+﻿using ICD.Common.Utils;
+
+namespace ICD.Connect.Devices.Controls
 {
 	/// <summary>
 	/// Simple pairing of device and control ids.
@@ -31,7 +33,12 @@
 
 		public override string ToString()
 		{
-			return string.Format("{0}(DeviceId={1}, ControlId={2})", GetType().Name, DeviceId, ControlId);
+			ReprBuilder builder = new ReprBuilder(this);
+
+			builder.AppendProperty("DeviceId", DeviceId);
+			builder.AppendProperty("ControlId", ControlId);
+
+			return builder.ToString();
 		}
 
 		#region Equality

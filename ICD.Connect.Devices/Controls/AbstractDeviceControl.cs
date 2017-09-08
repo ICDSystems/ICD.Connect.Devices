@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using ICD.Common.Properties;
 using ICD.Common.Services.Logging;
+using ICD.Common.Utils;
 using ICD.Connect.API.Commands;
 using ICD.Connect.API.Nodes;
 
@@ -101,7 +102,12 @@ namespace ICD.Connect.Devices.Controls
 		/// <returns></returns>
 		public override string ToString()
 		{
-			return string.Format("{0}(Id={1}, Parent={2})", GetType().Name, Id, Parent.Id);
+			ReprBuilder builder = new ReprBuilder(this);
+
+			builder.AppendProperty("Id", Id);
+			builder.AppendProperty("Parent", Parent.Id);
+
+			return builder.ToString();
 		}
 
 		#endregion
