@@ -33,7 +33,7 @@ namespace ICD.Connect.Devices.Controls
 			get { return m_RawVolume; }
 			protected set
 			{
-				if (value == m_RawVolume)
+				if (Math.Abs(value - m_RawVolume) < 0.01f)
 					return;
 
 				m_RawVolume = value;
