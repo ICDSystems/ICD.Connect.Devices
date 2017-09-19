@@ -4,12 +4,14 @@ using System.Collections.Generic;
 using System.Linq;
 using ICD.Common.Properties;
 using ICD.Common.Utils;
+using ICD.Common.Utils.Collections;
 using ICD.Common.Utils.Extensions;
 
 namespace ICD.Connect.Devices.Controls
 {
 	public sealed class DeviceControlsCollection : IEnumerable<IDeviceControl>
 	{
+		private readonly Dictionary<Type, IcdHashSet<int>> m_TypeToControls; 
 		private readonly Dictionary<int, IDeviceControl> m_DeviceControls;
 		private readonly SafeCriticalSection m_DeviceControlsSection;
 
@@ -28,6 +30,7 @@ namespace ICD.Connect.Devices.Controls
 
 		public DeviceControlsCollection()
 		{
+			m_TypeToControls = new Dictionary<Type, IcdHashSet<int>>();
 			m_DeviceControls = new Dictionary<int, IDeviceControl>();
 			m_DeviceControlsSection = new SafeCriticalSection();
 		}
@@ -44,12 +47,38 @@ namespace ICD.Connect.Devices.Controls
 
 		public void Add(IDeviceControl item)
 		{
-			m_DeviceControlsSection.Execute(() => m_DeviceControls.Add(item.Id, item));
+			m_DeviceControlsSection.Enter();
+
+			try
+			{
+				m_DeviceControls.Add(item.Id, item);
+
+				foreach (Type type in item.GetType().GetAllTypes())
+				{
+					if (!m_TypeToControls.ContainsKey(type))
+						m_TypeToControls[type] = new IcdHashSet<int>();
+					m_TypeToControls[type].Add(item.Id);
+				}
+			}
+			finally
+			{
+				m_DeviceControlsSection.Leave();
+			}
 		}
 
 		public void Clear()
 		{
-			m_DeviceControlsSection.Execute(() => m_DeviceControls.Clear());
+			m_DeviceControlsSection.Enter();
+
+			try
+			{
+				m_TypeToControls.Clear();
+				m_DeviceControls.Clear();
+			}
+			finally
+			{
+				m_DeviceControlsSection.Leave();
+			}
 		}
 
 		public IDeviceControl GetControl(int id)
@@ -84,7 +113,23 @@ namespace ICD.Connect.Devices.Controls
 
 		public bool Remove(int id)
 		{
-			return m_DeviceControlsSection.Execute(() => m_DeviceControls.Remove(id));
+			m_DeviceControlsSection.Enter();
+
+			try
+			{
+				bool output = m_DeviceControls.Remove(id);
+				if (!output)
+					return false;
+
+				foreach (IcdHashSet<int> group in m_TypeToControls.Values)
+					group.Remove(id);
+			}
+			finally
+			{
+				m_DeviceControlsSection.Leave();
+			}
+
+			return true;
 		}
 
 		public bool Contains(int id)
@@ -101,7 +146,17 @@ namespace ICD.Connect.Devices.Controls
 		public T GetControl<T>()
 			where T : IDeviceControl
 		{
-			return GetControls<T>().First();
+			m_DeviceControlsSection.Enter();
+
+			try
+			{
+				int id = m_TypeToControls[typeof(T)].First();
+				return (T)GetControl(id);
+			}
+			finally
+			{
+				m_DeviceControlsSection.Leave();
+			}
 		}
 
 		/// <summary>
@@ -112,7 +167,24 @@ namespace ICD.Connect.Devices.Controls
 		public IEnumerable<T> GetControls<T>()
 			where T : IDeviceControl
 		{
-			return this.OfType<T>();
+			m_DeviceControlsSection.Enter();
+
+			try
+			{
+				Type type = typeof(T);
+
+				IcdHashSet<int> ids;
+				if (!m_TypeToControls.TryGetValue(type, out ids))
+					return Enumerable.Empty<T>();
+
+				return ids.Select(id => GetControl(id))
+				          .Cast<T>()
+				          .ToArray();
+			}
+			finally
+			{
+				m_DeviceControlsSection.Leave();
+			}
 		}
 
 		/// <summary>
