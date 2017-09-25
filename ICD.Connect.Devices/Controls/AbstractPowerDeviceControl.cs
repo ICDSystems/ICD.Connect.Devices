@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using ICD.Common.Services.Logging;
 using ICD.Common.Utils.EventArguments;
 using ICD.Common.Utils.Extensions;
 using ICD.Connect.API.Commands;
@@ -29,6 +30,8 @@ namespace ICD.Connect.Devices.Controls
 					return;
 
 				m_IsPowered = value;
+
+				Logger.AddEntry(eSeverity.Informational, "{0} IsPowered set to {1}", this, m_IsPowered);
 
 				OnIsPoweredChanged.Raise(this, new BoolEventArgs(m_IsPowered));
 			}
