@@ -8,7 +8,7 @@ using ICD.Connect.API.Nodes;
 namespace ICD.Connect.Devices.Controls
 {
 	public abstract class AbstractPowerDeviceControl<TDevice> : AbstractDeviceControl<TDevice>, IPowerDeviceControl
-		where TDevice : IDevice
+		where TDevice : IDeviceBase
 	{
 		/// <summary>
 		/// Raised when the powered state changes.
