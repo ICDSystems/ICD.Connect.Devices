@@ -142,7 +142,7 @@ namespace ICD.Connect.Devices.Controls
 		/// </summary>
 		/// <typeparam name="T"></typeparam>
 		/// <returns></returns>
-		[NotNull]
+		[CanBeNull]
 		public T GetControl<T>()
 			where T : IDeviceControl
 		{
@@ -150,8 +150,11 @@ namespace ICD.Connect.Devices.Controls
 
 			try
 			{
-				int id = m_TypeToControls[typeof(T)].First();
-				return (T)GetControl(id);
+				IcdHashSet<int> ids;
+				if (!m_TypeToControls.TryGetValue(typeof(T), out ids))
+					return default(T);
+
+				return ids.Count == 0 ? default(T) : GetControl<T>(ids.First());
 			}
 			finally
 			{
