@@ -9,7 +9,7 @@ using ICD.Common.Utils.Extensions;
 
 namespace ICD.Connect.Devices.Controls
 {
-	public sealed class DeviceControlsCollection : IEnumerable<IDeviceControl>
+	public sealed class DeviceControlsCollection : IEnumerable<IDeviceControl>, IStateDisposable
 	{
 		private readonly Dictionary<Type, IcdHashSet<int>> m_TypeToControls; 
 		private readonly Dictionary<int, IDeviceControl> m_DeviceControls;
@@ -24,10 +24,11 @@ namespace ICD.Connect.Devices.Controls
 		/// </summary>
 		public bool IsDisposed { get; private set; }
 
-		public IDeviceControl this[int control] { get { return GetControl(control); } }
-
 		#endregion
 
+		/// <summary>
+		/// Constructor.
+		/// </summary>
 		public DeviceControlsCollection()
 		{
 			m_TypeToControls = new Dictionary<Type, IcdHashSet<int>>();
@@ -45,6 +46,10 @@ namespace ICD.Connect.Devices.Controls
 			Dispose(true);
 		}
 
+		/// <summary>
+		/// Adds the control to the collection.
+		/// </summary>
+		/// <param name="item"></param>
 		public void Add(IDeviceControl item)
 		{
 			m_DeviceControlsSection.Enter();
@@ -66,6 +71,9 @@ namespace ICD.Connect.Devices.Controls
 			}
 		}
 
+		/// <summary>
+		/// Removes all controls from the collection.
+		/// </summary>
 		public void Clear()
 		{
 			m_DeviceControlsSection.Enter();
@@ -81,6 +89,12 @@ namespace ICD.Connect.Devices.Controls
 			}
 		}
 
+		/// <summary>
+		/// Gets the control with the given id.
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
+		[NotNull]
 		public IDeviceControl GetControl(int id)
 		{
 			m_DeviceControlsSection.Enter();
@@ -97,6 +111,12 @@ namespace ICD.Connect.Devices.Controls
 			}
 		}
 
+		/// <summary>
+		/// Attempts to get the control with the given id.
+		/// </summary>
+		/// <param name="id"></param>
+		/// <param name="control"></param>
+		/// <returns></returns>
 		public bool TryGetControl(int id, out IDeviceControl control)
 		{
 			m_DeviceControlsSection.Enter();
@@ -111,6 +131,11 @@ namespace ICD.Connect.Devices.Controls
 			}
 		}
 
+		/// <summary>
+		/// Removes the control with the given id from the collection.
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
 		public bool Remove(int id)
 		{
 			m_DeviceControlsSection.Enter();
@@ -132,6 +157,11 @@ namespace ICD.Connect.Devices.Controls
 			return true;
 		}
 
+		/// <summary>
+		/// Returns true if the collection contains a control with the given id.
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
 		public bool Contains(int id)
 		{
 			return m_DeviceControlsSection.Execute(() => m_DeviceControls.ContainsKey(id));
@@ -154,7 +184,7 @@ namespace ICD.Connect.Devices.Controls
 				if (!m_TypeToControls.TryGetValue(typeof(T), out ids))
 					return default(T);
 
-				return ids.Count == 0 ? default(T) : GetControl<T>(ids.First());
+				return ids.Count == 0 ? default(T) : GetControl<T>(ids.Order().First());
 			}
 			finally
 			{
