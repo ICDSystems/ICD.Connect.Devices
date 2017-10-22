@@ -1,12 +1,17 @@
-﻿using ICD.Common.Utils;
+﻿using System;
+using ICD.Common.Utils;
+using ICD.Common.Utils.Xml;
 
 namespace ICD.Connect.Devices.Controls
 {
 	/// <summary>
 	/// Simple pairing of device and control ids.
 	/// </summary>
-	public struct DeviceControlInfo
+	public struct DeviceControlInfo : IComparable
 	{
+		private const string DEVICE_ELEMENT = "Device";
+		private const string CONTROL_ELEMENT = "Control";
+
 		private readonly int m_DeviceId;
 		private readonly int m_ControlId;
 
@@ -39,6 +44,34 @@ namespace ICD.Connect.Devices.Controls
 			builder.AppendProperty("ControlId", ControlId);
 
 			return builder.ToString();
+		}
+
+		/// <summary>
+		/// Writes the device control info to the xml writer.
+		/// </summary>
+		/// <param name="writer"></param>
+		/// <param name="element"></param>
+		public void WriteToXml(IcdXmlTextWriter writer, string element)
+		{
+			writer.WriteStartElement(element);
+			{
+				writer.WriteElementString(DEVICE_ELEMENT, IcdXmlConvert.ToString(DeviceId));
+				writer.WriteElementString(CONTROL_ELEMENT, IcdXmlConvert.ToString(ControlId));
+			}
+			writer.WriteEndElement();
+		}
+
+		/// <summary>
+		/// Deserializes the device control info from an xml element.
+		/// </summary>
+		/// <param name="xml"></param>
+		/// <returns></returns>
+		public static DeviceControlInfo ReadFromXml(string xml)
+		{
+			int deviceId = XmlUtils.TryReadChildElementContentAsInt(xml, DEVICE_ELEMENT) ?? 0;
+			int controlId = XmlUtils.TryReadChildElementContentAsInt(xml, CONTROL_ELEMENT) ?? 0;
+
+			return new DeviceControlInfo(deviceId, controlId);
 		}
 
 		#region Equality
@@ -91,6 +124,21 @@ namespace ICD.Connect.Devices.Controls
 				hash = hash * 23 + m_ControlId;
 				return hash;
 			}
+		}
+
+		public int CompareTo(object obj)
+		{
+			DeviceControlInfo other = (DeviceControlInfo)obj;
+
+			int result = DeviceId.CompareTo(other.DeviceId);
+			if (result != 0)
+				return result;
+
+			result = ControlId.CompareTo(other.ControlId);
+			if (result != 0)
+				return result;
+
+			return 0;
 		}
 
 		#endregion
