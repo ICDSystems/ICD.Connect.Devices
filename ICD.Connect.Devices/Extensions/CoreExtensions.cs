@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using ICD.Common.Properties;
 using ICD.Connect.Devices.Controls;
 using ICD.Connect.Settings;
@@ -91,6 +92,33 @@ namespace ICD.Connect.Devices.Extensions
 
 			string message = string.Format("{0} can not be cast to {1}", output.GetType().Name, typeof(T).Name);
 			throw new InvalidCastException(message);
+		}
+
+		/// <summary>
+		/// Gets the control with the given device and control ids.
+		/// </summary>
+		/// <param name="extends"></param>
+		/// <param name="controlInfo"></param>
+		/// <returns></returns>
+		[NotNull]
+		public static IEnumerable<T> GetControls<T>(this ICore extends, IEnumerable<DeviceControlInfo> controlInfo)
+			where T : IDeviceControl
+		{
+			if (extends == null)
+				throw new ArgumentNullException("extends");
+
+			if (extends == null)
+				throw new ArgumentNullException("controlInfo");
+
+			DeviceControlInfo[] info = controlInfo as DeviceControlInfo[] ?? controlInfo.ToArray();
+
+			Dictionary<int, IDeviceBase> devices =
+				extends.Originators
+				       .GetChildren<IDeviceBase>(info.Select(i => i.DeviceId)
+				                                     .Distinct())
+				       .ToDictionary(d => d.Id);
+
+			return info.Select(i => devices[i.DeviceId].Controls.GetControl<T>(i.ControlId));
 		}
 	}
 }
