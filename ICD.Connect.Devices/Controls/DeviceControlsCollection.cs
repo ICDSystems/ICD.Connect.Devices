@@ -4,14 +4,13 @@ using System.Collections.Generic;
 using System.Linq;
 using ICD.Common.Properties;
 using ICD.Common.Utils;
-using ICD.Common.Utils.Collections;
 using ICD.Common.Utils.Extensions;
 
 namespace ICD.Connect.Devices.Controls
 {
 	public sealed class DeviceControlsCollection : IEnumerable<IDeviceControl>, IStateDisposable
 	{
-		private readonly Dictionary<Type, IcdHashSet<int>> m_TypeToControls; 
+		private readonly Dictionary<Type, List<int>> m_TypeToControls; 
 		private readonly Dictionary<int, IDeviceControl> m_DeviceControls;
 		private readonly SafeCriticalSection m_DeviceControlsSection;
 
@@ -31,7 +30,7 @@ namespace ICD.Connect.Devices.Controls
 		/// </summary>
 		public DeviceControlsCollection()
 		{
-			m_TypeToControls = new Dictionary<Type, IcdHashSet<int>>();
+			m_TypeToControls = new Dictionary<Type, List<int>>();
 			m_DeviceControls = new Dictionary<int, IDeviceControl>();
 			m_DeviceControlsSection = new SafeCriticalSection();
 		}
@@ -61,8 +60,8 @@ namespace ICD.Connect.Devices.Controls
 				foreach (Type type in item.GetType().GetAllTypes())
 				{
 					if (!m_TypeToControls.ContainsKey(type))
-						m_TypeToControls[type] = new IcdHashSet<int>();
-					m_TypeToControls[type].Add(item.Id);
+						m_TypeToControls[type] = new List<int>();
+					m_TypeToControls[type].AddSorted(item.Id);
 				}
 			}
 			finally
@@ -146,7 +145,7 @@ namespace ICD.Connect.Devices.Controls
 				if (!output)
 					return false;
 
-				foreach (IcdHashSet<int> group in m_TypeToControls.Values)
+				foreach (List<int> group in m_TypeToControls.Values)
 					group.Remove(id);
 			}
 			finally
@@ -180,11 +179,11 @@ namespace ICD.Connect.Devices.Controls
 
 			try
 			{
-				IcdHashSet<int> ids;
+				List<int> ids;
 				if (!m_TypeToControls.TryGetValue(typeof(T), out ids))
 					return default(T);
 
-				return ids.Count == 0 ? default(T) : GetControl<T>(ids.Order().First());
+				return ids.Count == 0 ? default(T) : GetControl<T>(ids.First());
 			}
 			finally
 			{
@@ -206,7 +205,7 @@ namespace ICD.Connect.Devices.Controls
 			{
 				Type type = typeof(T);
 
-				IcdHashSet<int> ids;
+				List<int> ids;
 				if (!m_TypeToControls.TryGetValue(type, out ids))
 					return Enumerable.Empty<T>();
 
