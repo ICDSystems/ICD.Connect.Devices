@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using ICD.Connect.Settings;
+﻿using ICD.Connect.Settings;
 
 namespace ICD.Connect.Devices
 {
