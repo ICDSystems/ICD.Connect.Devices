@@ -10,7 +10,7 @@ namespace ICD.Connect.Devices.Controls
 {
 	public sealed class DeviceControlsCollection : IEnumerable<IDeviceControl>, IStateDisposable
 	{
-		private readonly Dictionary<Type, List<int>> m_TypeToControls; 
+		private readonly Dictionary<Type, List<int>> m_TypeToControls;
 		private readonly Dictionary<int, IDeviceControl> m_DeviceControls;
 		private readonly SafeCriticalSection m_DeviceControlsSection;
 
