@@ -233,7 +233,7 @@ namespace ICD.Connect.Devices.Controls
 			if (control is T)
 				return (T)control;
 
-			string message = string.Format("{0} control {1} is not of type {2}", control.GetType().Name, id, typeof(T).Name);
+			string message = string.Format("{0} is not of type {1}", control, id, typeof(T).Name);
 			throw new InvalidOperationException(message);
 		}
 
