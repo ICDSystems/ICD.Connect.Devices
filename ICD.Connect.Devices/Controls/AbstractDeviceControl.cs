@@ -48,7 +48,7 @@ namespace ICD.Connect.Devices.Controls
 		/// <summary>
 		/// Gets the name of the node.
 		/// </summary>
-		public virtual string ConsoleName { get { return Name; } }
+		public virtual string ConsoleName { get { return string.IsNullOrEmpty(Name) ? GetType().Name : Name; } }
 
 		/// <summary>
 		/// Gets the help information for the node.
