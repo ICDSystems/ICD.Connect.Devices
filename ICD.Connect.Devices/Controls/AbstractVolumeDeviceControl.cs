@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using ICD.Common.Services.Logging;
 using ICD.Common.Utils;
 using ICD.Common.Utils.EventArguments;
 using ICD.Common.Utils.Extensions;
@@ -37,6 +38,8 @@ namespace ICD.Connect.Devices.Controls
 					return;
 
 				m_RawVolume = value;
+
+				Logger.AddEntry(eSeverity.Informational, "{0} RawVolume set to {1}", this, m_RawVolume);
 
 				OnRawVolumeChanged.Raise(this, new FloatEventArgs(m_RawVolume));
 
@@ -94,7 +97,7 @@ namespace ICD.Connect.Devices.Controls
 		/// <summary>
 		/// The volume the control is set to when the device comes online.
 		/// </summary>
-		public abstract float? RawVolumeDefault { get; set; }
+		public virtual float? RawVolumeDefault { get; set; }
 
 		/// <summary>
 		/// Gets the muted state.
@@ -108,6 +111,8 @@ namespace ICD.Connect.Devices.Controls
 					return;
 
 				m_IsMuted = value;
+
+				Logger.AddEntry(eSeverity.Informational, "{0} IsMuted set to {1}", this, m_IsMuted);
 
 				OnMuteStateChanged.Raise(this, new BoolEventArgs(m_IsMuted));
 			}
