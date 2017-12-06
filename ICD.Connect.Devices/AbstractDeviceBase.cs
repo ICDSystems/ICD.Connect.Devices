@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using ICD.Common.Properties;
 using ICD.Common.Services.Logging;
 using ICD.Common.Utils.EventArguments;
 using ICD.Common.Utils.Extensions;
@@ -100,7 +101,8 @@ namespace ICD.Connect.Devices
 		/// <summary>
 		/// Updates the cached online status and raises the OnIsOnlineStateChanged event if the cache changes.
 		/// </summary>
-		protected void UpdateCachedOnlineStatus()
+		[PublicAPI]
+		protected virtual void UpdateCachedOnlineStatus()
 		{
 			IsOnline = GetIsOnlineStatus();
 		}
