@@ -90,7 +90,7 @@ namespace ICD.Connect.Devices.Extensions
 			if (output is T)
 				return (T)output;
 
-			string message = string.Format("{0} can not be cast to {1}", output.GetType().Name, typeof(T).Name);
+			string message = string.Format("{0} can not be cast to {1}", output, typeof(T).Name);
 			throw new InvalidCastException(message);
 		}
 
