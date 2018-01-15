@@ -1,10 +1,8 @@
-﻿using ICD.Connect.Settings;
-
-namespace ICD.Connect.Devices
+﻿namespace ICD.Connect.Devices
 {
 	public abstract class AbstractDeviceSettings : AbstractDeviceBaseSettings, IDeviceSettings
 	{
-		public const string DEVICE_ELEMENT = "Device";
+		private const string DEVICE_ELEMENT = "Device";
 
 		/// <summary>
 		/// Gets the xml element.
