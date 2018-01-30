@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using ICD.Connect.API.Commands;
 
 namespace ICD.Connect.Devices.Controls
 {
-    public class PowerDeviceControl<T> : AbstractPowerDeviceControl<T>
+    public sealed class PowerDeviceControl<T> : AbstractPowerDeviceControl<T>
 		where T : IDeviceWithPower
     {
 	    public PowerDeviceControl(T parent, int id) : base(parent, id)
@@ -20,5 +21,5 @@ namespace ICD.Connect.Devices.Controls
 	    {
 		    Parent.PowerOff();
 	    }
-    }
+	}
 }
