@@ -7,12 +7,28 @@ namespace ICD.Connect.Devices.Controls
 {
 	public abstract class AbstractVolumeRawLevelDeviceControl<T> : AbstractVolumeLevelDeviceControl<T>, IVolumeRawLevelDeviceControl where T : IDeviceBase
 	{
-		
 
+		#region Abstract Properties
+
+		/// <summary>
+		/// Absolute Minimum the raw volume can be
+		/// Used as a last resort for position caculation
+		/// </summary>
 		protected abstract float VolumeRawMinAbsolute { get; }
 
+		/// <summary>
+		/// Absolute Maximum the raw volume can be
+		/// Used as a last resport for position caculation
+		/// </summary>
 		protected abstract float VolumeRawMaxAbsolute { get; }
+		#endregion
 
+		#region Properties
+
+		/// <summary>
+		/// VolumeRawMinRange is the best min volume we have for the control
+		/// either the Min from the control or the absolute min for the control
+		/// </summary>
 		public float VolumeRawMinRange
 		{
 			get
@@ -21,6 +37,10 @@ namespace ICD.Connect.Devices.Controls
 			}
 		}
 
+		/// <summary>
+		/// VolumeRawMaxRange is the best max volume we have for the control
+		/// either the Max from the control or the absolute max for the control
+		/// </summary>
 		public float VolumeRawMaxRange
 		{
 			get
@@ -29,8 +49,28 @@ namespace ICD.Connect.Devices.Controls
 			}
 		}
 
-		
+		/// <summary>
+		/// Gets the position of the volume in the specified range
+		/// </summary>
+		public override float VolumePosition
+		{
+			get { return this.ConvertRawToPosition(VolumeRaw); }
+		}
 
+		#endregion
+
+		#region Methods
+
+		/// <summary>
+		/// Sets the volume position in the specified range
+		/// </summary>
+		/// <param name="position"></param>
+		public override void SetVolumePosition(float position)
+		{
+			SetVolumeRaw(this.ConvertPositionToRaw(position));
+		}
+
+		#endregion
 
 		/// <summary>
 		/// Constructor
@@ -40,16 +80,5 @@ namespace ICD.Connect.Devices.Controls
 		protected AbstractVolumeRawLevelDeviceControl(T parent, int id) : base(parent, id)
 		{
 		}
-
-		public override float VolumePosition
-		{
-			get { return this.ConvertRawToPosition(VolumeRaw); }
-		}
-
-		public override void SetVolumePosition(float position)
-		{
-			SetVolumeRaw(this.ConvertPositionToRaw(position));
-		}
-		
 	}
 }

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ICD.Connect.Devices.Controls
 {
-    public class VolumeDeviceVolumeChangedEventArgs : EventArgs
+    public sealed class VolumeDeviceVolumeChangedEventArgs : EventArgs
     {
 		public float VolumeRaw { get; private set; }
 		public float VolumePosition { get; private set; }

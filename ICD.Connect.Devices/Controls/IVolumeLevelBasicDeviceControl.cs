@@ -4,6 +4,11 @@ using System.Text;
 
 namespace ICD.Connect.Devices.Controls
 {
+	/// <summary>
+	/// Basic volume control for devices
+	/// Supports Up/Down
+	/// Designed to support IR controlled devices
+	/// </summary>
     public interface IVolumeLevelBasicDeviceControl : IVolumeDeviceControl
     {
 

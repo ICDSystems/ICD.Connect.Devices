@@ -8,59 +8,98 @@ namespace ICD.Connect.Devices.Controls
 	public abstract class AbstractVolumeLevelBasicDeviceControl<T> : AbstractDeviceControl<T>, IVolumeLevelBasicDeviceControl
 		where T : IDeviceBase
 	{
-		private const int DEFAULT_REPEAT_TIME_INITIAL = 250;
-		private const int DEFAULT_REPEAT_TIME_RECURRING = 250;
-		private const float FLOAT_COMPARE_TOLERANCE = 0.00001F;
 
+		#region Constants
+		/// <summary>
+		/// Default time before repeat for volume ramping operations
+		/// </summary>
+		private const int DEFAULT_REPEAT_BEFORE_TIME = 250;
+
+		/// <summary>
+		/// Default time between repeats for volume ramping operations
+		/// </summary>
+		private const int DEFAULT_REPEAT_BETWEEN_TIME = 250;
+
+		/// <summary>
+		/// Tolerance for float comparisons
+		/// </summary>
+		private const float FLOAT_COMPARE_TOLERANCE = 0.00001F;
+		#endregion
+
+		#region Fields
+		/// <summary>
+		/// Repeater for volume ramping operaions
+		/// </summary>
 		private VolumeBasicRepeater m_Repeater;
 
+		/// <summary>
+		/// Used when creating/accessing/disposing repeater
+		/// </summary>
 		private readonly SafeCriticalSection m_RepeaterCriticalSection;
 
-		private int? m_RepeatTimeInitial;
+		private int? m_RepeatBeforeTime;
 
-		private int? m_RepeatTimeRecurring;
+		private int? m_RepeatBetweenTime;
+
+		#endregion
+
+		#region Properties
 
 		/// <summary>
-		/// Time from the press to the first repeat
+		/// Time from the press to the repeat
 		/// </summary>
 		[PublicAPI]
-		public virtual int RepeatTimeInitial
+		public virtual int RepeatBeforeTime
 		{
 			get
 			{
-				if (m_RepeatTimeInitial != null)
-					return (int)m_RepeatTimeInitial;
-				return DEFAULT_REPEAT_TIME_INITIAL;
+				if (m_RepeatBeforeTime != null)
+					return (int)m_RepeatBeforeTime;
+				return DEFAULT_REPEAT_BEFORE_TIME;
 			}
 			set
 			{
 				if (Math.Abs(value) > FLOAT_COMPARE_TOLERANCE)
-					m_RepeatTimeInitial = value;
+					m_RepeatBeforeTime = value;
 				else
-					m_RepeatTimeInitial = null;
+					m_RepeatBeforeTime = null;
 			}
 		}
 
 		/// <summary>
-		/// Time from the first repeat to subsequent repeats
+		/// Time between repeats
 		/// </summary>
 		[PublicAPI]
-		public virtual int RepeatTimeRecurring
+		public virtual int RepeatBetweenTime
 		{
 			get
 			{
-				if (m_RepeatTimeRecurring != null)
-					return (int)m_RepeatTimeRecurring;
-				return DEFAULT_REPEAT_TIME_RECURRING;
+				if (m_RepeatBetweenTime != null)
+					return (int)m_RepeatBetweenTime;
+				return DEFAULT_REPEAT_BETWEEN_TIME;
 			}
 			set
 			{
 				if (Math.Abs(value) > FLOAT_COMPARE_TOLERANCE)
-					m_RepeatTimeRecurring = value;
+					m_RepeatBetweenTime = value;
 				else
-					m_RepeatTimeRecurring = null;
+					m_RepeatBetweenTime = null;
 			}
 		}
+
+		#endregion
+
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="parent">Device this control belongs to</param>
+		/// <param name="id">Id of this control in the device</param>
+		protected AbstractVolumeLevelBasicDeviceControl(T parent, int id) : base(parent, id)
+		{
+			m_RepeaterCriticalSection = new SafeCriticalSection();
+		}
+
+		#region Methods
 
 		/// <summary>
 		/// Volume Level Increment
@@ -110,6 +149,10 @@ namespace ICD.Connect.Devices.Controls
 			}
 		}
 
+		#endregion
+
+		#region Private Methods
+
 		/// <summary>
 		/// Creates the repeater timer and starts up/down ramp
 		/// </summary>
@@ -121,7 +164,7 @@ namespace ICD.Connect.Devices.Controls
 			{
 				if (m_Repeater == null)
 				{
-					m_Repeater = new VolumeBasicRepeater(RepeatTimeInitial, RepeatTimeRecurring);
+					m_Repeater = new VolumeBasicRepeater(RepeatBeforeTime, RepeatBetweenTime);
 					m_Repeater.SetControl(this);
 				}
 				else
@@ -135,14 +178,6 @@ namespace ICD.Connect.Devices.Controls
 			}
 		}
 
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="parent">Device this control belongs to</param>
-		/// <param name="id">Id of this control in the device</param>
-		protected AbstractVolumeLevelBasicDeviceControl(T parent, int id) : base(parent, id)
-		{
-			m_RepeaterCriticalSection = new SafeCriticalSection();
-		}
+		#endregion
 	}
 }

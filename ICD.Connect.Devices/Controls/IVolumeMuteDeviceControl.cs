@@ -6,8 +6,7 @@ using ICD.Common.Utils.EventArguments;
 namespace ICD.Connect.Devices.Controls
 {
 	/// <summary>
-	/// IVolumeDeviceControls are used with devices that have volume and mute features.
-	/// For example, a TV or a Codec.
+	/// IVolumeMuteDeviceControl is for devices that offer both toggle and direct set for mute state
 	/// </summary>
 	public interface IVolumeMuteDeviceControl : IVolumeMuteBasicDeviceControl
 	{
