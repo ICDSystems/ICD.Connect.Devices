@@ -72,6 +72,15 @@ namespace ICD.Connect.Devices.Controls
 
 		#endregion
 
+		#region Private/Protected Methods
+
+		public virtual void VolumeFeedback(float volumeRaw)
+		{
+			VolumeFeedback(volumeRaw, this.ConvertRawToPosition(volumeRaw));
+		}
+
+		#endregion
+
 		/// <summary>
 		/// Constructor
 		/// </summary>

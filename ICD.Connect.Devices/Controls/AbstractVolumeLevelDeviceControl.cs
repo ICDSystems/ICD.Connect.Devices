@@ -1,6 +1,7 @@
 ﻿using System;
 using ICD.Common.Properties;
 using ICD.Common.Utils;
+using ICD.Common.Utils.Extensions;
 using ICD.Connect.Devices.Timers;
 
 namespace ICD.Connect.Devices.Controls
@@ -53,7 +54,9 @@ namespace ICD.Connect.Devices.Controls
 		#endregion
 
 		#region Abstract Events
-		public abstract event EventHandler<VolumeDeviceVolumeChangedEventArgs> OnVolumeChanged;
+
+		public virtual event EventHandler<VolumeDeviceVolumeChangedEventArgs> OnVolumeChanged;
+		
 		#endregion
 
 		#region Abstract Properties
@@ -236,7 +239,7 @@ namespace ICD.Connect.Devices.Controls
 
 		#endregion
 
-		#region Private Methods
+		#region Private/Protected Methods
 
 		/// <summary>
 		/// Creates the repeater timer and starts up/down ramp
@@ -270,6 +273,16 @@ namespace ICD.Connect.Devices.Controls
 			float clampValue = this.ClampRawVolume(VolumeRaw);
 			if (Math.Abs(clampValue - VolumeRaw) > FLOAT_COMPARE_TOLERANCE)
 				SetVolumeRaw(clampValue);
+		}
+
+		protected virtual void VolumeFeedback(float volumeRaw, float volumePosition)
+		{
+			VolumeFeedback(volumeRaw, volumePosition, volumeRaw.ToString("n2"));
+		}
+
+		protected virtual void VolumeFeedback(float volumeRaw, float volumePosition, string volumeString)
+		{
+			OnVolumeChanged.Raise(this, new VolumeDeviceVolumeChangedEventArgs(volumeRaw, volumePosition, volumeString));
 		}
 
 		#endregion
