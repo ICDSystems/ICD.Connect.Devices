@@ -53,7 +53,7 @@ namespace ICD.Connect.Devices.Controls
 
 		#endregion
 
-		#region Abstract Events
+		#region Events
 
 		public virtual event EventHandler<VolumeDeviceVolumeChangedEventArgs> OnVolumeChanged;
 		
@@ -70,7 +70,7 @@ namespace ICD.Connect.Devices.Controls
 
 		public virtual string VolumeString
 		{
-			get { return VolumeRaw.ToString("n2"); }
+			get { return ConvertLevelToString(VolumeRaw); }
 		}
 
 		protected float IncrementValue
@@ -237,6 +237,11 @@ namespace ICD.Connect.Devices.Controls
 			}
 		}
 
+		public virtual string ConvertLevelToString(float level)
+		{
+			return level.ToString("n2");
+		}
+
 		#endregion
 
 		#region Private/Protected Methods
@@ -277,12 +282,17 @@ namespace ICD.Connect.Devices.Controls
 
 		protected virtual void VolumeFeedback(float volumeRaw, float volumePosition)
 		{
-			VolumeFeedback(volumeRaw, volumePosition, volumeRaw.ToString("n2"));
+			VolumeFeedback(volumeRaw, volumePosition, ConvertLevelToString(volumeRaw));
 		}
 
 		protected virtual void VolumeFeedback(float volumeRaw, float volumePosition, string volumeString)
 		{
 			OnVolumeChanged.Raise(this, new VolumeDeviceVolumeChangedEventArgs(volumeRaw, volumePosition, volumeString));
+		}
+
+		protected virtual void VolumeFeedback(VolumeDeviceVolumeChangedEventArgs args)
+		{
+			OnVolumeChanged.Raise(this, args);
 		}
 
 		#endregion
