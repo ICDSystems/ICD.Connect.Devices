@@ -4,6 +4,7 @@ using ICD.Common.Properties;
 using ICD.Common.Utils.EventArguments;
 using ICD.Common.Utils.Extensions;
 using ICD.Common.Utils.Services.Logging;
+using ICD.Connect.API.Attributes;
 using ICD.Connect.API.Commands;
 using ICD.Connect.API.Nodes;
 using ICD.Connect.Devices.Controls;
@@ -29,6 +30,7 @@ namespace ICD.Connect.Devices
 		/// <summary>
 		/// Returns true if the device hardware is detected by the system.
 		/// </summary>
+		[ApiProperty("IsOnline", "Gets the online state of the device.")]
 		public bool IsOnline
 		{
 			get { return m_IsOnline; }
@@ -65,6 +67,9 @@ namespace ICD.Connect.Devices
 		/// </summary>
 		public DeviceControlsCollection Controls { get { return m_Controls; } }
 
+		[ApiNodeGroup("Controls", "The controls for this device.")]
+		private IApiNodeGroup ApiControls { get; set; }
+
 		#endregion
 
 		/// <summary>
@@ -73,6 +78,7 @@ namespace ICD.Connect.Devices
 		protected AbstractDeviceBase()
 		{
 			m_Controls = new DeviceControlsCollection();
+			ApiControls = new ApiNodeGroup<IDeviceControl>(m_Controls.GetControls, c => (uint)c.Id);
 
 			Name = GetType().Name;
 			UpdateCachedOnlineStatus();

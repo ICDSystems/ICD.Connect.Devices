@@ -192,6 +192,15 @@ namespace ICD.Connect.Devices.Controls
 		}
 
 		/// <summary>
+		/// Gets the controls.
+		/// </summary>
+		/// <returns></returns>
+		public IEnumerable<IDeviceControl> GetControls()
+		{
+			return GetControls<IDeviceControl>();
+		}
+
+		/// <summary>
 		/// Gets the controls of the given type.
 		/// </summary>
 		/// <typeparam name="T"></typeparam>
