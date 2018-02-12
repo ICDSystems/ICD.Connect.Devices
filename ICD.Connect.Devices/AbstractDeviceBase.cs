@@ -78,7 +78,7 @@ namespace ICD.Connect.Devices
 		protected AbstractDeviceBase()
 		{
 			m_Controls = new DeviceControlsCollection();
-			ApiControls = new ApiNodeGroup<IDeviceControl>(m_Controls.GetControls, c => (uint)c.Id);
+			ApiControls = new ApiNodeGroup<IDeviceControl>(m_Controls.GetControls, c => (uint)c.Id, id => m_Controls.GetControl((int)id));
 
 			Name = GetType().Name;
 			UpdateCachedOnlineStatus();
