@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using ICD.Common.Properties;
 using ICD.Common.Utils.EventArguments;
 using ICD.Common.Utils.Extensions;
@@ -78,7 +79,7 @@ namespace ICD.Connect.Devices
 		protected AbstractDeviceBase()
 		{
 			m_Controls = new DeviceControlsCollection();
-			ApiControls = new ApiNodeGroup<IDeviceControl>(m_Controls.GetControls, c => (uint)c.Id, id => m_Controls.GetControl((int)id));
+			ApiControls = new ApiControlsNodeGroup(m_Controls);
 
 			Name = GetType().Name;
 			UpdateCachedOnlineStatus();
@@ -115,7 +116,33 @@ namespace ICD.Connect.Devices
 
 		#endregion
 
-		#region Console
+		#region API
+
+		private sealed class ApiControlsNodeGroup : AbstractApiNodeGroup
+		{
+			private readonly DeviceControlsCollection m_Controls;
+
+			/// <summary>
+			/// Constructor.
+			/// </summary>
+			/// <param name="controls"></param>
+			public ApiControlsNodeGroup(DeviceControlsCollection controls)
+			{
+				m_Controls = controls;
+			}
+
+			public override object this[uint key] { get { return m_Controls.GetControl((int)key); } }
+
+			public override bool ContainsKey(uint key)
+			{
+				return m_Controls.Contains((int)key);
+			}
+
+			protected override IEnumerable<KeyValuePair<uint, object>> GetNodes()
+			{
+				return m_Controls.Select(c => new KeyValuePair<uint, object>((uint)c.Id, c));
+			}
+		}
 
 		/// <summary>
 		/// Gets the child console nodes.
