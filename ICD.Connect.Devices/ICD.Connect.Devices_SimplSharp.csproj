@@ -70,6 +70,9 @@
   <ItemGroup>
     <Compile Include="AbstractDeviceBaseSettings.cs" />
     <Compile Include="AbstractDeviceSettings.cs" />
+    <Compile Include="AbstractProxyDevice.cs" />
+    <Compile Include="AbstractProxyDeviceBase.cs" />
+    <Compile Include="ApiControlsNodeGroup.cs" />
     <Compile Include="Controls\AbstractPowerDeviceControl.cs" />
     <Compile Include="Controls\IPowerDeviceControl.cs" />
     <Compile Include="DevicePermissable.cs" />
@@ -88,7 +91,11 @@
     <None Include="ObfuscationSettings.cs" />
     <Compile Include="IDeviceBaseSettings.cs" />
     <Compile Include="IDeviceSettings.cs" />
+    <Compile Include="IProxyDevice.cs" />
+    <Compile Include="IProxyDeviceBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ProxyDevice.cs" />
+    <Compile Include="ProxyDeviceBase.cs" />
     <Compile Include="Timers\VolumeRepeater.cs" />
     <None Include="Properties\ControlSystem.cfg" />
   </ItemGroup>
