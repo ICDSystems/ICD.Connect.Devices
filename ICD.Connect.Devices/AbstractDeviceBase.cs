@@ -16,6 +16,7 @@ namespace ICD.Connect.Devices
 	/// <summary>
 	/// Base class for devices.
 	/// </summary>
+	[ApiClass(typeof(ProxyDeviceBase))]
 	public abstract class AbstractDeviceBase<T> : AbstractOriginator<T>, IDeviceBase, IConsoleNode
 		where T : ISettings, new()
 	{
