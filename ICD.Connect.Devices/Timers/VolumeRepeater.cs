@@ -9,18 +9,12 @@ namespace ICD.Connect.Devices.Timers
 	/// VolumeRepeater allows for a virtual "button" to be held, raising a callback for
 	/// every repeat interval.
 	/// </summary>
-	public sealed class VolumeRepeater : IDisposable
+	public sealed class VolumeRepeater : AbstactVolumeRepeater
 	{
-		private readonly SafeTimer m_RepeatTimer;
+		private IVolumeLevelDeviceControl m_Control;
 
-		private IVolumeDeviceControl m_Control;
-
-		private readonly int m_BeforeRepeat;
-		private readonly int m_BetweenRepeat;
-		private readonly int m_InitialIncrement;
-		private readonly int m_RepeatIncrement;
-
-		private bool m_Up;
+		private readonly float? m_InitialIncrement;
+		private readonly float? m_RepeatIncrement;
 
 		#region Constructor
 
@@ -31,14 +25,21 @@ namespace ICD.Connect.Devices.Timers
 		/// <param name="repeatIncrement">The increment for every subsequent repeat</param>
 		/// <param name="beforeRepeat">The delay before the second increment</param>
 		/// <param name="betweenRepeat">The delay between each subsequent repeat</param>
-		public VolumeRepeater(int initialIncrement, int repeatIncrement, int beforeRepeat, int betweenRepeat)
+		public VolumeRepeater(float? initialIncrement, float? repeatIncrement, int beforeRepeat, int betweenRepeat):base(beforeRepeat,betweenRepeat)
 		{
-			m_RepeatTimer = SafeTimer.Stopped(RepeatCallback);
-
 			m_InitialIncrement = initialIncrement;
 			m_RepeatIncrement = repeatIncrement;
-			m_BeforeRepeat = beforeRepeat;
-			m_BetweenRepeat = betweenRepeat;
+		}
+
+		/// <summary>
+		/// Constructor.  Uses device's Increment methods
+		/// </summary>
+		/// <param name="beforeRepeat">The delay before the second increment</param>
+		/// <param name="betweenRepeat">The delay between each subsequent repeat</param>
+		public VolumeRepeater(int beforeRepate, int betweenRepeat) : base(beforeRepate, betweenRepeat)
+		{
+			m_InitialIncrement = null;
+			m_RepeatIncrement = null;
 		}
 
 		/// <summary>
@@ -54,46 +55,12 @@ namespace ICD.Connect.Devices.Timers
 		#region Methods
 
 		/// <summary>
-		/// Release resources.
-		/// </summary>
-		public void Dispose()
-		{
-			m_RepeatTimer.Dispose();
-		}
-
-		/// <summary>
 		/// Sets the control.
 		/// </summary>
 		/// <param name="control"></param>
-		public void SetControl(IVolumeDeviceControl control)
+		public void SetControl(IVolumeLevelDeviceControl control)
 		{
 			m_Control = control;
-		}
-
-		/// <summary>
-		/// Begin incrementing the volume.
-		/// </summary>
-		public void VolumeUpHold()
-		{
-			Release();
-			BeginIncrement(true);
-		}
-
-		/// <summary>
-		/// Begin decrementing the volume.
-		/// </summary>
-		public void VolumeDownHold()
-		{
-			Release();
-			BeginIncrement(false);
-		}
-
-		/// <summary>
-		/// Stops the repeat timer.
-		/// </summary>
-		public void Release()
-		{
-			m_RepeatTimer.Stop();
 		}
 
 		#endregion
@@ -101,37 +68,56 @@ namespace ICD.Connect.Devices.Timers
 		#region Private Methods
 
 		/// <summary>
-		/// Applies the initial increment and resets the timer.
+		/// Performs the increment for the initial press
 		/// </summary>
-		/// <param name="up"></param>
-		private void BeginIncrement(bool up)
+		protected override void IncrementVolumeInitial()
 		{
-			m_Up = up;
-
-			IncrementVolume(m_InitialIncrement);
-
-			m_RepeatTimer.Reset(m_BeforeRepeat, m_BetweenRepeat);
+			if (m_InitialIncrement != null)
+				IncrementVolume((float)m_InitialIncrement);
+			else
+				IncrementVolume();
 		}
 
 		/// <summary>
-		/// Called for every repeat.
+		/// Performs the increment for the repeats
 		/// </summary>
-		private void RepeatCallback()
+		protected override void IncrementVolumeSubsequent()
 		{
-			IncrementVolume(m_RepeatIncrement);
+			if (m_RepeatIncrement != null)
+				IncrementVolume((float)m_RepeatIncrement);
+			else
+				IncrementVolume();
 		}
 
 		/// <summary>
-		/// Adjusts the device volume.
+		/// Adjusts the device volume by the specified increment.
+		/// Applies Up/Down offset based on Up property value.
 		/// </summary>
 		/// <param name="increment"></param>
-		private void IncrementVolume(int increment)
+		private void IncrementVolume(float increment)
 		{
-			int delta = m_Up ? increment : -1 * increment;
-			float newVolume =
-				MathUtils.Clamp(m_Control.RawVolume + delta, m_Control.RawVolumeMin, m_Control.RawVolumeMax);
+			if (m_Control == null)
+				throw new InvalidOperationException("Can't increment volume without control set");
 
-			m_Control.SetRawVolume(newVolume);
+			float delta = Up ? increment : -1 * increment;
+			float newVolume = m_Control.ClampRawVolume(m_Control.VolumeRaw + delta);
+
+			m_Control.SetVolumeRaw(newVolume);
+		}
+
+		/// <summary>
+		/// Adjusts the device volume using the default Increment/Decremnet methods.
+		/// Determines Increment/Decrement bad on Up property value.
+		/// </summary>
+		private void IncrementVolume()
+		{
+			if (m_Control == null)
+				throw new InvalidOperationException("Can't increment volume without control set");
+
+			if (Up)
+				m_Control.VolumeLevelIncrement();
+			else
+				m_Control.VolumeLevelDecrement();
 		}
 
 		#endregion
