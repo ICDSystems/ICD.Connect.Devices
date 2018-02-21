@@ -1,6 +1,4 @@
 ﻿using System;
-using ICD.Common.Utils;
-using ICD.Common.Utils.Timers;
 using ICD.Connect.Devices.Controls;
 
 namespace ICD.Connect.Devices.Timers
@@ -25,7 +23,8 @@ namespace ICD.Connect.Devices.Timers
 		/// <param name="repeatIncrement">The increment for every subsequent repeat</param>
 		/// <param name="beforeRepeat">The delay before the second increment</param>
 		/// <param name="betweenRepeat">The delay between each subsequent repeat</param>
-		public VolumeRepeater(float? initialIncrement, float? repeatIncrement, int beforeRepeat, int betweenRepeat):base(beforeRepeat,betweenRepeat)
+		public VolumeRepeater(float? initialIncrement, float? repeatIncrement, int beforeRepeat, int betweenRepeat)
+			: base(beforeRepeat, betweenRepeat)
 		{
 			m_InitialIncrement = initialIncrement;
 			m_RepeatIncrement = repeatIncrement;
@@ -36,7 +35,8 @@ namespace ICD.Connect.Devices.Timers
 		/// </summary>
 		/// <param name="beforeRepeat">The delay before the second increment</param>
 		/// <param name="betweenRepeat">The delay between each subsequent repeat</param>
-		public VolumeRepeater(int beforeRepate, int betweenRepeat) : base(beforeRepate, betweenRepeat)
+		public VolumeRepeater(int beforeRepeat, int betweenRepeat)
+			: base(beforeRepeat, betweenRepeat)
 		{
 			m_InitialIncrement = null;
 			m_RepeatIncrement = null;
