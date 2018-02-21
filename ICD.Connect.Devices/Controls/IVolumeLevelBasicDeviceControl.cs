@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ICD.Connect.Devices.Controls
+﻿namespace ICD.Connect.Devices.Controls
 {
 	/// <summary>
 	/// Basic volume control for devices
@@ -11,13 +7,11 @@ namespace ICD.Connect.Devices.Controls
 	/// </summary>
     public interface IVolumeLevelBasicDeviceControl : IVolumeDeviceControl
     {
-
 		/// <summary>
 		/// Raises the volume one time
 		/// Ammount of the change varies between implementations - typically "1" raw unit
 		/// </summary>
 	    void VolumeLevelIncrement();
-
 
 	    /// <summary>
 	    /// Lowers the volume one time

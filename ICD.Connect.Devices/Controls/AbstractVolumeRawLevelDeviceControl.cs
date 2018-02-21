@@ -1,13 +1,9 @@
 ﻿using System;
-using ICD.Common.Properties;
-using ICD.Common.Utils;
-using ICD.Connect.Devices.Timers;
 
 namespace ICD.Connect.Devices.Controls
 {
 	public abstract class AbstractVolumeRawLevelDeviceControl<T> : AbstractVolumeLevelDeviceControl<T>, IVolumeRawLevelDeviceControl where T : IDeviceBase
 	{
-
 		#region Abstract Properties
 
 		/// <summary>
