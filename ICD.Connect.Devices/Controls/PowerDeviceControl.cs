@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using ICD.Connect.API.Commands;
-
-namespace ICD.Connect.Devices.Controls
+﻿namespace ICD.Connect.Devices.Controls
 {
     public sealed class PowerDeviceControl<T> : AbstractPowerDeviceControl<T>
 		where T : IDeviceWithPower
