@@ -73,7 +73,7 @@ namespace ICD.Connect.Devices.Controls
 			get { return ConvertLevelToString(VolumeRaw); }
 		}
 
-		protected float IncrementValue
+		public float IncrementValue
 		{
 			get
 			{
