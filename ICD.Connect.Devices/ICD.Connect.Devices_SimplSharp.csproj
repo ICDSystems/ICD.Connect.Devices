@@ -94,7 +94,6 @@
     <Compile Include="Controls\DeviceControlsCollection.cs" />
     <Compile Include="Controls\IDeviceControl.cs" />
     <Compile Include="Controls\IVolumeDeviceControl.cs" />
-    <Compile Include="ICresnetDeviceSettings.cs" />
     <Compile Include="IDevice.cs" />
     <Compile Include="IDeviceBase.cs" />
     <None Include="ObfuscationSettings.cs" />
