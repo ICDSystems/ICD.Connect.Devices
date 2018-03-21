@@ -110,15 +110,7 @@ namespace ICD.Connect.Devices.Extensions
 			if (extends == null)
 				throw new ArgumentNullException("controlInfo");
 
-			DeviceControlInfo[] info = controlInfo as DeviceControlInfo[] ?? controlInfo.ToArray();
-
-			Dictionary<int, IDeviceBase> devices =
-				extends.Originators
-				       .GetChildren<IDeviceBase>(info.Select(i => i.DeviceId)
-				                                     .Distinct())
-				       .ToDictionary(d => d.Id);
-
-			return info.Select(i => devices[i.DeviceId].Controls.GetControl<T>(i.ControlId));
+			return controlInfo.Select(c => extends.GetControl<T>(c));
 		}
 	}
 }
