@@ -8,6 +8,7 @@ using ICD.Connect.API.Attributes;
 using ICD.Connect.API.Commands;
 using ICD.Connect.API.Nodes;
 using ICD.Connect.Devices.Controls;
+using ICD.Connect.Devices.Proxies;
 using ICD.Connect.Settings;
 
 namespace ICD.Connect.Devices

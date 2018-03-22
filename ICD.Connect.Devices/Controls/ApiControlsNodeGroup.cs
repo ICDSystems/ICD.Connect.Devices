@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using ICD.Connect.API.Nodes;
-using ICD.Connect.Devices.Controls;
 
-namespace ICD.Connect.Devices
+namespace ICD.Connect.Devices.Controls
 {
 	public sealed class ApiControlsNodeGroup : AbstractApiNodeGroup
 	{

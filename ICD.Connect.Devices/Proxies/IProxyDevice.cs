@@ -1,4 +1,4 @@
-﻿namespace ICD.Connect.Devices
+﻿namespace ICD.Connect.Devices.Proxies
 {
 	public interface IProxyDevice : IProxyDeviceBase, IDevice
 	{

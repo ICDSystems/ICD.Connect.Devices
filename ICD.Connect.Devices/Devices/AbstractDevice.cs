@@ -1,4 +1,5 @@
 ﻿using ICD.Connect.API.Attributes;
+using ICD.Connect.Devices.Proxies;
 
 namespace ICD.Connect.Devices
 {
