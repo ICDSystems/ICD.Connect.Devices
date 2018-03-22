@@ -2,12 +2,13 @@
 using ICD.Common.Properties;
 using ICD.Common.Utils;
 using ICD.Common.Utils.EventArguments;
+using ICD.Connect.API.Nodes;
 using ICD.Connect.Devices.Controls;
 using ICD.Connect.Settings;
 
 namespace ICD.Connect.Devices
 {
-	public interface IDeviceBase : IOriginator, IStateDisposable
+	public interface IDeviceBase : IOriginator, IStateDisposable, IConsoleNode
 	{
 		/// <summary>
 		/// Raised when the device goes online/offline.

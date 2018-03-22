@@ -17,7 +17,7 @@ namespace ICD.Connect.Devices
 	/// Base class for devices.
 	/// </summary>
 	[ApiClass(typeof(ProxyDeviceBase))]
-	public abstract class AbstractDeviceBase<T> : AbstractOriginator<T>, IDeviceBase, IConsoleNode
+	public abstract class AbstractDeviceBase<T> : AbstractOriginator<T>, IDeviceBase
 		where T : ISettings, new()
 	{
 		/// <summary>
@@ -117,7 +117,7 @@ namespace ICD.Connect.Devices
 
 		#endregion
 
-		#region API
+		#region Console
 
 		/// <summary>
 		/// Gets the child console nodes.
@@ -125,7 +125,7 @@ namespace ICD.Connect.Devices
 		/// <returns></returns>
 		public virtual IEnumerable<IConsoleNodeBase> GetConsoleNodes()
 		{
-			yield return ConsoleNodeGroup.KeyNodeMap("Controls", Controls, c => (uint)c.Id);
+			return DeviceBaseConsole.GetConsoleNodes(this);
 		}
 
 		/// <summary>
@@ -134,9 +134,7 @@ namespace ICD.Connect.Devices
 		/// <param name="addRow"></param>
 		public virtual void BuildConsoleStatus(AddStatusRowDelegate addRow)
 		{
-			addRow("ID", Id);
-			addRow("Name", Name);
-			addRow("Online", IsOnline);
+			DeviceBaseConsole.BuildConsoleStatus(this, addRow);
 		}
 
 		/// <summary>
@@ -145,7 +143,7 @@ namespace ICD.Connect.Devices
 		/// <returns></returns>
 		public virtual IEnumerable<IConsoleCommand> GetConsoleCommands()
 		{
-			yield break;
+			return DeviceBaseConsole.GetConsoleCommands(this);
 		}
 
 		#endregion
