@@ -4,11 +4,9 @@ using ICD.Common.Properties;
 using ICD.Common.Utils.EventArguments;
 using ICD.Common.Utils.Extensions;
 using ICD.Common.Utils.Services.Logging;
-using ICD.Connect.API.Attributes;
 using ICD.Connect.API.Commands;
 using ICD.Connect.API.Nodes;
 using ICD.Connect.Devices.Controls;
-using ICD.Connect.Devices.Proxies;
 using ICD.Connect.Settings;
 
 namespace ICD.Connect.Devices
@@ -16,7 +14,6 @@ namespace ICD.Connect.Devices
 	/// <summary>
 	/// Base class for devices.
 	/// </summary>
-	[ApiClass(typeof(ProxyDeviceBase))]
 	public abstract class AbstractDeviceBase<T> : AbstractOriginator<T>, IDeviceBase
 		where T : ISettings, new()
 	{
