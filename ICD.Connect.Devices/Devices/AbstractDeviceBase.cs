@@ -32,7 +32,6 @@ namespace ICD.Connect.Devices
 		/// <summary>
 		/// Returns true if the device hardware is detected by the system.
 		/// </summary>
-		[ApiProperty("IsOnline", "Gets the online state of the device.")]
 		public bool IsOnline
 		{
 			get { return m_IsOnline; }
@@ -44,6 +43,7 @@ namespace ICD.Connect.Devices
 				m_IsOnline = value;
 
 				Logger.AddEntry(eSeverity.Informational, "{0} - Online status changed to {1}", this, IsOnline);
+
 				OnIsOnlineStateChanged.Raise(this, new BoolEventArgs(IsOnline));
 			}
 		}
@@ -69,9 +69,6 @@ namespace ICD.Connect.Devices
 		/// </summary>
 		public DeviceControlsCollection Controls { get { return m_Controls; } }
 
-		[ApiNodeGroup("Controls", "The controls for this device.")]
-		private IApiNodeGroup ApiControls { get; set; }
-
 		#endregion
 
 		/// <summary>
@@ -80,7 +77,6 @@ namespace ICD.Connect.Devices
 		protected AbstractDeviceBase()
 		{
 			m_Controls = new DeviceControlsCollection();
-			ApiControls = new ApiControlsNodeGroup(m_Controls);
 
 			Name = GetType().Name;
 			UpdateCachedOnlineStatus();

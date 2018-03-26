@@ -5,10 +5,11 @@ using System.Linq;
 using ICD.Common.Properties;
 using ICD.Common.Utils;
 using ICD.Common.Utils.Extensions;
+using ICD.Connect.API.Nodes;
 
 namespace ICD.Connect.Devices.Controls
 {
-	public sealed class DeviceControlsCollection : IEnumerable<IDeviceControl>, IStateDisposable
+	public sealed class DeviceControlsCollection : IEnumerable<IDeviceControl>, IStateDisposable, IApiNodeGroup
 	{
 		private readonly Dictionary<Type, List<int>> m_TypeToControls;
 		private readonly Dictionary<int, IDeviceControl> m_DeviceControls;
@@ -303,6 +304,36 @@ namespace ICD.Connect.Devices.Controls
 			{
 				m_DeviceControlsSection.Leave();
 			}
+		}
+
+		#endregion
+
+		#region API Node Group
+
+		/// <summary>
+		/// Gets a sequence of keyed nodes.
+		/// </summary>
+		/// <returns></returns>
+		IEnumerable<KeyValuePair<uint, object>> IApiNodeGroup.GetKeyedNodes()
+		{
+			return GetControls().Select(c => new KeyValuePair<uint, object>((uint)c.Id, c));
+		}
+
+		/// <summary>
+		/// Gets the instance for the given key.
+		/// </summary>
+		/// <param name="key"></param>
+		/// <returns></returns>
+		object IApiNodeGroup.this[uint key] { get { return GetControl((int)key); } }
+
+		/// <summary>
+		/// Returns true if the group contains an instance for the given key.
+		/// </summary>
+		/// <param name="key"></param>
+		/// <returns></returns>
+		bool IApiNodeGroup.ContainsKey(uint key)
+		{
+			return Contains((int)key);
 		}
 
 		#endregion

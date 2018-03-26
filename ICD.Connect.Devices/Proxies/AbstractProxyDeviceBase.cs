@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using ICD.Common.Utils.EventArguments;
-using ICD.Connect.API.Attributes;
 using ICD.Connect.API.Commands;
 using ICD.Connect.API.Nodes;
 using ICD.Connect.Devices.Controls;
@@ -17,16 +16,12 @@ namespace ICD.Connect.Devices.Proxies
 
 		#region Properties
 
-		[ApiProperty("IsOnline", "Gets the online state of the device.")]
 		public bool IsOnline { get { return true; } }
 
 		/// <summary>
 		/// Gets the controls for this device.
 		/// </summary>
 		public DeviceControlsCollection Controls { get { return m_Controls; } }
-
-		[ApiNodeGroup("Controls", "The controls for this device.")]
-		private IApiNodeGroup ApiControls { get; set; }
 
 		/// <summary>
 		/// Gets the name of the node.
@@ -46,7 +41,6 @@ namespace ICD.Connect.Devices.Proxies
 		protected AbstractProxyDeviceBase()
 		{
 			m_Controls = new DeviceControlsCollection();
-			ApiControls = new ApiControlsNodeGroup(m_Controls);
 		}
 
 		/// <summary>

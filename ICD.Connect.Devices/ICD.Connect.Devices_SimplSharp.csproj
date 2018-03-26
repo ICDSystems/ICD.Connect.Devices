@@ -71,7 +71,6 @@
     <Compile Include="Devices\DeviceBaseConsole.cs" />
     <Compile Include="Proxies\AbstractProxyDevice.cs" />
     <Compile Include="Proxies\AbstractProxyDeviceBase.cs" />
-    <Compile Include="Controls\ApiControlsNodeGroup.cs" />
     <Compile Include="Devices\AbstractDeviceBaseSettings.cs" />
     <Compile Include="Devices\AbstractDeviceSettings.cs" />
     <Compile Include="Controls\AbstractPowerDeviceControl.cs" />
