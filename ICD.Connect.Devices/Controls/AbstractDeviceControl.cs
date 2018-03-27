@@ -2,7 +2,6 @@
 using ICD.Common.Properties;
 using ICD.Common.Utils;
 using ICD.Common.Utils.Services.Logging;
-using ICD.Connect.API.Attributes;
 using ICD.Connect.API.Commands;
 using ICD.Connect.API.Nodes;
 
@@ -12,7 +11,6 @@ namespace ICD.Connect.Devices.Controls
 	/// Base class for device controls that wrap a specific device type.
 	/// </summary>
 	/// <typeparam name="T"></typeparam>
-	[ApiClass]
 	public abstract class AbstractDeviceControl<T> : IDeviceControl
 		where T : IDeviceBase
 	{
@@ -29,7 +27,6 @@ namespace ICD.Connect.Devices.Controls
 		/// <summary>
 		/// Gets the id for this control.
 		/// </summary>
-		[ApiProperty("Id", "The unique ID of the control within the device.")]
 		public int Id { get { return m_Id; } }
 
 		/// <summary>
@@ -41,7 +38,6 @@ namespace ICD.Connect.Devices.Controls
 		/// <summary>
 		/// Gets the human readable name for this control.
 		/// </summary>
-		[ApiProperty("Name", "The name of the control.")]
 		public virtual string Name { get { return GetType().Name; } }
 
 		/// <summary>
