@@ -6,7 +6,7 @@ namespace ICD.Connect.Devices
 	/// <summary>
 	/// Interface for all hardware devices.
 	/// </summary>
-	[ApiClass(typeof(ProxyDevice))]
+	[ApiClass(typeof(ProxyDevice), typeof(IDeviceBase))]
 	public interface IDevice : IDeviceBase
 	{
 	}

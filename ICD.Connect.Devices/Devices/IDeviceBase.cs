@@ -10,7 +10,7 @@ using ICD.Connect.Settings;
 
 namespace ICD.Connect.Devices
 {
-	[ApiClass(typeof(ProxyDeviceBase))]
+	[ApiClass(typeof(ProxyDeviceBase), typeof(IOriginator))]
 	public interface IDeviceBase : IOriginator, IStateDisposable, IConsoleNode
 	{
 		/// <summary>
