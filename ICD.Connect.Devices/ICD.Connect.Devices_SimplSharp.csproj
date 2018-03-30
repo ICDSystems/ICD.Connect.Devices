@@ -101,6 +101,8 @@
     <Compile Include="Devices\IDevice.cs" />
     <Compile Include="Devices\IDeviceBase.cs" />
     <None Include="ObfuscationSettings.cs" />
+    <Compile Include="Proxies\DeviceBaseApi.cs" />
+    <Compile Include="Proxies\DeviceControlApi.cs" />
     <Compile Include="Proxies\IProxyDevice.cs" />
     <Compile Include="Proxies\IProxyDeviceBase.cs" />
     <Compile Include="Devices\IDeviceBaseSettings.cs" />

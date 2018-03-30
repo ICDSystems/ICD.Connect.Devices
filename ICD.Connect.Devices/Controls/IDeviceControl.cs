@@ -6,13 +6,14 @@ using ICD.Common.Utils;
 using ICD.Common.Utils.Extensions;
 using ICD.Connect.API.Attributes;
 using ICD.Connect.API.Nodes;
+using ICD.Connect.Devices.Proxies;
 
 namespace ICD.Connect.Devices.Controls
 {
 	/// <summary>
 	/// IDeviceControl contains the usage features for a parent device.
 	/// </summary>
-	[ApiClass]
+	[ApiClass(typeof(ProxyDeviceControl))]
 	public interface IDeviceControl : IConsoleNode, IStateDisposable
 	{
 		/// <summary>
@@ -23,13 +24,13 @@ namespace ICD.Connect.Devices.Controls
 		/// <summary>
 		/// Gets the id for this control.
 		/// </summary>
-		[ApiProperty("Id", "The unique ID of the control within the device.")]
+		[ApiProperty(DeviceControlApi.PROPERTY_ID, DeviceControlApi.HELP_PROPERTY_ID)]
 		int Id { get; }
 
 		/// <summary>
 		/// Gets the human readable name for this control.
 		/// </summary>
-		[ApiProperty("Name", "The name of the control.")]
+		[ApiProperty(DeviceControlApi.PROPERTY_NAME, DeviceControlApi.HELP_PROPERTY_NAME)]
 		string Name { get; }
 
 		/// <summary>
