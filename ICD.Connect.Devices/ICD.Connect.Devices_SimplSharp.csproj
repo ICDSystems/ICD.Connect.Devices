@@ -89,7 +89,7 @@
     <Compile Include="Controls\IVolumeMuteFeedbackDeviceControl.cs" />
     <Compile Include="Controls\IVolumeRawLevelDeviceControl.cs" />
     <Compile Include="Controls\VolumeDeviceVolumeChangedEventArgs.cs" />
-    <Compile Include="Controls\IDeviceWithPower.cs" />
+    <Compile Include="Devices\IDeviceWithPower.cs" />
     <Compile Include="Controls\PowerDeviceControl.cs" />
     <Compile Include="DevicePermissable.cs" />
     <Compile Include="Extensions\CoreExtensions.cs" />
