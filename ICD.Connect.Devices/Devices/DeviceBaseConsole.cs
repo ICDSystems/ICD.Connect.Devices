@@ -30,8 +30,6 @@ namespace ICD.Connect.Devices
 			if (instance == null)
 				throw new ArgumentNullException("instance");
 
-			addRow("ID", instance.Id);
-			addRow("Name", instance.Name);
 			addRow("Online", instance.IsOnline);
 		}
 
