@@ -45,16 +45,6 @@ namespace ICD.Connect.Devices
 			}
 		}
 
-		/// <summary>
-		/// Gets the name of the node.
-		/// </summary>
-		public virtual string ConsoleName { get { return string.IsNullOrEmpty(Name) ? GetType().Name : Name; } }
-
-		/// <summary>
-		/// Gets the help information for the node.
-		/// </summary>
-		public virtual string ConsoleHelp { get { return string.Empty; } }
-
 		#endregion
 
 		private readonly DeviceControlsCollection m_Controls;
@@ -116,17 +106,32 @@ namespace ICD.Connect.Devices
 		/// Gets the child console nodes.
 		/// </summary>
 		/// <returns></returns>
-		public virtual IEnumerable<IConsoleNodeBase> GetConsoleNodes()
+		public override IEnumerable<IConsoleNodeBase> GetConsoleNodes()
 		{
-			return DeviceBaseConsole.GetConsoleNodes(this);
+			foreach (IConsoleNodeBase node in GetBaseConsoleNodes())
+				yield return node;
+
+			foreach (IConsoleNodeBase node in  DeviceBaseConsole.GetConsoleNodes(this))
+				yield return node;
+		}
+
+		/// <summary>
+		/// Wrokaround for "unverifiable code" warning.
+		/// </summary>
+		/// <returns></returns>
+		private IEnumerable<IConsoleNodeBase> GetBaseConsoleNodes()
+		{
+			return base.GetConsoleNodes();
 		}
 
 		/// <summary>
 		/// Calls the delegate for each console status item.
 		/// </summary>
 		/// <param name="addRow"></param>
-		public virtual void BuildConsoleStatus(AddStatusRowDelegate addRow)
+		public override void BuildConsoleStatus(AddStatusRowDelegate addRow)
 		{
+			base.BuildConsoleStatus(addRow);
+
 			DeviceBaseConsole.BuildConsoleStatus(this, addRow);
 		}
 
@@ -134,9 +139,22 @@ namespace ICD.Connect.Devices
 		/// Gets the child console commands.
 		/// </summary>
 		/// <returns></returns>
-		public virtual IEnumerable<IConsoleCommand> GetConsoleCommands()
+		public override IEnumerable<IConsoleCommand> GetConsoleCommands()
 		{
-			return DeviceBaseConsole.GetConsoleCommands(this);
+			foreach (IConsoleCommand command in GetBaseConsoleCommands())
+				yield return command;
+
+			foreach (IConsoleCommand command in DeviceBaseConsole.GetConsoleCommands(this))
+				yield return command;
+		}
+
+		/// <summary>
+		/// Workaround for "unverifiable code" warning.
+		/// </summary>
+		/// <returns></returns>
+		private IEnumerable<IConsoleCommand> GetBaseConsoleCommands()
+		{
+			return base.GetConsoleCommands();
 		}
 
 		#endregion
