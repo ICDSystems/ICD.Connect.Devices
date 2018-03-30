@@ -143,7 +143,7 @@ namespace ICD.Connect.Devices.Controls
 		/// <returns></returns>
 		public virtual IEnumerable<IConsoleNodeBase> GetConsoleNodes()
 		{
-			yield break;
+			return DeviceControlConsole.GetConsoleNodes(this);
 		}
 
 		/// <summary>
@@ -152,7 +152,7 @@ namespace ICD.Connect.Devices.Controls
 		/// <param name="addRow"></param>
 		public virtual void BuildConsoleStatus(AddStatusRowDelegate addRow)
 		{
-			addRow("Name", Name);
+			DeviceControlConsole.BuildConsoleStatus(this, addRow);
 		}
 
 		/// <summary>
@@ -161,7 +161,7 @@ namespace ICD.Connect.Devices.Controls
 		/// <returns></returns>
 		public virtual IEnumerable<IConsoleCommand> GetConsoleCommands()
 		{
-			yield break;
+			return DeviceControlConsole.GetConsoleCommands(this);
 		}
 
 		#endregion
