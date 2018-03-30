@@ -4,12 +4,12 @@ using ICD.Common.Utils.EventArguments;
 using ICD.Connect.API.Commands;
 using ICD.Connect.API.Nodes;
 using ICD.Connect.Devices.Controls;
-using ICD.Connect.Settings;
+using ICD.Connect.Settings.Proxies;
 
 namespace ICD.Connect.Devices.Proxies
 {
-    public abstract class AbstractProxyDeviceBase : AbstractProxyOriginator, IProxyDeviceBase
-    {
+	public abstract class AbstractProxyDeviceBase : AbstractProxyOriginator, IProxyDeviceBase
+	{
 		public event EventHandler<BoolEventArgs> OnIsOnlineStateChanged;
 
 		private readonly DeviceControlsCollection m_Controls;
@@ -44,7 +44,7 @@ namespace ICD.Connect.Devices.Proxies
 		}
 
 		/// <summary>
-		/// Release resources.
+		/// Override to release resources.
 		/// </summary>
 		/// <param name="disposing"></param>
 		protected override void DisposeFinal(bool disposing)
