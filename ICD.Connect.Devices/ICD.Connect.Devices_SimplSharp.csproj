@@ -70,6 +70,8 @@
   <ItemGroup>
     <Compile Include="Controls\DeviceControlConsole.cs" />
     <Compile Include="Devices\DeviceBaseConsole.cs" />
+    <Compile Include="Proxies\Controls\PowerDeviceControlApi.cs" />
+    <Compile Include="Proxies\Controls\ProxyPowerDeviceControl.cs" />
     <Compile Include="Proxies\Devices\AbstractProxyDevice.cs" />
     <Compile Include="Proxies\Devices\AbstractProxyDeviceBase.cs" />
     <Compile Include="Devices\AbstractDeviceBaseSettings.cs" />
