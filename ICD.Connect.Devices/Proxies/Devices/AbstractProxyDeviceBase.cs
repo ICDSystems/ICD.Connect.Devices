@@ -6,7 +6,7 @@ using ICD.Connect.API.Nodes;
 using ICD.Connect.Devices.Controls;
 using ICD.Connect.Settings.Proxies;
 
-namespace ICD.Connect.Devices.Proxies
+namespace ICD.Connect.Devices.Proxies.Devices
 {
 	public abstract class AbstractProxyDeviceBase : AbstractProxyOriginator, IProxyDeviceBase
 	{

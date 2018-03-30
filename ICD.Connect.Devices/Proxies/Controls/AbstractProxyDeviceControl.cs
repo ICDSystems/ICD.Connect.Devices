@@ -5,8 +5,9 @@ using ICD.Connect.API.Commands;
 using ICD.Connect.API.Nodes;
 using ICD.Connect.API.Proxies;
 using ICD.Connect.Devices.Controls;
+using ICD.Connect.Devices.Proxies.Devices;
 
-namespace ICD.Connect.Devices.Proxies
+namespace ICD.Connect.Devices.Proxies.Controls
 {
 	public abstract class AbstractProxyDeviceControl : AbstractProxy, IProxyDeviceControl
 	{

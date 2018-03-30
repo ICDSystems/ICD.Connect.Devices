@@ -1,4 +1,4 @@
-﻿namespace ICD.Connect.Devices.Proxies
+﻿namespace ICD.Connect.Devices.Proxies.Controls
 {
 	public static class DeviceControlApi
 	{

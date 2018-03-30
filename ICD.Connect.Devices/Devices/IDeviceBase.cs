@@ -4,7 +4,7 @@ using ICD.Common.Utils;
 using ICD.Common.Utils.EventArguments;
 using ICD.Connect.API.Attributes;
 using ICD.Connect.Devices.Controls;
-using ICD.Connect.Devices.Proxies;
+using ICD.Connect.Devices.Proxies.Devices;
 using ICD.Connect.Settings;
 
 namespace ICD.Connect.Devices

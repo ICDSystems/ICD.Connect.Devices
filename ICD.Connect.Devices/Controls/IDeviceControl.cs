@@ -6,7 +6,7 @@ using ICD.Common.Utils;
 using ICD.Common.Utils.Extensions;
 using ICD.Connect.API.Attributes;
 using ICD.Connect.API.Nodes;
-using ICD.Connect.Devices.Proxies;
+using ICD.Connect.Devices.Proxies.Controls;
 
 namespace ICD.Connect.Devices.Controls
 {
