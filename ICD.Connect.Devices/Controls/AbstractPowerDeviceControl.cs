@@ -75,6 +75,28 @@ namespace ICD.Connect.Devices.Controls
 		#region Console
 
 		/// <summary>
+		/// Gets the child console nodes.
+		/// </summary>
+		/// <returns></returns>
+		public override IEnumerable<IConsoleNodeBase> GetConsoleNodes()
+		{
+			foreach (IConsoleNodeBase node in GetBaseConsoleNodes())
+				yield return node;
+
+			foreach (IConsoleNodeBase node in PowerDeviceControlConsole.GetConsoleNodes(this))
+				yield return node;
+		}
+
+		/// <summary>
+		/// Wrokaround for "unverifiable code" warning.
+		/// </summary>
+		/// <returns></returns>
+		private IEnumerable<IConsoleNodeBase> GetBaseConsoleNodes()
+		{
+			return base.GetConsoleNodes();
+		}
+
+		/// <summary>
 		/// Calls the delegate for each console status item.
 		/// </summary>
 		/// <param name="addRow"></param>
@@ -82,7 +104,7 @@ namespace ICD.Connect.Devices.Controls
 		{
 			base.BuildConsoleStatus(addRow);
 
-			addRow("Powered", IsPowered);
+			PowerDeviceControlConsole.BuildConsoleStatus(this, addRow);
 		}
 
 		/// <summary>
@@ -94,8 +116,8 @@ namespace ICD.Connect.Devices.Controls
 			foreach (IConsoleCommand command in GetBaseConsoleCommands())
 				yield return command;
 
-			yield return new ConsoleCommand("PowerOn", "Turns on the device", () => PowerOn());
-			yield return new ConsoleCommand("PowerOff", "Turns off the device", () => PowerOff());
+			foreach (IConsoleCommand command in PowerDeviceControlConsole.GetConsoleCommands(this))
+				yield return command;
 		}
 
 		/// <summary>
