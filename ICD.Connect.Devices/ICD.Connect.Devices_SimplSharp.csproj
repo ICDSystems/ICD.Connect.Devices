@@ -101,6 +101,7 @@
     <Compile Include="Devices\IDevice.cs" />
     <Compile Include="Devices\IDeviceBase.cs" />
     <None Include="ObfuscationSettings.cs" />
+    <Compile Include="Proxies\AbstractProxyDeviceControl.cs" />
     <Compile Include="Proxies\DeviceBaseApi.cs" />
     <Compile Include="Proxies\DeviceControlApi.cs" />
     <Compile Include="Proxies\IProxyDevice.cs" />
@@ -108,8 +109,10 @@
     <Compile Include="Devices\IDeviceBaseSettings.cs" />
     <Compile Include="Devices\IDeviceSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Proxies\IProxyDeviceControl.cs" />
     <Compile Include="Proxies\ProxyDevice.cs" />
     <Compile Include="Proxies\ProxyDeviceBase.cs" />
+    <Compile Include="Proxies\ProxyDeviceControl.cs" />
     <Compile Include="Timers\AbstactVolumeRepeater.cs" />
     <Compile Include="Timers\VolumeBasicRepeater.cs" />
     <Compile Include="Timers\VolumeRepeater.cs" />
