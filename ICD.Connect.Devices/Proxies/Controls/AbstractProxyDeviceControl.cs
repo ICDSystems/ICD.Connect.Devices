@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using ICD.Common.Utils;
 using ICD.Common.Utils.Services.Logging;
+using ICD.Connect.API;
 using ICD.Connect.API.Commands;
+using ICD.Connect.API.Info;
 using ICD.Connect.API.Nodes;
 using ICD.Connect.API.Proxies;
 using ICD.Connect.Devices.Controls;
@@ -29,7 +31,7 @@ namespace ICD.Connect.Devices.Proxies.Controls
 		/// <summary>
 		/// Gets the human readable name for this control.
 		/// </summary>
-		public virtual string Name { get { return GetType().Name; } }
+		public string Name { get; set; }
 
 		/// <summary>
 		/// Gets the parent and control id info.
@@ -81,6 +83,36 @@ namespace ICD.Connect.Devices.Proxies.Controls
 		}
 
 		#endregion
+
+		/// <summary>
+		/// Override to build initialization commands on top of the current class info.
+		/// </summary>
+		/// <param name="command"></param>
+		protected override void Initialize(ApiClassInfo command)
+		{
+			base.Initialize(command);
+
+			ApiCommandBuilder.UpdateCommand(command)
+			                 .GetProperty(DeviceControlApi.PROPERTY_NAME)
+			                 .Complete();
+		}
+
+		/// <summary>
+		/// Updates the proxy with a property result.
+		/// </summary>
+		/// <param name="name"></param>
+		/// <param name="result"></param>
+		protected override void ParseProperty(string name, ApiResult result)
+		{
+			base.ParseProperty(name, result);
+
+			switch (name)
+			{
+				case DeviceControlApi.PROPERTY_NAME:
+					Name = result.GetValue<string>();
+					break;
+			}
+		}
 
 		#region Console
 
