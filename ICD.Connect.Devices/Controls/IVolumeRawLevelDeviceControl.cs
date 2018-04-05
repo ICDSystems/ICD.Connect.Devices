@@ -1,4 +1,5 @@
-﻿using ICD.Common.Utils;
+﻿using System;
+using ICD.Common.Utils;
 
 namespace ICD.Connect.Devices.Controls
 {
@@ -36,6 +37,12 @@ namespace ICD.Connect.Devices.Controls
 		/// <returns>Volume position, between 0 and 1</returns>
 		public static float ConvertRawToPosition(this IVolumeRawLevelDeviceControl control, float volumeRaw)
 		{
+			if (control == null)
+				throw new ArgumentNullException("control");
+
+			if (control.VolumeRawMinRange.Equals(control.VolumeRawMaxRange))
+				return 0.0f;
+
 			return MathUtils.MapRange(control.VolumeRawMinRange, control.VolumeRawMaxRange, 0.0f, 1.0f, volumeRaw);
 		}
 
@@ -47,12 +54,18 @@ namespace ICD.Connect.Devices.Controls
 		/// <returns>Volume Raw Value</returns>
 		public static float ConvertPositionToRaw(this IVolumeRawLevelDeviceControl control, float volumePosition)
 		{
+			if (control == null)
+				throw new ArgumentNullException("control");
+
 			return MathUtils.MapRange(0.0f, 1.0f, control.VolumeRawMinRange, control.VolumeRawMaxRange, volumePosition);
 		}
 
 		public static float ClampRawVolume(this IVolumeRawLevelDeviceControl control, float level)
 		{
-				return MathUtils.Clamp(level, control.VolumeRawMinRange, control.VolumeRawMaxRange);
+			if (control == null)
+				throw new ArgumentNullException("control");
+
+			return MathUtils.Clamp(level, control.VolumeRawMinRange, control.VolumeRawMaxRange);
 		}
 	}
 }
