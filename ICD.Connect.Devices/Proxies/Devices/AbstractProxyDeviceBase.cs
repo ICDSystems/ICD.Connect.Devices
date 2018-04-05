@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using ICD.Common.Properties;
+using ICD.Common.Utils;
 using ICD.Common.Utils.EventArguments;
 using ICD.Common.Utils.Extensions;
 using ICD.Connect.API;
 using ICD.Connect.API.Commands;
 using ICD.Connect.API.Info;
 using ICD.Connect.API.Nodes;
+using ICD.Connect.API.Proxies;
 using ICD.Connect.Devices.Controls;
+using ICD.Connect.Devices.Proxies.Controls;
 using ICD.Connect.Settings.Proxies;
 
 namespace ICD.Connect.Devices.Proxies.Devices
@@ -17,6 +21,8 @@ namespace ICD.Connect.Devices.Proxies.Devices
 		public event EventHandler<BoolEventArgs> OnIsOnlineStateChanged;
 
 		private readonly DeviceControlsCollection m_Controls;
+		private readonly Dictionary<IProxy, Func<ApiClassInfo, ApiClassInfo>> m_ProxyBuildCommand;
+
 		private bool m_IsOnline;
 
 		#region Properties
@@ -51,10 +57,9 @@ namespace ICD.Connect.Devices.Proxies.Devices
 		/// </summary>
 		protected AbstractProxyDeviceBase()
 		{
+			m_ProxyBuildCommand = new Dictionary<IProxy, Func<ApiClassInfo, ApiClassInfo>>();
 			m_Controls = new DeviceControlsCollection();
 		}
-
-		#region Private Methods
 
 		/// <summary>
 		/// Override to release resources.
@@ -65,7 +70,23 @@ namespace ICD.Connect.Devices.Proxies.Devices
 			OnIsOnlineStateChanged = null;
 
 			base.DisposeFinal(disposing);
+
+			DisposeControls();
 		}
+
+		private void DisposeControls()
+		{
+			foreach (IProxyDeviceControl control in m_Controls.OfType<IProxyDeviceControl>())
+			{
+				Unsubscribe(control);
+				control.Dispose();
+			}
+
+			m_Controls.Dispose();
+			m_ProxyBuildCommand.Clear();
+		}
+
+		#region Private Methods
 
 		/// <summary>
 		/// Override to build initialization commands on top of the current class info.
@@ -96,6 +117,106 @@ namespace ICD.Connect.Devices.Proxies.Devices
 					IsOnline = result.GetValue<bool>();
 					break;
 			}
+		}
+
+		/// <summary>
+		/// Updates the proxy with a node group result.
+		/// </summary>
+		/// <param name="name"></param>
+		/// <param name="result"></param>
+		protected override void ParseNodeGroup(string name, ApiResult result)
+		{
+			base.ParseNodeGroup(name, result);
+
+			switch (name)
+			{
+				case DeviceBaseApi.NODE_GROUP_CONTROLS:
+					ApiNodeGroupInfo nodeGroup = result.GetValue<ApiNodeGroupInfo>();
+					foreach (KeyValuePair<uint, ApiClassInfo> item in nodeGroup)
+					{
+						IProxyDeviceControl proxy = LazyLoadProxyControl("Controls", (int)item.Key, item.Value);
+						proxy.ParseInfo(item.Value);
+					}
+					break;
+			}
+		}
+
+		/// <summary>
+		/// Creates a proxy control for the given class info if a control with the given id does not exist.
+		/// </summary>
+		/// <param name="group"></param>
+		/// <param name="id"></param>
+		/// <param name="classInfo"></param>
+		private IProxyDeviceControl LazyLoadProxyControl(string group, int id, ApiClassInfo classInfo)
+		{
+			if (m_Controls.Contains(id))
+				return m_Controls.GetControl<IProxyDeviceControl>(id);
+
+			Type proxyType = classInfo.GetProxyTypes().FirstOrDefault();
+			if (proxyType == null)
+				throw new InvalidOperationException(string.Format("No proxy type discovered for control {0}", id));
+
+			// Build the control
+			IProxyDeviceControl control = ReflectionUtils.CreateInstance(proxyType, this, id) as IProxyDeviceControl;
+			if (control == null)
+				throw new InvalidOperationException();
+
+			// Build the root command
+			Func<ApiClassInfo, ApiClassInfo> buildCommand = local =>
+				                                                ApiCommandBuilder.NewCommand()
+				                                                                 .AtNodeGroup(group)
+				                                                                 .AddKey((uint)id, local)
+				                                                                 .Complete();
+
+			m_ProxyBuildCommand.Add(control, buildCommand);
+			m_Controls.Add(control);
+
+			// Start handling the proxy callbacks
+			Subscribe(control);
+
+			// Initialize the proxy
+			control.Initialize();
+
+			return control;
+		}
+
+		#endregion
+
+		#region Proxy Callbacks
+
+		/// <summary>
+		/// Subscribe to the proxy events.
+		/// </summary>
+		/// <param name="originator"></param>
+		private void Subscribe(IProxy originator)
+		{
+			originator.OnCommand += ProxyOnCommand;
+		}
+
+		/// <summary>
+		/// Unsubscribe from the proxy events.
+		/// </summary>
+		/// <param name="originator"></param>
+		private void Unsubscribe(IProxy originator)
+		{
+			originator.OnCommand -= ProxyOnCommand;
+		}
+
+		/// <summary>
+		/// Called when a proxy raises a command to be sent to the remote API.
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="eventArgs"></param>
+		private void ProxyOnCommand(object sender, ApiClassInfoEventArgs eventArgs)
+		{
+			IProxy proxy = sender as IProxy;
+			if (proxy == null)
+				return;
+
+			// Build the full command from the device to the proxy
+			ApiClassInfo command = m_ProxyBuildCommand[proxy](eventArgs.Data);
+
+			SendCommand(command);
 		}
 
 		#endregion
