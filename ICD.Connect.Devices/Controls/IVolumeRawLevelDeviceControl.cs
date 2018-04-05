@@ -40,6 +40,9 @@ namespace ICD.Connect.Devices.Controls
 			if (control == null)
 				throw new ArgumentNullException("control");
 
+			if (control.VolumeRawMinRange.Equals(control.VolumeRawMaxRange))
+				return 0.0f;
+
 			return MathUtils.MapRange(control.VolumeRawMinRange, control.VolumeRawMaxRange, 0.0f, 1.0f, volumeRaw);
 		}
 
