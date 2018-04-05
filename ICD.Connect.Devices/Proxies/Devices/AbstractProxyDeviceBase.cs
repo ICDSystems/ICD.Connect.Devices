@@ -54,6 +54,8 @@ namespace ICD.Connect.Devices.Proxies.Devices
 			m_Controls = new DeviceControlsCollection();
 		}
 
+		#region Private Methods
+
 		/// <summary>
 		/// Override to release resources.
 		/// </summary>
@@ -78,6 +80,25 @@ namespace ICD.Connect.Devices.Proxies.Devices
 			                 .GetNodeGroup(DeviceBaseApi.NODE_GROUP_CONTROLS)
 			                 .Complete();
 		}
+
+		/// <summary>
+		/// Updates the proxy with a property result.
+		/// </summary>
+		/// <param name="name"></param>
+		/// <param name="result"></param>
+		protected override void ParseProperty(string name, ApiResult result)
+		{
+			base.ParseProperty(name, result);
+
+			switch (name)
+			{
+				case DeviceBaseApi.PROPERTY_IS_ONLINE:
+					IsOnline = result.GetValue<bool>();
+					break;
+			}
+		}
+
+		#endregion
 
 		#region Console
 
