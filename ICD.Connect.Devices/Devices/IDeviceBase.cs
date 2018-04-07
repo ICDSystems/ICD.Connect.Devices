@@ -15,7 +15,7 @@ namespace ICD.Connect.Devices
 		/// <summary>
 		/// Raised when the device goes online/offline.
 		/// </summary>
-		[PublicAPI]
+		[ApiEvent(DeviceBaseApi.EVENT_IS_ONLINE, DeviceBaseApi.HELP_EVENT_IS_ONLINE)]
 		event EventHandler<BoolEventArgs> OnIsOnlineStateChanged;
 
 		/// <summary>
