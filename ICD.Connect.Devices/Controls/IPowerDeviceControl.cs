@@ -11,6 +11,7 @@ namespace ICD.Connect.Devices.Controls
 		/// <summary>
 		/// Raised when the powered state changes.
 		/// </summary>
+		[ApiEvent(PowerDeviceControlApi.EVENT_IS_POWERED, PowerDeviceControlApi.HELP_EVENT_IS_POWERED)]
 		event EventHandler<BoolEventArgs> OnIsPoweredChanged;
 
 		/// <summary>

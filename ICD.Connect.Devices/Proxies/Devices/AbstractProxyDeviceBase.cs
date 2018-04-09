@@ -97,6 +97,7 @@ namespace ICD.Connect.Devices.Proxies.Devices
 			base.Initialize(command);
 
 			ApiCommandBuilder.UpdateCommand(command)
+			                 .SubscribeEvent(DeviceBaseApi.EVENT_IS_ONLINE)
 			                 .GetProperty(DeviceBaseApi.PROPERTY_IS_ONLINE)
 			                 .GetNodeGroup(DeviceBaseApi.NODE_GROUP_CONTROLS)
 			                 .Complete();

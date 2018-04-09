@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using ICD.Common.Properties;
 using ICD.Common.Utils.EventArguments;
 using ICD.Common.Utils.Extensions;
+using ICD.Connect.API;
 using ICD.Connect.API.Commands;
+using ICD.Connect.API.Info;
 using ICD.Connect.API.Nodes;
 using ICD.Connect.Devices.Controls;
 using ICD.Connect.Devices.Proxies.Devices;
@@ -53,6 +55,20 @@ namespace ICD.Connect.Devices.Proxies.Controls
 			OnIsPoweredChanged = null;
 
 			base.DisposeFinal(disposing);
+		}
+
+		/// <summary>
+		/// Override to build initialization commands on top of the current class info.
+		/// </summary>
+		/// <param name="command"></param>
+		protected override void Initialize(ApiClassInfo command)
+		{
+			base.Initialize(command);
+
+			ApiCommandBuilder.UpdateCommand(command)
+			                 .SubscribeEvent(PowerDeviceControlApi.EVENT_IS_POWERED)
+			                 .GetProperty(PowerDeviceControlApi.PROPERTY_IS_POWERED)
+			                 .Complete();
 		}
 
 		#region Methods
