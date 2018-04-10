@@ -11,6 +11,7 @@ using ICD.Connect.API.Info;
 using ICD.Connect.API.Nodes;
 using ICD.Connect.API.Proxies;
 using ICD.Connect.Devices.Controls;
+using ICD.Connect.Devices.EventArguments;
 using ICD.Connect.Devices.Proxies.Controls;
 using ICD.Connect.Settings.Proxies;
 
@@ -18,7 +19,7 @@ namespace ICD.Connect.Devices.Proxies.Devices
 {
 	public abstract class AbstractProxyDeviceBase : AbstractProxyOriginator, IProxyDeviceBase
 	{
-		public event EventHandler<BoolEventArgs> OnIsOnlineStateChanged;
+		public event EventHandler<DeviceBaseOnlineStateApiEventArgs> OnIsOnlineStateChanged;
 
 		private readonly DeviceControlsCollection m_Controls;
 		private readonly Dictionary<IProxy, Func<ApiClassInfo, ApiClassInfo>> m_ProxyBuildCommand;
@@ -41,7 +42,7 @@ namespace ICD.Connect.Devices.Proxies.Devices
 
 				m_IsOnline = value;
 
-				OnIsOnlineStateChanged.Raise(this, new BoolEventArgs(m_IsOnline));
+				OnIsOnlineStateChanged.Raise(this, new DeviceBaseOnlineStateApiEventArgs(m_IsOnline));
 			}
 		}
 

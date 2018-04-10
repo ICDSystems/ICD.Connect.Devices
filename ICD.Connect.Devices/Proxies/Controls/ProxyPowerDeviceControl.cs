@@ -1,20 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using ICD.Common.Properties;
-using ICD.Common.Utils.EventArguments;
 using ICD.Common.Utils.Extensions;
 using ICD.Connect.API;
 using ICD.Connect.API.Commands;
 using ICD.Connect.API.Info;
 using ICD.Connect.API.Nodes;
 using ICD.Connect.Devices.Controls;
+using ICD.Connect.Devices.EventArguments;
 using ICD.Connect.Devices.Proxies.Devices;
 
 namespace ICD.Connect.Devices.Proxies.Controls
 {
 	public sealed class ProxyPowerDeviceControl : AbstractProxyDeviceControl, IPowerDeviceControl
 	{
-		public event EventHandler<BoolEventArgs> OnIsPoweredChanged;
+		public event EventHandler<PowerDeviceControlPowerStateApiEventArgs> OnIsPoweredChanged;
 
 		private bool m_IsPowered;
 
@@ -32,7 +32,7 @@ namespace ICD.Connect.Devices.Proxies.Controls
 
 				m_IsPowered = value;
 
-				OnIsPoweredChanged.Raise(this, new BoolEventArgs(m_IsPowered));
+				OnIsPoweredChanged.Raise(this, new PowerDeviceControlPowerStateApiEventArgs(m_IsPowered));
 			}
 		}
 

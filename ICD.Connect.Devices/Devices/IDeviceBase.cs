@@ -1,8 +1,8 @@
 ﻿using System;
 using ICD.Common.Utils;
-using ICD.Common.Utils.EventArguments;
 using ICD.Connect.API.Attributes;
 using ICD.Connect.Devices.Controls;
+using ICD.Connect.Devices.EventArguments;
 using ICD.Connect.Devices.Proxies.Devices;
 using ICD.Connect.Settings;
 
@@ -15,7 +15,7 @@ namespace ICD.Connect.Devices
 		/// Raised when the device goes online/offline.
 		/// </summary>
 		[ApiEvent(DeviceBaseApi.EVENT_IS_ONLINE, DeviceBaseApi.HELP_EVENT_IS_ONLINE)]
-		event EventHandler<BoolEventArgs> OnIsOnlineStateChanged;
+		event EventHandler<DeviceBaseOnlineStateApiEventArgs> OnIsOnlineStateChanged;
 
 		/// <summary>
 		/// Returns true if the device hardware is detected by the system.

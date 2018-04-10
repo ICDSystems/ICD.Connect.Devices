@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using ICD.Common.Properties;
-using ICD.Common.Utils.EventArguments;
 using ICD.Common.Utils.Extensions;
 using ICD.Common.Utils.Services.Logging;
 using ICD.Connect.API.Commands;
 using ICD.Connect.API.Nodes;
 using ICD.Connect.Devices.Controls;
+using ICD.Connect.Devices.EventArguments;
 using ICD.Connect.Settings;
 
 namespace ICD.Connect.Devices
@@ -20,7 +20,7 @@ namespace ICD.Connect.Devices
 		/// <summary>
 		/// Raised when the device becomes online/offline.
 		/// </summary>
-		public event EventHandler<BoolEventArgs> OnIsOnlineStateChanged;
+		public event EventHandler<DeviceBaseOnlineStateApiEventArgs> OnIsOnlineStateChanged;
 
 		private bool m_IsOnline;
 
@@ -41,7 +41,7 @@ namespace ICD.Connect.Devices
 
 				Logger.AddEntry(eSeverity.Informational, "{0} - Online status changed to {1}", this, IsOnline);
 
-				OnIsOnlineStateChanged.Raise(this, new BoolEventArgs(IsOnline));
+				OnIsOnlineStateChanged.Raise(this, new DeviceBaseOnlineStateApiEventArgs(IsOnline));
 			}
 		}
 

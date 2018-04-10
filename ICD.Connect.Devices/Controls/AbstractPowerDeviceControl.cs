@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using ICD.Common.Utils.EventArguments;
 using ICD.Common.Utils.Extensions;
 using ICD.Common.Utils.Services.Logging;
 using ICD.Connect.API.Commands;
 using ICD.Connect.API.Nodes;
+using ICD.Connect.Devices.EventArguments;
 
 namespace ICD.Connect.Devices.Controls
 {
@@ -14,7 +14,7 @@ namespace ICD.Connect.Devices.Controls
 		/// <summary>
 		/// Raised when the powered state changes.
 		/// </summary>
-		public event EventHandler<BoolEventArgs> OnIsPoweredChanged;
+		public event EventHandler<PowerDeviceControlPowerStateApiEventArgs> OnIsPoweredChanged;
 
 		private bool m_IsPowered;
 
@@ -33,7 +33,7 @@ namespace ICD.Connect.Devices.Controls
 
 				Logger.AddEntry(eSeverity.Informational, "{0} IsPowered set to {1}", this, m_IsPowered);
 
-				OnIsPoweredChanged.Raise(this, new BoolEventArgs(m_IsPowered));
+				OnIsPoweredChanged.Raise(this, new PowerDeviceControlPowerStateApiEventArgs(m_IsPowered));
 			}
 		}
 
