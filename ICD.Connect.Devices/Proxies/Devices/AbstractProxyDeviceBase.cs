@@ -133,10 +133,11 @@ namespace ICD.Connect.Devices.Proxies.Devices
 			{
 				case DeviceBaseApi.NODE_GROUP_CONTROLS:
 					ApiNodeGroupInfo nodeGroup = result.GetValue<ApiNodeGroupInfo>();
-					foreach (KeyValuePair<uint, ApiClassInfo> item in nodeGroup)
+					foreach (ApiNodeGroupKeyInfo item in nodeGroup)
 					{
-						IProxyDeviceControl proxy = LazyLoadProxyControl("Controls", (int)item.Key, item.Value);
-						proxy.ParseInfo(item.Value);
+						ApiClassInfo node = item.Node;
+						IProxyDeviceControl proxy = LazyLoadProxyControl("Controls", (int)item.Key, node);
+						proxy.ParseInfo(node);
 					}
 					break;
 			}
