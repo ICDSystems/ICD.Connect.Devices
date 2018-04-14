@@ -104,6 +104,23 @@ namespace ICD.Connect.Devices.Proxies.Devices
 		}
 
 		/// <summary>
+		/// Updates the proxy with event feedback info.
+		/// </summary>
+		/// <param name="name"></param>
+		/// <param name="result"></param>
+		protected override void ParseEvent(string name, ApiResult result)
+		{
+			base.ParseEvent(name, result);
+
+			switch (name)
+			{
+				case DeviceBaseApi.EVENT_IS_ONLINE:
+					IsOnline = result.GetValue<bool>();
+					break;
+			}
+		}
+
+		/// <summary>
 		/// Updates the proxy with a property result.
 		/// </summary>
 		/// <param name="name"></param>
