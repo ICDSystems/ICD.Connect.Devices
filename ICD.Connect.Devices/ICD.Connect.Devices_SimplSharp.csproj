@@ -68,6 +68,14 @@
     <Reference Include="System.Data" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Devices\Simpl\AbstractSimplDevice.cs" />
+    <Compile Include="Devices\Simpl\AbstractSimplDeviceBase.cs" />
+    <Compile Include="Devices\Simpl\AbstractSimplDeviceBaseSettings.cs" />
+    <Compile Include="Devices\Simpl\AbstractSimplDeviceSettings.cs" />
+    <Compile Include="Devices\Simpl\ISimplDevice.cs" />
+    <Compile Include="Devices\Simpl\ISimplDeviceBase.cs" />
+    <Compile Include="Devices\Simpl\ISimplDeviceBaseSettings.cs" />
+    <Compile Include="Devices\Simpl\ISimplDeviceSettings.cs" />
     <Compile Include="Devices\AbstractDeviceBaseSettings.cs" />
     <Compile Include="Devices\AbstractDeviceSettings.cs" />
     <Compile Include="Controls\AbstractPowerDeviceControl.cs" />
