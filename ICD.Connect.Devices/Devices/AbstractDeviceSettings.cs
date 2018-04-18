@@ -2,7 +2,7 @@
 {
 	public abstract class AbstractDeviceSettings : AbstractDeviceBaseSettings, IDeviceSettings
 	{
-		private const string DEVICE_ELEMENT = "Device";
+		public const string DEVICE_ELEMENT = "Device";
 
 		/// <summary>
 		/// Gets the xml element.
