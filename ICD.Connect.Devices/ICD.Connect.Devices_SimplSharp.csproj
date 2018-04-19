@@ -108,6 +108,8 @@
     <Compile Include="Devices\IDeviceBaseSettings.cs" />
     <Compile Include="Devices\IDeviceSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SPlusInterfaces\AbstractSPlusDeviceBaseInterface.cs" />
+    <Compile Include="SPlusInterfaces\AbstractSPlusDeviceInterface.cs" />
     <Compile Include="Timers\AbstactVolumeRepeater.cs" />
     <Compile Include="Timers\VolumeBasicRepeater.cs" />
     <Compile Include="Timers\VolumeRepeater.cs" />
