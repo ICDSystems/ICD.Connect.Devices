@@ -77,6 +77,14 @@
     <Compile Include="Proxies\Controls\ProxyPowerDeviceControl.cs" />
     <Compile Include="Proxies\Devices\AbstractProxyDevice.cs" />
     <Compile Include="Proxies\Devices\AbstractProxyDeviceBase.cs" />
+    <Compile Include="Devices\Simpl\AbstractSimplDevice.cs" />
+    <Compile Include="Devices\Simpl\AbstractSimplDeviceBase.cs" />
+    <Compile Include="Devices\Simpl\AbstractSimplDeviceBaseSettings.cs" />
+    <Compile Include="Devices\Simpl\AbstractSimplDeviceSettings.cs" />
+    <Compile Include="Devices\Simpl\ISimplDevice.cs" />
+    <Compile Include="Devices\Simpl\ISimplDeviceBase.cs" />
+    <Compile Include="Devices\Simpl\ISimplDeviceBaseSettings.cs" />
+    <Compile Include="Devices\Simpl\ISimplDeviceSettings.cs" />
     <Compile Include="Devices\AbstractDeviceBaseSettings.cs" />
     <Compile Include="Devices\AbstractDeviceSettings.cs" />
     <Compile Include="Controls\AbstractPowerDeviceControl.cs" />
@@ -118,6 +126,8 @@
     <Compile Include="Proxies\Devices\ProxyDevice.cs" />
     <Compile Include="Proxies\Devices\ProxyDeviceBase.cs" />
     <Compile Include="Proxies\Controls\ProxyDeviceControl.cs" />
+    <Compile Include="SPlusInterfaces\AbstractSPlusDeviceBaseInterface.cs" />
+    <Compile Include="SPlusInterfaces\AbstractSPlusDeviceInterface.cs" />
     <Compile Include="Timers\AbstactVolumeRepeater.cs" />
     <Compile Include="Timers\VolumeBasicRepeater.cs" />
     <Compile Include="Timers\VolumeRepeater.cs" />
