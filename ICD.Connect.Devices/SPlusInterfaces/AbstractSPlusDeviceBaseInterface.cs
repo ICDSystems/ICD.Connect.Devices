@@ -2,6 +2,7 @@
 using ICD.Common.Properties;
 using ICD.Common.Utils.EventArguments;
 using ICD.Common.Utils.Extensions;
+using ICD.Connect.Devices.EventArguments;
 using ICD.Connect.Devices.Simpl;
 using ICD.Connect.Settings.SPlusInterfaces;
 
@@ -75,7 +76,7 @@ namespace ICD.Connect.Devices.SPlusInterfaces
 			return callback != null && callback(this) != 0;
 		}
 
-		private void OriginatorOnIsOnlineStateChanged(object sender, BoolEventArgs boolEventArgs)
+		private void OriginatorOnIsOnlineStateChanged(object sender, DeviceBaseOnlineStateApiEventArgs eventArgs)
 		{
 			OnIsOnlineStateChanged.Raise(this, new UShortEventArgs(IsOnline));
 		}
