@@ -4,13 +4,16 @@ using System.Linq;
 using ICD.Common.Properties;
 using ICD.Common.Utils;
 using ICD.Common.Utils.Extensions;
+using ICD.Connect.API.Attributes;
 using ICD.Connect.API.Nodes;
+using ICD.Connect.Devices.Proxies.Controls;
 
 namespace ICD.Connect.Devices.Controls
 {
 	/// <summary>
 	/// IDeviceControl contains the usage features for a parent device.
 	/// </summary>
+	[ApiClass(typeof(ProxyDeviceControl))]
 	public interface IDeviceControl : IConsoleNode, IStateDisposable
 	{
 		/// <summary>
@@ -21,12 +24,13 @@ namespace ICD.Connect.Devices.Controls
 		/// <summary>
 		/// Gets the id for this control.
 		/// </summary>
+		[ApiProperty(DeviceControlApi.PROPERTY_ID, DeviceControlApi.HELP_PROPERTY_ID)]
 		int Id { get; }
 
 		/// <summary>
 		/// Gets the human readable name for this control.
 		/// </summary>
-		[PublicAPI]
+		[ApiProperty(DeviceControlApi.PROPERTY_NAME, DeviceControlApi.HELP_PROPERTY_NAME)]
 		string Name { get; }
 
 		/// <summary>

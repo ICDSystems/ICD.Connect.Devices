@@ -1,19 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using ICD.Common.Properties;
 using ICD.Common.Utils.Extensions;
-using ICD.Common.Utils.Services.Logging;
+using ICD.Connect.API;
 using ICD.Connect.API.Commands;
+using ICD.Connect.API.Info;
 using ICD.Connect.API.Nodes;
+using ICD.Connect.Devices.Controls;
 using ICD.Connect.Devices.EventArguments;
+using ICD.Connect.Devices.Proxies.Devices;
 
-namespace ICD.Connect.Devices.Controls
+namespace ICD.Connect.Devices.Proxies.Controls
 {
-	public abstract class AbstractPowerDeviceControl<TDevice> : AbstractDeviceControl<TDevice>, IPowerDeviceControl
-		where TDevice : IDeviceBase
+	public sealed class ProxyPowerDeviceControl : AbstractProxyDeviceControl, IPowerDeviceControl
 	{
-		/// <summary>
-		/// Raised when the powered state changes.
-		/// </summary>
 		public event EventHandler<PowerDeviceControlPowerStateApiEventArgs> OnIsPoweredChanged;
 
 		private bool m_IsPowered;
@@ -24,14 +24,13 @@ namespace ICD.Connect.Devices.Controls
 		public bool IsPowered
 		{
 			get { return m_IsPowered; }
-			protected set
+			[UsedImplicitly]
+			private set
 			{
 				if (value == m_IsPowered)
 					return;
 
 				m_IsPowered = value;
-
-				Logger.AddEntry(eSeverity.Informational, "{0} IsPowered set to {1}", this, m_IsPowered);
 
 				OnIsPoweredChanged.Raise(this, new PowerDeviceControlPowerStateApiEventArgs(m_IsPowered));
 			}
@@ -42,7 +41,7 @@ namespace ICD.Connect.Devices.Controls
 		/// </summary>
 		/// <param name="parent"></param>
 		/// <param name="id"></param>
-		protected AbstractPowerDeviceControl(TDevice parent, int id)
+		public ProxyPowerDeviceControl(IProxyDeviceBase parent, int id)
 			: base(parent, id)
 		{
 		}
@@ -58,17 +57,37 @@ namespace ICD.Connect.Devices.Controls
 			base.DisposeFinal(disposing);
 		}
 
+		/// <summary>
+		/// Override to build initialization commands on top of the current class info.
+		/// </summary>
+		/// <param name="command"></param>
+		protected override void Initialize(ApiClassInfo command)
+		{
+			base.Initialize(command);
+
+			ApiCommandBuilder.UpdateCommand(command)
+			                 .SubscribeEvent(PowerDeviceControlApi.EVENT_IS_POWERED)
+			                 .GetProperty(PowerDeviceControlApi.PROPERTY_IS_POWERED)
+			                 .Complete();
+		}
+
 		#region Methods
 
 		/// <summary>
 		/// Powers on the device.
 		/// </summary>
-		public abstract void PowerOn();
+		public void PowerOn()
+		{
+			CallMethod(PowerDeviceControlApi.METHOD_POWER_ON);
+		}
 
 		/// <summary>
 		/// Powers off the device.
 		/// </summary>
-		public abstract void PowerOff();
+		public void PowerOff()
+		{
+			CallMethod(PowerDeviceControlApi.METHOD_POWER_OFF);
+		}
 
 		#endregion
 

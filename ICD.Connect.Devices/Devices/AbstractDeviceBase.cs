@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using ICD.Common.Properties;
-using ICD.Common.Utils.EventArguments;
 using ICD.Common.Utils.Extensions;
 using ICD.Common.Utils.Services.Logging;
 using ICD.Connect.API.Commands;
 using ICD.Connect.API.Nodes;
 using ICD.Connect.Devices.Controls;
+using ICD.Connect.Devices.EventArguments;
 using ICD.Connect.Settings;
 
 namespace ICD.Connect.Devices
@@ -14,13 +14,13 @@ namespace ICD.Connect.Devices
 	/// <summary>
 	/// Base class for devices.
 	/// </summary>
-	public abstract class AbstractDeviceBase<T> : AbstractOriginator<T>, IDeviceBase, IConsoleNode
+	public abstract class AbstractDeviceBase<T> : AbstractOriginator<T>, IDeviceBase
 		where T : ISettings, new()
 	{
 		/// <summary>
 		/// Raised when the device becomes online/offline.
 		/// </summary>
-		public event EventHandler<BoolEventArgs> OnIsOnlineStateChanged;
+		public event EventHandler<DeviceBaseOnlineStateApiEventArgs> OnIsOnlineStateChanged;
 
 		private bool m_IsOnline;
 
@@ -40,19 +40,10 @@ namespace ICD.Connect.Devices
 				m_IsOnline = value;
 
 				Logger.AddEntry(eSeverity.Informational, "{0} - Online status changed to {1}", this, IsOnline);
-				OnIsOnlineStateChanged.Raise(this, new BoolEventArgs(IsOnline));
+
+				OnIsOnlineStateChanged.Raise(this, new DeviceBaseOnlineStateApiEventArgs(IsOnline));
 			}
 		}
-
-		/// <summary>
-		/// Gets the name of the node.
-		/// </summary>
-		public virtual string ConsoleName { get { return string.IsNullOrEmpty(Name) ? GetType().Name : Name; } }
-
-		/// <summary>
-		/// Gets the help information for the node.
-		/// </summary>
-		public virtual string ConsoleHelp { get { return string.Empty; } }
 
 		#endregion
 
@@ -115,29 +106,55 @@ namespace ICD.Connect.Devices
 		/// Gets the child console nodes.
 		/// </summary>
 		/// <returns></returns>
-		public virtual IEnumerable<IConsoleNodeBase> GetConsoleNodes()
+		public override IEnumerable<IConsoleNodeBase> GetConsoleNodes()
 		{
-			yield return ConsoleNodeGroup.KeyNodeMap("Controls", Controls, c => (uint)c.Id);
+			foreach (IConsoleNodeBase node in GetBaseConsoleNodes())
+				yield return node;
+
+			foreach (IConsoleNodeBase node in  DeviceBaseConsole.GetConsoleNodes(this))
+				yield return node;
+		}
+
+		/// <summary>
+		/// Wrokaround for "unverifiable code" warning.
+		/// </summary>
+		/// <returns></returns>
+		private IEnumerable<IConsoleNodeBase> GetBaseConsoleNodes()
+		{
+			return base.GetConsoleNodes();
 		}
 
 		/// <summary>
 		/// Calls the delegate for each console status item.
 		/// </summary>
 		/// <param name="addRow"></param>
-		public virtual void BuildConsoleStatus(AddStatusRowDelegate addRow)
+		public override void BuildConsoleStatus(AddStatusRowDelegate addRow)
 		{
-			addRow("ID", Id);
-			addRow("Name", Name);
-			addRow("Online", IsOnline);
+			base.BuildConsoleStatus(addRow);
+
+			DeviceBaseConsole.BuildConsoleStatus(this, addRow);
 		}
 
 		/// <summary>
 		/// Gets the child console commands.
 		/// </summary>
 		/// <returns></returns>
-		public virtual IEnumerable<IConsoleCommand> GetConsoleCommands()
+		public override IEnumerable<IConsoleCommand> GetConsoleCommands()
 		{
-			yield break;
+			foreach (IConsoleCommand command in GetBaseConsoleCommands())
+				yield return command;
+
+			foreach (IConsoleCommand command in DeviceBaseConsole.GetConsoleCommands(this))
+				yield return command;
+		}
+
+		/// <summary>
+		/// Workaround for "unverifiable code" warning.
+		/// </summary>
+		/// <returns></returns>
+		private IEnumerable<IConsoleCommand> GetBaseConsoleCommands()
+		{
+			return base.GetConsoleCommands();
 		}
 
 		#endregion

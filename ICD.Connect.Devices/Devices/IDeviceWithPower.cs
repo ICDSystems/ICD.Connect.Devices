@@ -1,4 +1,4 @@
-﻿namespace ICD.Connect.Devices.Controls
+﻿namespace ICD.Connect.Devices
 {
 	public interface IDeviceWithPower : IDevice
 	{

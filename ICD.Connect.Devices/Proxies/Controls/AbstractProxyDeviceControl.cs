@@ -1,28 +1,27 @@
 ﻿using System.Collections.Generic;
-using ICD.Common.Properties;
 using ICD.Common.Utils;
 using ICD.Common.Utils.Services.Logging;
+using ICD.Connect.API;
 using ICD.Connect.API.Commands;
+using ICD.Connect.API.Info;
 using ICD.Connect.API.Nodes;
+using ICD.Connect.API.Proxies;
+using ICD.Connect.Devices.Controls;
+using ICD.Connect.Devices.Proxies.Devices;
 
-namespace ICD.Connect.Devices.Controls
+namespace ICD.Connect.Devices.Proxies.Controls
 {
-	/// <summary>
-	/// Base class for device controls that wrap a specific device type.
-	/// </summary>
-	/// <typeparam name="T"></typeparam>
-	public abstract class AbstractDeviceControl<T> : IDeviceControl
-		where T : IDeviceBase
+	public abstract class AbstractProxyDeviceControl : AbstractProxy, IProxyDeviceControl
 	{
-		private readonly T m_Parent;
 		private readonly int m_Id;
+		private readonly IProxyDeviceBase m_Parent;
 
 		#region Properties
 
 		/// <summary>
 		/// Gets the parent device for this control.
 		/// </summary>
-		IDeviceBase IDeviceControl.Parent { get { return Parent; } }
+		public IDeviceBase Parent { get { return m_Parent; } }
 
 		/// <summary>
 		/// Gets the id for this control.
@@ -30,15 +29,9 @@ namespace ICD.Connect.Devices.Controls
 		public int Id { get { return m_Id; } }
 
 		/// <summary>
-		/// Gets the parent device for this control.
-		/// </summary>
-		[PublicAPI]
-		public T Parent { get { return m_Parent; } }
-
-		/// <summary>
 		/// Gets the human readable name for this control.
 		/// </summary>
-		public virtual string Name { get { return GetType().Name; } }
+		public string Name { get; set; }
 
 		/// <summary>
 		/// Gets the parent and control id info.
@@ -56,11 +49,6 @@ namespace ICD.Connect.Devices.Controls
 		public virtual string ConsoleHelp { get { return string.Empty; } }
 
 		/// <summary>
-		/// Returns true if this instance has been disposed.
-		/// </summary>
-		public bool IsDisposed { get; private set; }
-
-		/// <summary>
 		/// Gets the logger for the control.
 		/// </summary>
 		public ILoggerService Logger { get { return Parent.Logger; } }
@@ -72,29 +60,13 @@ namespace ICD.Connect.Devices.Controls
 		/// </summary>
 		/// <param name="parent"></param>
 		/// <param name="id"></param>
-		protected AbstractDeviceControl(T parent, int id)
+		protected AbstractProxyDeviceControl(IProxyDeviceBase parent, int id)
 		{
 			m_Id = id;
 			m_Parent = parent;
 		}
 
-		/// <summary>
-		/// Destructor.
-		/// </summary>
-		~AbstractDeviceControl()
-		{
-			Dispose(false);
-		}
-
 		#region Methods
-
-		/// <summary>
-		/// Release resources.
-		/// </summary>
-		public void Dispose()
-		{
-			Dispose(true);
-		}
 
 		/// <summary>
 		/// Gets the string representation for this instance.
@@ -112,28 +84,35 @@ namespace ICD.Connect.Devices.Controls
 
 		#endregion
 
-		#region Private Methods
-
 		/// <summary>
-		/// Releases resources but also allows for finalizing without touching managed resources.
+		/// Override to build initialization commands on top of the current class info.
 		/// </summary>
-		/// <param name="disposing"></param>
-		private void Dispose(bool disposing)
+		/// <param name="command"></param>
+		protected override void Initialize(ApiClassInfo command)
 		{
-			if (!IsDisposed)
-				DisposeFinal(disposing);
-			IsDisposed = IsDisposed || disposing;
+			base.Initialize(command);
+
+			ApiCommandBuilder.UpdateCommand(command)
+			                 .GetProperty(DeviceControlApi.PROPERTY_NAME)
+			                 .Complete();
 		}
 
 		/// <summary>
-		/// Override to release resources.
+		/// Updates the proxy with a property result.
 		/// </summary>
-		/// <param name="disposing"></param>
-		protected virtual void DisposeFinal(bool disposing)
+		/// <param name="name"></param>
+		/// <param name="result"></param>
+		protected override void ParseProperty(string name, ApiResult result)
 		{
-		}
+			base.ParseProperty(name, result);
 
-		#endregion
+			switch (name)
+			{
+				case DeviceControlApi.PROPERTY_NAME:
+					Name = result.GetValue<string>();
+					break;
+			}
+		}
 
 		#region Console
 
