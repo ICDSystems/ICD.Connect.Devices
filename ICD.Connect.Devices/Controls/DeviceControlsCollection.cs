@@ -237,15 +237,18 @@ namespace ICD.Connect.Devices.Controls
 
 		/// <summary>
 		/// Gets the control with the given id and type.
+		/// 
+		/// Special case - If id is 0 we look up the first control of the given type.
 		/// </summary>
 		/// <typeparam name="T"></typeparam>
 		/// <param name="id"></param>
+		/// <exception cref="InvalidOperationException">Throws InvalidOperationException if the given control does not exist.</exception>
 		/// <returns></returns>
 		[NotNull]
 		public T GetControl<T>(int id)
 			where T : IDeviceControl
 		{
-			IDeviceControl control = GetControl(id);
+			IDeviceControl control = id == 0 ? GetControl<T>() : GetControl(id);
 			if (control is T)
 				return (T)control;
 
