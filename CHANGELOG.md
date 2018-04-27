@@ -7,4 +7,4 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 
 ### Added
- - ICD.Connect.Conferencing.Mock project, relevant project files
+ - Getting a control with id 0 now returns the first available control of that type. 
