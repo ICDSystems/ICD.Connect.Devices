@@ -9,13 +9,13 @@
     {
 		/// <summary>
 		/// Raises the volume one time
-		/// Ammount of the change varies between implementations - typically "1" raw unit
+		/// Amount of the change varies between implementations - typically "1" raw unit
 		/// </summary>
 	    void VolumeLevelIncrement();
 
 	    /// <summary>
 	    /// Lowers the volume one time
-	    /// Ammount of the change varies between implementations - typically "1" raw unit
+	    /// Amount of the change varies between implementations - typically "1" raw unit
 	    /// </summary>
 		void VolumeLevelDecrement();
 

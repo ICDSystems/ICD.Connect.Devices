@@ -7,7 +7,6 @@ namespace ICD.Connect.Devices.Controls
 	/// </summary>
 	public interface IVolumeMuteDeviceControl : IVolumeMuteBasicDeviceControl
 	{
-
 		#region Methods
 
 		/// <summary>
