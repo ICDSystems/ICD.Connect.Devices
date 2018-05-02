@@ -25,6 +25,7 @@
   </ItemGroup>
   
   <ItemGroup>
+    <ProjectReference Include="..\..\ICD.Connect.Settings\ICD.Connect.Settings.Tests\ICD.Connect.Settings.Tests_NetStandard.csproj" />
     <ProjectReference Include="..\ICD.Connect.Devices\ICD.Connect.Devices_NetStandard.csproj" />
   </ItemGroup>
   
