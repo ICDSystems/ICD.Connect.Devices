@@ -89,17 +89,7 @@
     <Compile Include="Devices\AbstractDeviceBaseSettings.cs" />
     <Compile Include="Devices\AbstractDeviceSettings.cs" />
     <Compile Include="Controls\AbstractPowerDeviceControl.cs" />
-    <Compile Include="Controls\AbstractVolumeLevelBasicDeviceControl.cs" />
-    <Compile Include="Controls\AbstractVolumeLevelDeviceControl.cs" />
-    <Compile Include="Controls\AbstractVolumeRawLevelDeviceControl.cs" />
     <Compile Include="Controls\IPowerDeviceControl.cs" />
-    <Compile Include="Controls\IVolumeLevelBasicDeviceControl.cs" />
-    <Compile Include="Controls\IVolumeLevelDeviceControl.cs" />
-    <Compile Include="Controls\IVolumeMuteBasicDeviceControl.cs" />
-    <Compile Include="Controls\IVolumeMuteDeviceControl.cs" />
-    <Compile Include="Controls\IVolumeMuteFeedbackDeviceControl.cs" />
-    <Compile Include="Controls\IVolumeRawLevelDeviceControl.cs" />
-    <Compile Include="Controls\VolumeDeviceVolumeChangedEventArgs.cs" />
     <Compile Include="Devices\IDeviceWithPower.cs" />
     <Compile Include="Controls\PowerDeviceControl.cs" />
     <Compile Include="DevicePermissable.cs" />
@@ -111,7 +101,6 @@
     <Compile Include="Controls\DeviceControlInfo.cs" />
     <Compile Include="Controls\DeviceControlsCollection.cs" />
     <Compile Include="Controls\IDeviceControl.cs" />
-    <Compile Include="Controls\IVolumeDeviceControl.cs" />
     <Compile Include="Devices\IDevice.cs" />
     <Compile Include="Devices\IDeviceBase.cs" />
     <None Include="ObfuscationSettings.cs" />
@@ -129,9 +118,6 @@
     <Compile Include="Proxies\Controls\ProxyDeviceControl.cs" />
     <Compile Include="SPlusInterfaces\AbstractSPlusDeviceBaseInterface.cs" />
     <Compile Include="SPlusInterfaces\AbstractSPlusDeviceInterface.cs" />
-    <Compile Include="Timers\AbstactVolumeRepeater.cs" />
-    <Compile Include="Timers\VolumeBasicRepeater.cs" />
-    <Compile Include="Timers\VolumeRepeater.cs" />
     <None Include="Properties\ControlSystem.cfg" />
   </ItemGroup>
   <ItemGroup>
