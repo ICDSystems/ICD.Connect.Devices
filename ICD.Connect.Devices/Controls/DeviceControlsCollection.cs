@@ -248,7 +248,21 @@ namespace ICD.Connect.Devices.Controls
 		public T GetControl<T>(int id)
 			where T : IDeviceControl
 		{
-			IDeviceControl control = id == 0 ? GetControl<T>() : GetControl(id);
+			IDeviceControl control;
+
+			// Edge case - we use control id 0 as a lookup
+			if (id == 0 && !Contains(id))
+			{
+				control = GetControl<T>();
+
+				// Update the id for logging below
+				id = control == null ? id : control.Id;
+			}
+			else
+			{
+				control = GetControl(id);
+			}
+
 			if (control is T)
 				return (T)control;
 
