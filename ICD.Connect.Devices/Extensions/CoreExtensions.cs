@@ -86,12 +86,8 @@ namespace ICD.Connect.Devices.Extensions
 			if (extends == null)
 				throw new ArgumentNullException("extends");
 
-			IDeviceControl output = extends.GetControl(device, control);
-			if (output is T)
-				return (T)output;
-
-			string message = string.Format("{0} can not be cast to {1}", output, typeof(T).Name);
-			throw new InvalidCastException(message);
+			IDeviceBase originator = extends.Originators.GetChild<IDeviceBase>(device);
+			return originator.Controls.GetControl<T>(control);
 		}
 
 		/// <summary>
