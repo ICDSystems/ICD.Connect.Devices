@@ -24,6 +24,8 @@ namespace ICD.Connect.Devices
 
 		private bool m_IsOnline;
 
+		private readonly DeviceControlsCollection m_Controls;
+
 		#region Properties
 
 		/// <summary>
@@ -44,12 +46,6 @@ namespace ICD.Connect.Devices
 				OnIsOnlineStateChanged.Raise(this, new DeviceBaseOnlineStateApiEventArgs(IsOnline));
 			}
 		}
-
-		#endregion
-
-		private readonly DeviceControlsCollection m_Controls;
-
-		#region Properties
 
 		/// <summary>
 		/// Gets the controls for this device.
