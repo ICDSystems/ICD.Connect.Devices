@@ -252,21 +252,14 @@ namespace ICD.Connect.Devices.Controls
 
 			// Edge case - we use control id 0 as a lookup
 			if (id == 0 && !Contains(id))
-			{
 				control = GetControl<T>();
-
-				// Update the id for logging below
-				id = control == null ? id : control.Id;
-			}
 			else
-			{
 				control = GetControl(id);
-			}
 
 			if (control is T)
 				return (T)control;
 
-			string message = string.Format("{0} is not of type {1}", control, id, typeof(T).Name);
+			string message = string.Format("{0} is not of type {1}", control, typeof(T).Name);
 			throw new InvalidOperationException(message);
 		}
 
