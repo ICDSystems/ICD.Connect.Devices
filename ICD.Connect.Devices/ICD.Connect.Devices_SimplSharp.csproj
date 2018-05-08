@@ -116,8 +116,8 @@
     <Compile Include="Proxies\Devices\ProxyDevice.cs" />
     <Compile Include="Proxies\Devices\ProxyDeviceBase.cs" />
     <Compile Include="Proxies\Controls\ProxyDeviceControl.cs" />
-    <Compile Include="SPlusInterfaces\AbstractSPlusDeviceBaseInterface.cs" />
-    <Compile Include="SPlusInterfaces\AbstractSPlusDeviceInterface.cs" />
+    <Compile Include="SPlusShims\AbstractSPlusDeviceBaseShim.cs" />
+    <Compile Include="SPlusShims\AbstractSPlusDeviceShim.cs" />
     <None Include="Properties\ControlSystem.cfg" />
   </ItemGroup>
   <ItemGroup>
