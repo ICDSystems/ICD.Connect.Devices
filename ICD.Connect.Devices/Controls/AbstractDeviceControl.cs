@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using ICD.Common.Properties;
 using ICD.Common.Utils;
 using ICD.Common.Utils.Services.Logging;
@@ -63,6 +64,7 @@ namespace ICD.Connect.Devices.Controls
 		/// <summary>
 		/// Gets the logger for the control.
 		/// </summary>
+		[Obsolete]
 		public ILoggerService Logger { get { return Parent.Logger; } }
 
 		#endregion
@@ -108,6 +110,17 @@ namespace ICD.Connect.Devices.Controls
 			builder.AppendProperty("Parent", Parent.Id);
 
 			return builder.ToString();
+		}
+
+		public void Log(eSeverity severity, string message)
+		{
+			Logger.AddEntry(severity, "{0} - {1}", this, message);
+		}
+
+		public void Log(eSeverity severity, string message, params object[] args)
+		{
+			message = string.Format(message, args);
+			Log(severity, message);
 		}
 
 		#endregion
