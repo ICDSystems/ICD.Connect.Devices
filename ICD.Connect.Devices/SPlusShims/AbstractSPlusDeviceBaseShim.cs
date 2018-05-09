@@ -31,6 +31,7 @@ namespace ICD.Connect.Devices.SPlusShims
 			get
 			{
 				TOriginator originator = Originator;
+// ReSharper disable once CompareNonConstrainedGenericWithNull
 				if (originator == null)
 					return 0;
 
@@ -48,6 +49,7 @@ namespace ICD.Connect.Devices.SPlusShims
 		{
 			base.Subscribe(originator);
 
+// ReSharper disable once CompareNonConstrainedGenericWithNull
 			if (originator == null)
 				return;
 
@@ -63,6 +65,7 @@ namespace ICD.Connect.Devices.SPlusShims
 		{
 			base.Unsubscribe(originator);
 
+// ReSharper disable once CompareNonConstrainedGenericWithNull
 			if (originator == null)
 				return;
 

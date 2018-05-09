@@ -190,7 +190,7 @@ namespace ICD.Connect.Devices.Controls
 				if (!m_TypeToControls.TryGetValue(typeof(T), out ids))
 					return default(T);
 
-				return ids.Count == 0 ? default(T) : GetControl<T>(ids.First());
+				return ids.Count == 0 ? default(T) : (T)GetControl(ids.First());
 			}
 			finally
 			{
@@ -248,25 +248,13 @@ namespace ICD.Connect.Devices.Controls
 		public T GetControl<T>(int id)
 			where T : IDeviceControl
 		{
-			IDeviceControl control;
-
 			// Edge case - we use control id 0 as a lookup
-			if (id == 0 && !Contains(id))
-			{
-				control = GetControl<T>();
-
-				// Update the id for logging below
-				id = control == null ? id : control.Id;
-			}
-			else
-			{
-				control = GetControl(id);
-			}
+			IDeviceControl control = id == 0 ? GetControl<T>() : GetControl(id);
 
 			if (control is T)
 				return (T)control;
 
-			string message = string.Format("{0} is not of type {1}", control, id, typeof(T).Name);
+			string message = string.Format("{0} is not of type {1}", control, typeof(T).Name);
 			throw new InvalidOperationException(message);
 		}
 
