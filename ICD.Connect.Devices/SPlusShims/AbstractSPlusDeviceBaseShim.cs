@@ -4,13 +4,13 @@ using ICD.Common.Utils.EventArguments;
 using ICD.Common.Utils.Extensions;
 using ICD.Connect.Devices.EventArguments;
 using ICD.Connect.Devices.Simpl;
-using ICD.Connect.Settings.SPlusInterfaces;
+using ICD.Connect.Settings.SPlusShims;
 
-namespace ICD.Connect.Devices.SPlusInterfaces
+namespace ICD.Connect.Devices.SPlusShims
 {
-	public delegate ushort SPlusDeviceBaseInterfaceOnlineStatusCallback(object sender);
+	public delegate ushort SPlusDeviceBaseShimOnlineStatusCallback(object sender);
 
-	public abstract class AbstractSPlusDeviceBaseInterface<TOriginator> : AbstractSPlusOriginatorInterface<TOriginator>
+	public abstract class AbstractSPlusDeviceBaseShim<TOriginator> : AbstractSPlusOriginatorShim<TOriginator>
 		where TOriginator : ISimplDeviceBase
 	{
 		/// <summary>
@@ -20,7 +20,7 @@ namespace ICD.Connect.Devices.SPlusInterfaces
 		public event EventHandler<UShortEventArgs> OnIsOnlineStateChanged;
 
 		[PublicAPI("S+")]
-		public SPlusDeviceBaseInterfaceOnlineStatusCallback OnlineStatusCallback { get; set; }
+		public SPlusDeviceBaseShimOnlineStatusCallback OnlineStatusCallback { get; set; }
 
 		/// <summary>
 		/// Returns true if the device hardware is detected by the system.
@@ -75,7 +75,7 @@ namespace ICD.Connect.Devices.SPlusInterfaces
 
 		private bool OriginatorOnlineStatusCallback(ISimplDeviceBase sender)
 		{
-			SPlusDeviceBaseInterfaceOnlineStatusCallback callback = OnlineStatusCallback;
+			SPlusDeviceBaseShimOnlineStatusCallback callback = OnlineStatusCallback;
 			return callback != null && callback(this) != 0;
 		}
 
