@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [5.0.0] - 2018-05-09
+### Changed
+ - Fixed lookup issue with control id 0
+ - Changed S+ shim naming convention
+ - Standardized control logging
+
 ## [4.0.0] - 2018-05-03
 ### Removed
  - Moved volume controls and volume repeaters into Audio project
