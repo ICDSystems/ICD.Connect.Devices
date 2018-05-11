@@ -10,7 +10,7 @@ namespace ICD.Connect.Devices.SPlusShims
 {
 	public delegate ushort SPlusDeviceBaseShimOnlineStatusCallback(object sender);
 
-	public abstract class AbstractSPlusDeviceBaseShim<TOriginator> : AbstractSPlusOriginatorShim<TOriginator>
+	public abstract class AbstractSPlusDeviceBaseShim<TOriginator> : AbstractSPlusOriginatorShim<TOriginator>, ISPlusDeviceBaseShim<TOriginator> 
 		where TOriginator : ISimplDeviceBase
 	{
 		/// <summary>
