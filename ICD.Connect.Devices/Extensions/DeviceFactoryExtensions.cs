@@ -1,6 +1,5 @@
 ﻿using ICD.Common.Properties;
 using ICD.Connect.Settings;
-using ICD.Connect.Settings.Cores;
 
 namespace ICD.Connect.Devices.Extensions
 {
