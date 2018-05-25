@@ -41,7 +41,7 @@ namespace ICD.Connect.Devices
 
 				m_IsOnline = value;
 
-				Logger.AddEntry(eSeverity.Informational, "{0} - Online status changed to {1}", this, IsOnline);
+				Log(eSeverity.Informational, "Online status changed to {0}", IsOnline);
 
 				OnIsOnlineStateChanged.Raise(this, new DeviceBaseOnlineStateApiEventArgs(IsOnline));
 			}
