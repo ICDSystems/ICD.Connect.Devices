@@ -8,9 +8,9 @@ namespace ICD.Connect.Devices.SPlusShims
 		where TOriginator : ISimplDeviceBase
 	{
 		/// <summary>
-		/// Returns true if the device hardware is detected by the system.
+		/// Gets/sets the online status of the device.
 		/// </summary>
 		[PublicAPI("S+")]
-		ushort IsOnline { get; }
+		ushort IsOnline { get; set; }
 	}
 }
