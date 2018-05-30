@@ -8,6 +8,7 @@ using ICD.Connect.API.Commands;
 using ICD.Connect.API.Nodes;
 using ICD.Connect.Devices.Controls;
 using ICD.Connect.Settings;
+using ICD.Connect.Settings.Core;
 
 namespace ICD.Connect.Devices
 {
@@ -75,7 +76,6 @@ namespace ICD.Connect.Devices
 			m_Controls = new DeviceControlsCollection();
 
 			Name = GetType().Name;
-			UpdateCachedOnlineStatus();
 		}
 
 		#region Private Methods
@@ -108,6 +108,17 @@ namespace ICD.Connect.Devices
 		}
 
 		#endregion
+
+		/// <summary>
+		/// Override to apply settings to the instance.
+		/// </summary>
+		/// <param name="settings"></param>
+		/// <param name="factory"></param>
+		protected override void ApplySettingsFinal(T settings, IDeviceFactory factory)
+		{
+			UpdateCachedOnlineStatus();
+			base.ApplySettingsFinal(settings, factory);
+		}
 
 		#region Console
 
