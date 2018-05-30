@@ -109,6 +109,8 @@ namespace ICD.Connect.Devices
 
 		#endregion
 
+		#region Settings
+
 		/// <summary>
 		/// Override to apply settings to the instance.
 		/// </summary>
@@ -116,9 +118,12 @@ namespace ICD.Connect.Devices
 		/// <param name="factory"></param>
 		protected override void ApplySettingsFinal(T settings, IDeviceFactory factory)
 		{
-			UpdateCachedOnlineStatus();
 			base.ApplySettingsFinal(settings, factory);
+
+			UpdateCachedOnlineStatus();
 		}
+
+		#endregion
 
 		#region Console
 
