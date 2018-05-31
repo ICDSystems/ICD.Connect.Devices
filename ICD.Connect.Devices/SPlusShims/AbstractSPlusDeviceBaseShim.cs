@@ -47,9 +47,9 @@ namespace ICD.Connect.Devices.SPlusShims
 		/// Called when the originator is detached
 		/// Do any actions needed to desyncronize
 		/// </summary>
-		protected override void DeinstantiateOriginator()
+		protected override void DeinitializeOriginator()
 		{
-			base.DeinstantiateOriginator();
+			base.DeinitializeOriginator();
 
 			TOriginator originator = Originator;
 			if (originator == null)
