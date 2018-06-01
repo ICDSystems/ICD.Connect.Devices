@@ -68,6 +68,17 @@ namespace ICD.Connect.Devices.Proxies.Controls
 
 		#region Methods
 
+		public void Log(eSeverity severity, string message)
+		{
+			Logger.AddEntry(severity, "{0} - {1}", this, message);
+		}
+
+		public void Log(eSeverity severity, string message, params object[] args)
+		{
+			message = string.Format(message, args);
+			Log(severity, message);
+		}
+
 		/// <summary>
 		/// Gets the string representation for this instance.
 		/// </summary>
