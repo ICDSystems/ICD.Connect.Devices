@@ -41,6 +41,25 @@ namespace ICD.Connect.Devices.SPlusShims
 			}
 		}
 
+		#region Private/Protected Methods
+
+		/// <summary>
+		/// Called when the originator is detached
+		/// Do any actions needed to desyncronize
+		/// </summary>
+		protected override void DeinitializeOriginator()
+		{
+			base.DeinitializeOriginator();
+
+			TOriginator originator = Originator;
+			if (originator == null)
+				return;
+
+			originator.IsOnline = false;
+		}
+
+		#endregion
+
 		#region Originator Callbacks
 
 		/// <summary>
