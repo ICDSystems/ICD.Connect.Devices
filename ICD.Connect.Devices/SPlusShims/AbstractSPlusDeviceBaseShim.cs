@@ -8,8 +8,6 @@ using ICD.Connect.Settings.SPlusShims;
 
 namespace ICD.Connect.Devices.SPlusShims
 {
-	public delegate ushort SPlusDeviceBaseShimOnlineStatusCallback(object sender);
-
 	public abstract class AbstractSPlusDeviceBaseShim<TOriginator> : AbstractSPlusOriginatorShim<TOriginator>, ISPlusDeviceBaseShim<TOriginator> 
 		where TOriginator : class, ISimplDeviceBase
 	{
@@ -18,9 +16,6 @@ namespace ICD.Connect.Devices.SPlusShims
 		/// </summary>
 		[PublicAPI("S+")]
 		public event EventHandler<UShortEventArgs> OnIsOnlineStateChanged;
-
-		[PublicAPI("S+")]
-		public SPlusDeviceBaseShimOnlineStatusCallback OnlineStatusCallback { get; set; }
 
 		/// <summary>
 		/// Returns true if the device hardware is detected by the system.
@@ -31,13 +26,39 @@ namespace ICD.Connect.Devices.SPlusShims
 			get
 			{
 				TOriginator originator = Originator;
-// ReSharper disable once CompareNonConstrainedGenericWithNull
 				if (originator == null)
 					return 0;
 
 				return (ushort)(originator.IsOnline ? 1 : 0);
 			}
+			set
+			{
+				TOriginator originator = Originator;
+				if (originator == null)
+					return;
+
+				originator.IsOnline = value.ToBool();
+			}
 		}
+
+		#region Private/Protected Methods
+
+		/// <summary>
+		/// Called when the originator is detached
+		/// Do any actions needed to desyncronize
+		/// </summary>
+		protected override void DeinitializeOriginator()
+		{
+			base.DeinitializeOriginator();
+
+			TOriginator originator = Originator;
+			if (originator == null)
+				return;
+
+			originator.IsOnline = false;
+		}
+
+		#endregion
 
 		#region Originator Callbacks
 
@@ -49,12 +70,10 @@ namespace ICD.Connect.Devices.SPlusShims
 		{
 			base.Subscribe(originator);
 
-// ReSharper disable once CompareNonConstrainedGenericWithNull
 			if (originator == null)
 				return;
 
 			originator.OnIsOnlineStateChanged += OriginatorOnIsOnlineStateChanged;
-			originator.OnlineStatusCallback = OriginatorOnlineStatusCallback;
 		}
 
 		/// <summary>
@@ -65,18 +84,10 @@ namespace ICD.Connect.Devices.SPlusShims
 		{
 			base.Unsubscribe(originator);
 
-// ReSharper disable once CompareNonConstrainedGenericWithNull
 			if (originator == null)
 				return;
 
 			originator.OnIsOnlineStateChanged -= OriginatorOnIsOnlineStateChanged;
-			originator.OnlineStatusCallback = null;
-		}
-
-		private bool OriginatorOnlineStatusCallback(ISimplDeviceBase sender)
-		{
-			SPlusDeviceBaseShimOnlineStatusCallback callback = OnlineStatusCallback;
-			return callback != null && callback(this) != 0;
 		}
 
 		private void OriginatorOnIsOnlineStateChanged(object sender, DeviceBaseOnlineStateApiEventArgs eventArgs)
