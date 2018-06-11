@@ -67,7 +67,7 @@ namespace ICD.Connect.Devices.Controls
 				if (m_DeviceControls.TryGetValue(item.Id, out existing))
 				{
 					string message = string.Format("Failed to add {0} - already contains a {1} with id {2}",
-					                               item.GetType(), existing.GetType(), item.Id);
+					                               item.GetType().Name, existing.GetType().Name, item.Id);
 					throw new InvalidOperationException(message);
 				}
 
