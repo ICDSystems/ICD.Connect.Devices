@@ -56,10 +56,21 @@ namespace ICD.Connect.Devices.Controls
 		/// <param name="item"></param>
 		public void Add(IDeviceControl item)
 		{
+			if (item == null)
+				throw new ArgumentNullException("item");
+
 			m_DeviceControlsSection.Enter();
 
 			try
 			{
+				IDeviceControl existing;
+				if (m_DeviceControls.TryGetValue(item.Id, out existing))
+				{
+					string message = string.Format("Failed to add {0} - already contains a {1} with id {2}",
+					                               item.GetType(), existing.GetType(), item.Id);
+					throw new InvalidOperationException(message);
+				}
+
 				m_DeviceControls.Add(item.Id, item);
 
 				foreach (Type type in item.GetType().GetAllTypes())
