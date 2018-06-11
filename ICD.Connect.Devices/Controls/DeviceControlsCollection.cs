@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using ICD.Common.Properties;
 using ICD.Common.Utils;
+using ICD.Common.Utils.Collections;
 using ICD.Common.Utils.Extensions;
 using ICD.Connect.API.Nodes;
 
@@ -12,12 +13,14 @@ namespace ICD.Connect.Devices.Controls
 	public sealed class DeviceControlsCollection : IEnumerable<IDeviceControl>, IStateDisposable, IApiNodeGroup
 	{
 		private readonly Dictionary<Type, List<int>> m_TypeToControls;
-		private readonly List<int> m_OrderedControls;
-		private readonly Dictionary<int, IDeviceControl> m_DeviceControls;
+		private readonly IcdOrderedDictionary<int, IDeviceControl> m_DeviceControls;
 		private readonly SafeCriticalSection m_DeviceControlsSection;
 
 		#region Properties
 
+		/// <summary>
+		/// Gets the number of controls in the collection.
+		/// </summary>
 		public int Count { get { return m_DeviceControlsSection.Execute(() => m_DeviceControls.Count); } }
 
 		/// <summary>
@@ -33,8 +36,7 @@ namespace ICD.Connect.Devices.Controls
 		public DeviceControlsCollection()
 		{
 			m_TypeToControls = new Dictionary<Type, List<int>>();
-			m_OrderedControls = new List<int>();
-			m_DeviceControls = new Dictionary<int, IDeviceControl>();
+			m_DeviceControls = new IcdOrderedDictionary<int, IDeviceControl>();
 			m_DeviceControlsSection = new SafeCriticalSection();
 		}
 
@@ -59,7 +61,6 @@ namespace ICD.Connect.Devices.Controls
 			try
 			{
 				m_DeviceControls.Add(item.Id, item);
-				m_OrderedControls.AddSorted(item.Id);
 
 				foreach (Type type in item.GetType().GetAllTypes())
 				{
@@ -84,7 +85,6 @@ namespace ICD.Connect.Devices.Controls
 			try
 			{
 				m_TypeToControls.Clear();
-				m_OrderedControls.Clear();
 				m_DeviceControls.Clear();
 			}
 			finally
@@ -149,8 +149,6 @@ namespace ICD.Connect.Devices.Controls
 				bool output = m_DeviceControls.Remove(id);
 				if (!output)
 					return false;
-
-				m_OrderedControls.Remove(id);
 
 				foreach (List<int> group in m_TypeToControls.Values)
 					group.Remove(id);
@@ -264,9 +262,9 @@ namespace ICD.Connect.Devices.Controls
 
 			try
 			{
-				return m_OrderedControls.Select(c => m_DeviceControls[c])
-				                        .ToList()
-				                        .GetEnumerator();
+				return m_DeviceControls.Values
+				                       .ToList(m_DeviceControls.Count)
+				                       .GetEnumerator();
 			}
 			finally
 			{
@@ -291,6 +289,7 @@ namespace ICD.Connect.Devices.Controls
 		{
 			if (!IsDisposed)
 				DisposeFinal(disposing);
+
 			IsDisposed = IsDisposed || disposing;
 		}
 
