@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [6.2.0] - 2018-06-19
+### Changed
+ - Simpl shim improvements
+
 ## [6.1.0] - 2018-06-04
 ### Added
  - Added SimplDeviceBase abstractions and interfaces
