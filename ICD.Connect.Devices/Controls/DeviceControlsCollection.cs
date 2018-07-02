@@ -105,48 +105,6 @@ namespace ICD.Connect.Devices.Controls
 		}
 
 		/// <summary>
-		/// Gets the control with the given id.
-		/// </summary>
-		/// <param name="id"></param>
-		/// <returns></returns>
-		[NotNull]
-		public IDeviceControl GetControl(int id)
-		{
-			m_DeviceControlsSection.Enter();
-
-			try
-			{
-				if (!m_DeviceControls.ContainsKey(id))
-					throw new KeyNotFoundException(string.Format("{0} does not contain control with id {1}", GetType().Name, id));
-				return m_DeviceControls[id];
-			}
-			finally
-			{
-				m_DeviceControlsSection.Leave();
-			}
-		}
-
-		/// <summary>
-		/// Attempts to get the control with the given id.
-		/// </summary>
-		/// <param name="id"></param>
-		/// <param name="control"></param>
-		/// <returns></returns>
-		public bool TryGetControl(int id, out IDeviceControl control)
-		{
-			m_DeviceControlsSection.Enter();
-
-			try
-			{
-				return m_DeviceControls.TryGetValue(id, out control);
-			}
-			finally
-			{
-				m_DeviceControlsSection.Leave();
-			}
-		}
-
-		/// <summary>
 		/// Removes the control with the given id from the collection.
 		/// </summary>
 		/// <param name="id"></param>
@@ -208,6 +166,74 @@ namespace ICD.Connect.Devices.Controls
 		}
 
 		/// <summary>
+		/// Gets the control with the given id and type.
+		/// 
+		/// Special case - If id is 0 we look up the first control of the given type.
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="id"></param>
+		/// <exception cref="InvalidOperationException">Throws InvalidOperationException if the given control does not exist.</exception>
+		/// <returns></returns>
+		[NotNull]
+		public T GetControl<T>(int id)
+			where T : IDeviceControl
+		{
+			// Edge case - we use control id 0 as a lookup
+			IDeviceControl control = id == 0 ? GetControl<T>() : GetControl(id);
+
+			if (control == null)
+				throw new ArgumentException(string.Format("No control of type {0}", typeof(T).Name), "id");
+
+			if (control is T)
+				return (T)control;
+
+			string message = string.Format("{0} is not of type {1}", control, typeof(T).Name);
+			throw new InvalidOperationException(message);
+		}
+
+		/// <summary>
+		/// Gets the control with the given id.
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
+		[NotNull]
+		public IDeviceControl GetControl(int id)
+		{
+			m_DeviceControlsSection.Enter();
+
+			try
+			{
+				if (!m_DeviceControls.ContainsKey(id))
+					throw new KeyNotFoundException(string.Format("{0} does not contain control with id {1}", GetType().Name, id));
+				return m_DeviceControls[id];
+			}
+			finally
+			{
+				m_DeviceControlsSection.Leave();
+			}
+		}
+
+		/// <summary>
+		/// Attempts to get the control with the given id.
+		/// </summary>
+		/// <param name="id"></param>
+		/// <param name="control"></param>
+		/// <returns></returns>
+		public bool TryGetControl(int id, out IDeviceControl control)
+		{
+			m_DeviceControlsSection.Enter();
+
+			try
+			{
+				return m_DeviceControls.TryGetValue(id, out control);
+			}
+			finally
+			{
+				m_DeviceControlsSection.Leave();
+			}
+		}
+
+		/// <summary>
 		/// Gets the controls.
 		/// </summary>
 		/// <returns></returns>
@@ -242,32 +268,6 @@ namespace ICD.Connect.Devices.Controls
 			{
 				m_DeviceControlsSection.Leave();
 			}
-		}
-
-		/// <summary>
-		/// Gets the control with the given id and type.
-		/// 
-		/// Special case - If id is 0 we look up the first control of the given type.
-		/// </summary>
-		/// <typeparam name="T"></typeparam>
-		/// <param name="id"></param>
-		/// <exception cref="InvalidOperationException">Throws InvalidOperationException if the given control does not exist.</exception>
-		/// <returns></returns>
-		[NotNull]
-		public T GetControl<T>(int id)
-			where T : IDeviceControl
-		{
-			// Edge case - we use control id 0 as a lookup
-			IDeviceControl control = id == 0 ? GetControl<T>() : GetControl(id);
-
-			if (control == null)
-				throw new ArgumentException(string.Format("No control of type {0}", typeof(T).Name), "id");
-
-			if (control is T)
-				return (T)control;
-
-			string message = string.Format("{0} is not of type {1}", control, typeof(T).Name);
-			throw new InvalidOperationException(message);
 		}
 
 		public IEnumerator<IDeviceControl> GetEnumerator()
