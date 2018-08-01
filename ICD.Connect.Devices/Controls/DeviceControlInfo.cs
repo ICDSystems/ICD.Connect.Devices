@@ -7,7 +7,7 @@ namespace ICD.Connect.Devices.Controls
 	/// <summary>
 	/// Simple pairing of device and control ids.
 	/// </summary>
-	public struct DeviceControlInfo : IComparable
+	public struct DeviceControlInfo : IComparable<DeviceControlInfo>, IEquatable<DeviceControlInfo>
 	{
 		private const string DEVICE_ELEMENT = "Device";
 		private const string CONTROL_ELEMENT = "Control";
@@ -95,7 +95,22 @@ namespace ICD.Connect.Devices.Controls
 		/// <returns></returns>
 		public static bool operator !=(DeviceControlInfo a1, DeviceControlInfo a2)
 		{
-			return !(a1 == a2);
+			return !a1.Equals(a2);
+		}
+
+		public int CompareTo(DeviceControlInfo other)
+		{
+			int result = DeviceId.CompareTo(other.DeviceId);
+			if (result != 0)
+				return result;
+
+			return ControlId.CompareTo(other.ControlId);
+		}
+
+		public bool Equals(DeviceControlInfo other)
+		{
+			return m_DeviceId == other.m_DeviceId &&
+			       m_ControlId == other.m_ControlId;
 		}
 
 		/// <summary>
@@ -105,10 +120,7 @@ namespace ICD.Connect.Devices.Controls
 		/// <returns></returns>
 		public override bool Equals(object other)
 		{
-			if (other == null || GetType() != other.GetType())
-				return false;
-
-			return GetHashCode() == ((DeviceControlInfo)other).GetHashCode();
+			return other is DeviceControlInfo && Equals((DeviceControlInfo)other);
 		}
 
 		/// <summary>
@@ -124,21 +136,6 @@ namespace ICD.Connect.Devices.Controls
 				hash = hash * 23 + m_ControlId;
 				return hash;
 			}
-		}
-
-		public int CompareTo(object obj)
-		{
-			DeviceControlInfo other = (DeviceControlInfo)obj;
-
-			int result = DeviceId.CompareTo(other.DeviceId);
-			if (result != 0)
-				return result;
-
-			result = ControlId.CompareTo(other.ControlId);
-			if (result != 0)
-				return result;
-
-			return 0;
 		}
 
 		#endregion
