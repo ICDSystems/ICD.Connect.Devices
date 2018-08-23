@@ -64,7 +64,7 @@ namespace ICD.Connect.Devices.Extensions
 		/// <returns></returns>
 		[NotNull]
 		public static T GetControl<T>(this ICore extends, DeviceControlInfo controlInfo)
-			where T : IDeviceControl
+			where T : class, IDeviceControl
 		{
 			if (extends == null)
 				throw new ArgumentNullException("extends");
@@ -81,7 +81,7 @@ namespace ICD.Connect.Devices.Extensions
 		/// <returns></returns>
 		[NotNull]
 		public static T GetControl<T>(this ICore extends, int device, int control)
-			where T : IDeviceControl
+			where T : class, IDeviceControl
 		{
 			if (extends == null)
 				throw new ArgumentNullException("extends");
@@ -98,7 +98,7 @@ namespace ICD.Connect.Devices.Extensions
 		/// <returns></returns>
 		[NotNull]
 		public static IEnumerable<T> GetControls<T>(this ICore extends, IEnumerable<DeviceControlInfo> controlInfo)
-			where T : IDeviceControl
+			where T : class, IDeviceControl
 		{
 			if (extends == null)
 				throw new ArgumentNullException("extends");

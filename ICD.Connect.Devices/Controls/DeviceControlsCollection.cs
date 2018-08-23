@@ -165,7 +165,7 @@ namespace ICD.Connect.Devices.Controls
 		/// <returns></returns>
 		[CanBeNull]
 		public T GetControl<T>()
-			where T : IDeviceControl
+			where T : class, IDeviceControl
 		{
 			m_DeviceControlsSection.Enter();
 
@@ -173,9 +173,9 @@ namespace ICD.Connect.Devices.Controls
 			{
 				List<IDeviceControl> controls;
 				if (!m_TypeToControls.TryGetValue(typeof(T), out controls))
-					return default(T);
+					return null;
 
-				return controls.Count == 0 ? default(T) : (T)controls[0];
+				return controls.Count == 0 ? null : controls[0] as T;
 			}
 			finally
 			{
@@ -194,7 +194,7 @@ namespace ICD.Connect.Devices.Controls
 		/// <returns></returns>
 		[NotNull]
 		public T GetControl<T>(int id)
-			where T : IDeviceControl
+			where T : class, IDeviceControl
 		{
 			// Edge case - we use control id 0 as a lookup
 			IDeviceControl control = id == 0 ? GetControl<T>() : GetControl(id);
@@ -202,8 +202,9 @@ namespace ICD.Connect.Devices.Controls
 			if (control == null)
 				throw new ArgumentException(string.Format("No control of type {0}", typeof(T).Name), "id");
 
-			if (control is T)
-				return (T)control;
+			T output = control as T;
+			if (output != null)
+				return output;
 
 			string message = string.Format("{0} is not of type {1}", control, typeof(T).Name);
 			throw new InvalidOperationException(message);
@@ -268,7 +269,7 @@ namespace ICD.Connect.Devices.Controls
 		/// <typeparam name="T"></typeparam>
 		/// <returns></returns>
 		public IEnumerable<T> GetControls<T>()
-			where T : IDeviceControl
+			where T : class, IDeviceControl
 		{
 			m_DeviceControlsSection.Enter();
 
@@ -277,10 +278,9 @@ namespace ICD.Connect.Devices.Controls
 				Type type = typeof(T);
 
 				List<IDeviceControl> controls;
-				if (!m_TypeToControls.TryGetValue(type, out controls))
-					return Enumerable.Empty<T>();
-
-				return controls.Cast<T>().ToArray(controls.Count);
+				return m_TypeToControls.TryGetValue(type, out controls)
+					? controls.Cast<T>().ToArray(controls.Count)
+					: Enumerable.Empty<T>();
 			}
 			finally
 			{
