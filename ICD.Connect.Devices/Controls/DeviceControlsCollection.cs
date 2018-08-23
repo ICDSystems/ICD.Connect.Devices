@@ -5,6 +5,7 @@ using System.Linq;
 using ICD.Common.Properties;
 using ICD.Common.Utils;
 using ICD.Common.Utils.Collections;
+using ICD.Common.Utils.Comparers;
 using ICD.Common.Utils.Extensions;
 using ICD.Connect.API.Nodes;
 
@@ -12,9 +13,11 @@ namespace ICD.Connect.Devices.Controls
 {
 	public sealed class DeviceControlsCollection : IEnumerable<IDeviceControl>, IStateDisposable, IApiNodeGroup
 	{
-		private readonly Dictionary<Type, List<int>> m_TypeToControls;
+		private readonly Dictionary<Type, List<IDeviceControl>> m_TypeToControls;
 		private readonly IcdOrderedDictionary<int, IDeviceControl> m_DeviceControls;
 		private readonly SafeCriticalSection m_DeviceControlsSection;
+
+		private static readonly PredicateComparer<IDeviceControl, int> s_ControlComparer;
 
 		#region Properties
 
@@ -31,11 +34,19 @@ namespace ICD.Connect.Devices.Controls
 		#endregion
 
 		/// <summary>
+		/// Static constructor.
+		/// </summary>
+		static DeviceControlsCollection()
+		{
+			s_ControlComparer = new PredicateComparer<IDeviceControl, int>(c => c.Id);
+		}
+
+		/// <summary>
 		/// Constructor.
 		/// </summary>
 		public DeviceControlsCollection()
 		{
-			m_TypeToControls = new Dictionary<Type, List<int>>();
+			m_TypeToControls = new Dictionary<Type, List<IDeviceControl>>();
 			m_DeviceControls = new IcdOrderedDictionary<int, IDeviceControl>();
 			m_DeviceControlsSection = new SafeCriticalSection();
 		}
@@ -75,9 +86,14 @@ namespace ICD.Connect.Devices.Controls
 
 				foreach (Type type in item.GetType().GetAllTypes())
 				{
-					if (!m_TypeToControls.ContainsKey(type))
-						m_TypeToControls[type] = new List<int>();
-					m_TypeToControls[type].AddSorted(item.Id);
+					List<IDeviceControl> controls;
+					if (!m_TypeToControls.TryGetValue(type, out controls))
+					{
+						controls = new List<IDeviceControl>();
+						m_TypeToControls[type] = controls;
+					}
+
+					controls.AddSorted(item, s_ControlComparer);
 				}
 			}
 			finally
@@ -115,12 +131,14 @@ namespace ICD.Connect.Devices.Controls
 
 			try
 			{
-				bool output = m_DeviceControls.Remove(id);
-				if (!output)
+				IDeviceControl control;
+				if (!m_DeviceControls.TryGetValue(id, out control))
 					return false;
 
-				foreach (List<int> group in m_TypeToControls.Values)
-					group.Remove(id);
+				m_DeviceControls.Remove(id);
+
+				foreach (List<IDeviceControl> group in m_TypeToControls.Values)
+					group.Remove(control);
 			}
 			finally
 			{
@@ -153,11 +171,11 @@ namespace ICD.Connect.Devices.Controls
 
 			try
 			{
-				List<int> ids;
-				if (!m_TypeToControls.TryGetValue(typeof(T), out ids))
+				List<IDeviceControl> controls;
+				if (!m_TypeToControls.TryGetValue(typeof(T), out controls))
 					return default(T);
 
-				return ids.Count == 0 ? default(T) : (T)GetControl(ids.First());
+				return controls.Count == 0 ? default(T) : (T)controls[0];
 			}
 			finally
 			{
@@ -203,9 +221,11 @@ namespace ICD.Connect.Devices.Controls
 
 			try
 			{
-				if (!m_DeviceControls.ContainsKey(id))
-					throw new KeyNotFoundException(string.Format("{0} does not contain control with id {1}", GetType().Name, id));
-				return m_DeviceControls[id];
+				IDeviceControl control;
+				if (m_DeviceControls.TryGetValue(id, out control))
+					return control;
+
+				throw new KeyNotFoundException(string.Format("{0} does not contain control with id {1}", GetType().Name, id));
 			}
 			finally
 			{
@@ -256,13 +276,11 @@ namespace ICD.Connect.Devices.Controls
 			{
 				Type type = typeof(T);
 
-				List<int> ids;
-				if (!m_TypeToControls.TryGetValue(type, out ids))
+				List<IDeviceControl> controls;
+				if (!m_TypeToControls.TryGetValue(type, out controls))
 					return Enumerable.Empty<T>();
 
-				return ids.Select(id => GetControl(id))
-				          .Cast<T>()
-				          .ToArray();
+				return controls.Cast<T>().ToArray(controls.Count);
 			}
 			finally
 			{
