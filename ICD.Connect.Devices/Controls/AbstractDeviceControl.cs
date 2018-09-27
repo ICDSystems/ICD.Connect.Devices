@@ -40,7 +40,7 @@ namespace ICD.Connect.Devices.Controls
 		/// <summary>
 		/// Gets the human readable name for this control.
 		/// </summary>
-		public virtual string Name { get { return GetType().Name; } }
+		public virtual string Name { get { return GetType().GetNameWithoutGenericArity(); } }
 
 		/// <summary>
 		/// Gets the parent and control id info.
