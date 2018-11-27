@@ -3,14 +3,12 @@ using ICD.Connect.Settings.Originators.Simpl;
 
 namespace ICD.Connect.Devices.Simpl
 {
-	public delegate bool SimplDeviceOnlineCallback(ISimplDeviceBase sender);
-
 	public interface ISimplDeviceBase : ISimplOriginator, IDeviceBase
 	{
 		/// <summary>
-		/// Gets/sets the online status callback.
+		/// Gets/sets the device online status.
 		/// </summary>
 		[PublicAPI("S+")]
-		SimplDeviceOnlineCallback OnlineStatusCallback { get; set; }
+		new bool IsOnline { get; set; }
 	}
 }

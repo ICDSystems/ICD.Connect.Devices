@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using ICD.Common.Properties;
 using ICD.Common.Utils;
+using ICD.Common.Utils.Extensions;
 using ICD.Common.Utils.Services.Logging;
 using ICD.Connect.API.Commands;
 using ICD.Connect.API.Nodes;
@@ -39,7 +40,7 @@ namespace ICD.Connect.Devices.Controls
 		/// <summary>
 		/// Gets the human readable name for this control.
 		/// </summary>
-		public virtual string Name { get { return GetType().Name; } }
+		public virtual string Name { get { return GetType().GetNameWithoutGenericArity(); } }
 
 		/// <summary>
 		/// Gets the parent and control id info.
@@ -49,7 +50,7 @@ namespace ICD.Connect.Devices.Controls
 		/// <summary>
 		/// Gets the name of the node.
 		/// </summary>
-		public virtual string ConsoleName { get { return string.IsNullOrEmpty(Name) ? GetType().Name : Name; } }
+		public virtual string ConsoleName { get { return string.IsNullOrEmpty(Name) ? GetType().GetNameWithoutGenericArity() : Name; } }
 
 		/// <summary>
 		/// Gets the help information for the node.

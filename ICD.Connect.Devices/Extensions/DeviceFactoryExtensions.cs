@@ -12,6 +12,7 @@ namespace ICD.Connect.Devices.Extensions
 		/// <param name="id"></param>
 		/// <returns></returns>
 		[PublicAPI]
+		[NotNull]
 		public static IDevice GetDeviceById(this IDeviceFactory factory, int id)
 		{
 			return factory.GetOriginatorById<IDevice>(id);

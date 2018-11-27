@@ -31,7 +31,7 @@ namespace ICD.Connect.Devices.Controls
 
 				m_IsPowered = value;
 
-				Logger.AddEntry(eSeverity.Informational, "{0} IsPowered set to {1}", this, m_IsPowered);
+				Log(eSeverity.Informational, "IsPowered set to {0}", m_IsPowered);
 
 				OnIsPoweredChanged.Raise(this, new PowerDeviceControlPowerStateApiEventArgs(m_IsPowered));
 			}

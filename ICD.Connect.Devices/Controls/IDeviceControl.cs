@@ -89,7 +89,7 @@ namespace ICD.Connect.Devices.Controls
 		[NotNull]
 		[PublicAPI]
 		public static T GetSibling<T>(this IDeviceControl extends, int id)
-			where T : IDeviceControl
+			where T : class, IDeviceControl
 		{
 			if (extends == null)
 				throw new ArgumentNullException("extends");

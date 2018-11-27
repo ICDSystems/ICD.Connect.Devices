@@ -42,7 +42,7 @@ namespace ICD.Connect.Devices
 
 				m_IsOnline = value;
 
-				Logger.AddEntry(eSeverity.Informational, "{0} - Online status changed to {1}", this, IsOnline);
+				Log(eSeverity.Informational, "Online status changed to {0}", IsOnline);
 
 				OnIsOnlineStateChanged.Raise(this, new DeviceBaseOnlineStateApiEventArgs(IsOnline));
 			}
@@ -63,7 +63,6 @@ namespace ICD.Connect.Devices
 			m_Controls = new DeviceControlsCollection();
 
 			Name = GetType().Name;
-			UpdateCachedOnlineStatus();
 		}
 
 		#region Private Methods
@@ -93,6 +92,22 @@ namespace ICD.Connect.Devices
 		protected virtual void UpdateCachedOnlineStatus()
 		{
 			IsOnline = GetIsOnlineStatus();
+		}
+
+		#endregion
+
+		#region Settings
+
+		/// <summary>
+		/// Override to apply settings to the instance.
+		/// </summary>
+		/// <param name="settings"></param>
+		/// <param name="factory"></param>
+		protected override void ApplySettingsFinal(T settings, IDeviceFactory factory)
+		{
+			base.ApplySettingsFinal(settings, factory);
+
+			UpdateCachedOnlineStatus();
 		}
 
 		#endregion

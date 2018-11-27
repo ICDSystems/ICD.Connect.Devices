@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using ICD.Common.Properties;
 using ICD.Common.Utils;
+using ICD.Common.Utils.Collections;
+using ICD.Common.Utils.Comparers;
 using ICD.Common.Utils.Extensions;
 using ICD.Connect.API.Nodes;
 
@@ -11,13 +13,17 @@ namespace ICD.Connect.Devices.Controls
 {
 	public sealed class DeviceControlsCollection : IEnumerable<IDeviceControl>, IStateDisposable, IApiNodeGroup
 	{
-		private readonly Dictionary<Type, List<int>> m_TypeToControls;
-		private readonly List<int> m_OrderedControls;
-		private readonly Dictionary<int, IDeviceControl> m_DeviceControls;
+		private readonly Dictionary<Type, List<IDeviceControl>> m_TypeToControls;
+		private readonly IcdOrderedDictionary<int, IDeviceControl> m_DeviceControls;
 		private readonly SafeCriticalSection m_DeviceControlsSection;
+
+		private static readonly PredicateComparer<IDeviceControl, int> s_ControlComparer;
 
 		#region Properties
 
+		/// <summary>
+		/// Gets the number of controls in the collection.
+		/// </summary>
 		public int Count { get { return m_DeviceControlsSection.Execute(() => m_DeviceControls.Count); } }
 
 		/// <summary>
@@ -28,13 +34,20 @@ namespace ICD.Connect.Devices.Controls
 		#endregion
 
 		/// <summary>
+		/// Static constructor.
+		/// </summary>
+		static DeviceControlsCollection()
+		{
+			s_ControlComparer = new PredicateComparer<IDeviceControl, int>(c => c.Id);
+		}
+
+		/// <summary>
 		/// Constructor.
 		/// </summary>
 		public DeviceControlsCollection()
 		{
-			m_TypeToControls = new Dictionary<Type, List<int>>();
-			m_OrderedControls = new List<int>();
-			m_DeviceControls = new Dictionary<int, IDeviceControl>();
+			m_TypeToControls = new Dictionary<Type, List<IDeviceControl>>();
+			m_DeviceControls = new IcdOrderedDictionary<int, IDeviceControl>();
 			m_DeviceControlsSection = new SafeCriticalSection();
 		}
 
@@ -54,18 +67,33 @@ namespace ICD.Connect.Devices.Controls
 		/// <param name="item"></param>
 		public void Add(IDeviceControl item)
 		{
+			if (item == null)
+				throw new ArgumentNullException("item");
+
 			m_DeviceControlsSection.Enter();
 
 			try
 			{
+				IDeviceControl existing;
+				if (m_DeviceControls.TryGetValue(item.Id, out existing))
+				{
+					string message = string.Format("Failed to add {0} - already contains a {1} with id {2}",
+					                               item.GetType().Name, existing.GetType().Name, item.Id);
+					throw new InvalidOperationException(message);
+				}
+
 				m_DeviceControls.Add(item.Id, item);
-				m_OrderedControls.AddSorted(item.Id);
 
 				foreach (Type type in item.GetType().GetAllTypes())
 				{
-					if (!m_TypeToControls.ContainsKey(type))
-						m_TypeToControls[type] = new List<int>();
-					m_TypeToControls[type].AddSorted(item.Id);
+					List<IDeviceControl> controls;
+					if (!m_TypeToControls.TryGetValue(type, out controls))
+					{
+						controls = new List<IDeviceControl>();
+						m_TypeToControls[type] = controls;
+					}
+
+					controls.AddSorted(item, s_ControlComparer);
 				}
 			}
 			finally
@@ -84,13 +112,102 @@ namespace ICD.Connect.Devices.Controls
 			try
 			{
 				m_TypeToControls.Clear();
-				m_OrderedControls.Clear();
 				m_DeviceControls.Clear();
 			}
 			finally
 			{
 				m_DeviceControlsSection.Leave();
 			}
+		}
+
+		/// <summary>
+		/// Removes the control with the given id from the collection.
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
+		public bool Remove(int id)
+		{
+			m_DeviceControlsSection.Enter();
+
+			try
+			{
+				IDeviceControl control;
+				if (!m_DeviceControls.TryGetValue(id, out control))
+					return false;
+
+				m_DeviceControls.Remove(id);
+
+				foreach (List<IDeviceControl> group in m_TypeToControls.Values)
+					group.Remove(control);
+			}
+			finally
+			{
+				m_DeviceControlsSection.Leave();
+			}
+
+			return true;
+		}
+
+		/// <summary>
+		/// Returns true if the collection contains a control with the given id.
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
+		public bool Contains(int id)
+		{
+			return m_DeviceControlsSection.Execute(() => m_DeviceControls.ContainsKey(id));
+		}
+
+		/// <summary>
+		/// Gets the first control of the given type.
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <returns></returns>
+		[CanBeNull]
+		public T GetControl<T>()
+			where T : class, IDeviceControl
+		{
+			m_DeviceControlsSection.Enter();
+
+			try
+			{
+				List<IDeviceControl> controls;
+				if (!m_TypeToControls.TryGetValue(typeof(T), out controls))
+					return null;
+
+				return controls.Count == 0 ? null : controls[0] as T;
+			}
+			finally
+			{
+				m_DeviceControlsSection.Leave();
+			}
+		}
+
+		/// <summary>
+		/// Gets the control with the given id and type.
+		/// 
+		/// Special case - If id is 0 we look up the first control of the given type.
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="id"></param>
+		/// <exception cref="InvalidOperationException">Throws InvalidOperationException if the given control does not exist.</exception>
+		/// <returns></returns>
+		[NotNull]
+		public T GetControl<T>(int id)
+			where T : class, IDeviceControl
+		{
+			// Edge case - we use control id 0 as a lookup
+			IDeviceControl control = id == 0 ? GetControl<T>() : GetControl(id);
+
+			if (control == null)
+				throw new ArgumentException(string.Format("No control of type {0}", typeof(T).Name), "id");
+
+			T output = control as T;
+			if (output != null)
+				return output;
+
+			string message = string.Format("{0} is not of type {1}", control, typeof(T).Name);
+			throw new InvalidOperationException(message);
 		}
 
 		/// <summary>
@@ -105,9 +222,11 @@ namespace ICD.Connect.Devices.Controls
 
 			try
 			{
-				if (!m_DeviceControls.ContainsKey(id))
-					throw new KeyNotFoundException(string.Format("{0} does not contain control with id {1}", GetType().Name, id));
-				return m_DeviceControls[id];
+				IDeviceControl control;
+				if (m_DeviceControls.TryGetValue(id, out control))
+					return control;
+
+				throw new KeyNotFoundException(string.Format("{0} does not contain control with id {1}", GetType().Name, id));
 			}
 			finally
 			{
@@ -136,69 +255,6 @@ namespace ICD.Connect.Devices.Controls
 		}
 
 		/// <summary>
-		/// Removes the control with the given id from the collection.
-		/// </summary>
-		/// <param name="id"></param>
-		/// <returns></returns>
-		public bool Remove(int id)
-		{
-			m_DeviceControlsSection.Enter();
-
-			try
-			{
-				bool output = m_DeviceControls.Remove(id);
-				if (!output)
-					return false;
-
-				m_OrderedControls.Remove(id);
-
-				foreach (List<int> group in m_TypeToControls.Values)
-					group.Remove(id);
-			}
-			finally
-			{
-				m_DeviceControlsSection.Leave();
-			}
-
-			return true;
-		}
-
-		/// <summary>
-		/// Returns true if the collection contains a control with the given id.
-		/// </summary>
-		/// <param name="id"></param>
-		/// <returns></returns>
-		public bool Contains(int id)
-		{
-			return m_DeviceControlsSection.Execute(() => m_DeviceControls.ContainsKey(id));
-		}
-
-		/// <summary>
-		/// Gets the first control of the given type.
-		/// </summary>
-		/// <typeparam name="T"></typeparam>
-		/// <returns></returns>
-		[CanBeNull]
-		public T GetControl<T>()
-			where T : IDeviceControl
-		{
-			m_DeviceControlsSection.Enter();
-
-			try
-			{
-				List<int> ids;
-				if (!m_TypeToControls.TryGetValue(typeof(T), out ids))
-					return default(T);
-
-				return ids.Count == 0 ? default(T) : (T)GetControl(ids.First());
-			}
-			finally
-			{
-				m_DeviceControlsSection.Leave();
-			}
-		}
-
-		/// <summary>
 		/// Gets the controls.
 		/// </summary>
 		/// <returns></returns>
@@ -213,7 +269,7 @@ namespace ICD.Connect.Devices.Controls
 		/// <typeparam name="T"></typeparam>
 		/// <returns></returns>
 		public IEnumerable<T> GetControls<T>()
-			where T : IDeviceControl
+			where T : class, IDeviceControl
 		{
 			m_DeviceControlsSection.Enter();
 
@@ -221,41 +277,15 @@ namespace ICD.Connect.Devices.Controls
 			{
 				Type type = typeof(T);
 
-				List<int> ids;
-				if (!m_TypeToControls.TryGetValue(type, out ids))
-					return Enumerable.Empty<T>();
-
-				return ids.Select(id => GetControl(id))
-				          .Cast<T>()
-				          .ToArray();
+				List<IDeviceControl> controls;
+				return m_TypeToControls.TryGetValue(type, out controls)
+					? controls.Cast<T>().ToArray(controls.Count)
+					: Enumerable.Empty<T>();
 			}
 			finally
 			{
 				m_DeviceControlsSection.Leave();
 			}
-		}
-
-		/// <summary>
-		/// Gets the control with the given id and type.
-		/// 
-		/// Special case - If id is 0 we look up the first control of the given type.
-		/// </summary>
-		/// <typeparam name="T"></typeparam>
-		/// <param name="id"></param>
-		/// <exception cref="InvalidOperationException">Throws InvalidOperationException if the given control does not exist.</exception>
-		/// <returns></returns>
-		[NotNull]
-		public T GetControl<T>(int id)
-			where T : IDeviceControl
-		{
-			// Edge case - we use control id 0 as a lookup
-			IDeviceControl control = id == 0 ? GetControl<T>() : GetControl(id);
-
-			if (control is T)
-				return (T)control;
-
-			string message = string.Format("{0} is not of type {1}", control, typeof(T).Name);
-			throw new InvalidOperationException(message);
 		}
 
 		public IEnumerator<IDeviceControl> GetEnumerator()
@@ -264,9 +294,9 @@ namespace ICD.Connect.Devices.Controls
 
 			try
 			{
-				return m_OrderedControls.Select(c => m_DeviceControls[c])
-				                        .ToList()
-				                        .GetEnumerator();
+				return m_DeviceControls.Values
+				                       .ToList(m_DeviceControls.Count)
+				                       .GetEnumerator();
 			}
 			finally
 			{
@@ -291,6 +321,7 @@ namespace ICD.Connect.Devices.Controls
 		{
 			if (!IsDisposed)
 				DisposeFinal(disposing);
+
 			IsDisposed = IsDisposed || disposing;
 		}
 

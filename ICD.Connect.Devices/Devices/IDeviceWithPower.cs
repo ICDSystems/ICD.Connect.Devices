@@ -3,12 +3,12 @@
 	public interface IDeviceWithPower : IDevice
 	{
 		/// <summary>
-		/// Powers the device on.
+		/// Powers on the device.
 		/// </summary>
 		void PowerOn();
 
 		/// <summary>
-		/// Powers the device off.
+		/// Powers off the device.
 		/// </summary>
 		void PowerOff();
 	}

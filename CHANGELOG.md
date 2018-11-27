@@ -6,6 +6,29 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [6.3.1] - 2018-10-04
+### Changed
+ - Fixed formatting issue with generic device controls in the console
+
+## [6.3.0] - 2018-09-14
+### Changed
+ - Control collection optimizations
+
+## [6.2.0] - 2018-06-19
+### Changed
+ - Simpl shim improvements
+
+## [6.1.0] - 2018-06-04
+### Added
+ - Added SimplDeviceBase abstractions and interfaces
+
+### Changed
+ - Simpl wrapper/originator online state is settable
+
+## [6.0.0] - 2018-05-24
+### Changed
+ - Significant namespace changes
+
 ## [5.0.0] - 2018-05-09
 ### Changed
  - Fixed lookup issue with control id 0
