@@ -1,6 +1,7 @@
 ﻿namespace ICD.Connect.Devices.Proxies.Devices
 {
-    public abstract class AbstractProxyDevice : AbstractProxyDeviceBase, IProxyDevice
+    public abstract class AbstractProxyDevice<TSettings> : AbstractProxyDeviceBase<TSettings>, IProxyDevice
+		where TSettings : IProxyDeviceSettings
     {
     }
 }
