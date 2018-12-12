@@ -27,7 +27,7 @@ namespace ICD.Connect.Devices.Simpl
 		public bool IsOnline
 		{
 			get { return m_IsOnline; }
-			set
+			private set
 			{
 				if (value == m_IsOnline)
 					return;
@@ -53,6 +53,11 @@ namespace ICD.Connect.Devices.Simpl
 			m_Controls = new DeviceControlsCollection();
 
 			Name = GetType().Name;
+		}
+
+		public void SetIsOnline(bool online)
+		{
+			IsOnline = online;
 		}
 
 		/// <summary>

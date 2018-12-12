@@ -1,4 +1,5 @@
 ﻿using ICD.Common.Properties;
+using ICD.Connect.API.Attributes;
 using ICD.Connect.Settings.Simpl;
 
 namespace ICD.Connect.Devices.Simpl
@@ -9,6 +10,7 @@ namespace ICD.Connect.Devices.Simpl
 		/// Gets/sets the device online status.
 		/// </summary>
 		[PublicAPI("S+")]
-		new bool IsOnline { get; set; }
+		[ApiMethod(SimplDeviceBaseApi.METHOD_SET_IS_ONLINE, SimplDeviceBaseApi.HELP_METHOD_SET_IS_ONLINE)]
+		void SetIsOnline(bool online);
 	}
 }

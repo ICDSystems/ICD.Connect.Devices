@@ -37,7 +37,7 @@ namespace ICD.Connect.Devices.SPlusShims
 				if (originator == null)
 					return;
 
-				originator.IsOnline = value.ToBool();
+				originator.SetIsOnline(value.ToBool());
 			}
 		}
 
