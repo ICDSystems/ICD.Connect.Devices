@@ -73,6 +73,7 @@
     <Compile Include="Controls\DeviceControlConsole.cs" />
     <Compile Include="Controls\PowerDeviceControlConsole.cs" />
     <Compile Include="Devices\DeviceBaseConsole.cs" />
+    <Compile Include="DeviceTelemetryNames.cs" />
     <Compile Include="EventArguments\DeviceBaseOnlineStateApiEventArgs.cs" />
     <Compile Include="EventArguments\PowerDeviceControlPowerStateApiEventArgs.cs" />
     <Compile Include="Proxies\Controls\PowerDeviceControlApi.cs" />
