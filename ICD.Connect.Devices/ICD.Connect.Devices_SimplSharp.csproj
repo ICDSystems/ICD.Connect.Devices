@@ -73,6 +73,11 @@
     <Compile Include="Controls\DeviceControlConsole.cs" />
     <Compile Include="Controls\PowerDeviceControlConsole.cs" />
     <Compile Include="Devices\DeviceBaseConsole.cs" />
+    <Compile Include="Devices\Simpl\AbstractSimplProxyDevice.cs" />
+    <Compile Include="Devices\Simpl\AbstractSimplProxyDeviceBase.cs" />
+    <Compile Include="Devices\Simpl\ISimplProxyDevice.cs" />
+    <Compile Include="Devices\Simpl\ISimplProxyDeviceBase.cs" />
+    <Compile Include="Devices\Simpl\SimplDeviceBaseApi.cs" />
     <Compile Include="EventArguments\DeviceBaseOnlineStateApiEventArgs.cs" />
     <Compile Include="EventArguments\PowerDeviceControlPowerStateApiEventArgs.cs" />
     <Compile Include="Proxies\Controls\PowerDeviceControlApi.cs" />

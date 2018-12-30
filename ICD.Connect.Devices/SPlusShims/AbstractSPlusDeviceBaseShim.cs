@@ -55,7 +55,7 @@ namespace ICD.Connect.Devices.SPlusShims
 			if (originator == null)
 				return;
 
-			originator.IsOnline = false;
+			originator.SetIsOnline(false);
 		}
 
 		#endregion
