@@ -17,7 +17,8 @@ using ICD.Connect.Settings.Proxies;
 
 namespace ICD.Connect.Devices.Proxies.Devices
 {
-	public abstract class AbstractProxyDeviceBase : AbstractProxyOriginator, IProxyDeviceBase
+	public abstract class AbstractProxyDeviceBase<TSettings> : AbstractProxyOriginator<TSettings>, IProxyDeviceBase
+		where TSettings : IProxyDeviceBaseSettings
 	{
 		public event EventHandler<DeviceBaseOnlineStateApiEventArgs> OnIsOnlineStateChanged;
 

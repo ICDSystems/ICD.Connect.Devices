@@ -111,6 +111,8 @@
     <Compile Include="Devices\IDeviceBase.cs" />
     <None Include="ObfuscationSettings.cs" />
     <Compile Include="Proxies\Controls\AbstractProxyDeviceControl.cs" />
+    <Compile Include="Proxies\Devices\AbstractProxyDeviceBaseSettings.cs" />
+    <Compile Include="Proxies\Devices\AbstractProxyDeviceSettings.cs" />
     <Compile Include="Proxies\Devices\DeviceBaseApi.cs" />
     <Compile Include="Proxies\Controls\DeviceControlApi.cs" />
     <Compile Include="Proxies\Devices\IProxyDevice.cs" />
@@ -119,9 +121,13 @@
     <Compile Include="Devices\IDeviceSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Proxies\Controls\IProxyDeviceControl.cs" />
+    <Compile Include="Proxies\Devices\IProxyDeviceBaseSettings.cs" />
+    <Compile Include="Proxies\Devices\IProxyDeviceSettings.cs" />
     <Compile Include="Proxies\Devices\ProxyDevice.cs" />
     <Compile Include="Proxies\Devices\ProxyDeviceBase.cs" />
     <Compile Include="Proxies\Controls\ProxyDeviceControl.cs" />
+    <Compile Include="Proxies\Devices\ProxyDeviceBaseSettings.cs" />
+    <Compile Include="Proxies\Devices\ProxyDeviceSettings.cs" />
     <Compile Include="SPlusShims\AbstractSPlusDeviceBaseShim.cs" />
     <Compile Include="SPlusShims\AbstractSPlusDeviceShim.cs" />
     <Compile Include="SPlusShims\ISPlusDeviceBaseShim.cs" />

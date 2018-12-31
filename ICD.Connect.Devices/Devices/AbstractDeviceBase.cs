@@ -123,7 +123,7 @@ namespace ICD.Connect.Devices
 			foreach (IConsoleNodeBase node in GetBaseConsoleNodes())
 				yield return node;
 
-			foreach (IConsoleNodeBase node in  DeviceBaseConsole.GetConsoleNodes(this))
+			foreach (IConsoleNodeBase node in DeviceBaseConsole.GetConsoleNodes(this))
 				yield return node;
 		}
 
