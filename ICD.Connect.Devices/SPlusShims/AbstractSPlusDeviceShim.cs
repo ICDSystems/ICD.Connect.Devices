@@ -6,10 +6,5 @@ namespace ICD.Connect.Devices.SPlusShims
 	public abstract class AbstractSPlusDeviceShim<TOriginator> : AbstractSPlusDeviceBaseShim<TOriginator>
 		where TOriginator : class, ISimplDevice
 	{
-
-		public static string SPlusSafeString(string input)
-		{
-			return input ?? String.Empty;
-		}
 	}
 }

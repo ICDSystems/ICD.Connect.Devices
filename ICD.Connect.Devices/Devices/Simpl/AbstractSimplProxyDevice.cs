@@ -1,6 +1,9 @@
-﻿namespace ICD.Connect.Devices.Simpl
+﻿using ICD.Connect.Devices.Proxies.Devices;
+
+namespace ICD.Connect.Devices.Simpl
 {
-	public abstract class AbstractSimplProxyDevice : AbstractSimplProxyDeviceBase, ISimplProxyDevice
+	public abstract class AbstractSimplProxyDevice<TSettings> : AbstractSimplProxyDeviceBase<TSettings>, ISimplProxyDevice
+		where TSettings : IProxyDeviceBaseSettings
 	{
 	}
 }
