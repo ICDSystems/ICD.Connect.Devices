@@ -8,7 +8,7 @@ using ICD.Connect.API.Nodes;
 using ICD.Connect.Devices.Controls;
 using ICD.Connect.Devices.EventArguments;
 using ICD.Connect.Settings;
-using ICD.Connect.Settings.Core;
+using ICD.Connect.Settings.Originators;
 
 namespace ICD.Connect.Devices
 {
