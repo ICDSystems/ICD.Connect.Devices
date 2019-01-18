@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [7.0.0] - 2019-01-10
+### Changed
+ - Originators and settings moved into subdirectories
+
 ## [6.3.1] - 2018-10-04
 ### Changed
  - Fixed formatting issue with generic device controls in the console

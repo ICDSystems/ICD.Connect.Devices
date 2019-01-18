@@ -6,7 +6,7 @@ using ICD.Connect.API.Commands;
 using ICD.Connect.API.Nodes;
 using ICD.Connect.Devices.Controls;
 using ICD.Connect.Devices.EventArguments;
-using ICD.Connect.Settings.Simpl;
+using ICD.Connect.Settings.Originators.Simpl;
 
 namespace ICD.Connect.Devices.Simpl
 {

@@ -1,6 +1,6 @@
 ﻿using ICD.Common.Properties;
 using ICD.Connect.API.Attributes;
-using ICD.Connect.Settings.Simpl;
+using ICD.Connect.Settings.Originators.Simpl;
 
 namespace ICD.Connect.Devices.Simpl
 {

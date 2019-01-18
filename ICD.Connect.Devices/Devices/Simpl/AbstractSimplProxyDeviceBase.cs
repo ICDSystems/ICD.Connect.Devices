@@ -2,7 +2,7 @@
 using ICD.Common.Utils.Extensions;
 using ICD.Connect.API.Info;
 using ICD.Connect.Devices.Proxies.Devices;
-using ICD.Connect.Settings.Simpl;
+using ICD.Connect.Settings.Originators.Simpl;
 
 namespace ICD.Connect.Devices.Simpl
 {

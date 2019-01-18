@@ -1,5 +1,4 @@
-﻿using System;
-using ICD.Connect.Devices.Simpl;
+﻿using ICD.Connect.Devices.Simpl;
 
 namespace ICD.Connect.Devices.SPlusShims
 {
