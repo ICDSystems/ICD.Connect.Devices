@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using ICD.Common.Properties;
-using ICD.Common.Utils;
 using ICD.Common.Utils.Extensions;
 using ICD.Common.Utils.Services.Logging;
 using ICD.Connect.API;
@@ -103,7 +102,7 @@ namespace ICD.Connect.Devices.Proxies.Devices
 			ApiCommandBuilder.UpdateCommand(command)
 			                 .SubscribeEvent(DeviceBaseApi.EVENT_IS_ONLINE)
 			                 .GetProperty(DeviceBaseApi.PROPERTY_IS_ONLINE)
-			                 .GetNodeGroup(DeviceBaseApi.NODE_GROUP_CONTROLS)
+			                 //.GetNodeGroup(DeviceBaseApi.NODE_GROUP_CONTROLS)
 			                 .Complete();
 		}
 
@@ -152,7 +151,7 @@ namespace ICD.Connect.Devices.Proxies.Devices
 
 			switch (name)
 			{
-				case DeviceBaseApi.NODE_GROUP_CONTROLS:
+				/*case DeviceBaseApi.NODE_GROUP_CONTROLS:
 					ApiNodeGroupInfo nodeGroup = result.GetValue<ApiNodeGroupInfo>();
 					foreach (ApiNodeGroupKeyInfo item in nodeGroup)
 					{
@@ -160,7 +159,7 @@ namespace ICD.Connect.Devices.Proxies.Devices
 						IProxyDeviceControl proxy = LazyLoadProxyControl("Controls", (int)item.Key, node);
 						proxy.ParseInfo(node);
 					}
-					break;
+					break;*/
 			}
 		}
 
@@ -170,7 +169,7 @@ namespace ICD.Connect.Devices.Proxies.Devices
 		/// <param name="group"></param>
 		/// <param name="id"></param>
 		/// <param name="classInfo"></param>
-		private IProxyDeviceControl LazyLoadProxyControl(string group, int id, ApiClassInfo classInfo)
+		/*private IProxyDeviceControl LazyLoadProxyControl(string group, int id, ApiClassInfo classInfo)
 		{
 			if (m_Controls.Contains(id))
 				return m_Controls.GetControl<IProxyDeviceControl>(id);
@@ -201,7 +200,7 @@ namespace ICD.Connect.Devices.Proxies.Devices
 			control.Initialize();
 
 			return control;
-		}
+		}*/
 
 		#endregion
 
