@@ -197,7 +197,8 @@ namespace ICD.Connect.Devices.Controls
 			where T : class, IDeviceControl
 		{
 			// Edge case - we use control id 0 as a lookup
-			IDeviceControl control = id == 0 ? GetControl<T>() : GetControl(id);
+			IDeviceControl control = id == 0 ? GetControl<T>() : null;
+			control = control ?? GetControl(id);
 
 			if (control == null)
 				throw new ArgumentException(string.Format("No control of type {0}", typeof(T).Name), "id");
