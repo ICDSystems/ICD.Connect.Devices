@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [6.3.2] - 2019-02-07
+### Changed
+ - Better error logging for bad control lookups
+
 ## [6.3.1] - 2018-10-04
 ### Changed
  - Fixed formatting issue with generic device controls in the console
