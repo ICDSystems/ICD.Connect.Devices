@@ -2,7 +2,7 @@
 
 namespace ICD.Connect.Devices.Proxies.Devices
 {
-	public interface IProxyDeviceBaseSettings : IProxySettings
+	public interface IProxyDeviceBaseSettings : IProxySettings, IDeviceBaseSettings
 	{
 	}
 }
