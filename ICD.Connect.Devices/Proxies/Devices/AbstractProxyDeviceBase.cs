@@ -140,7 +140,7 @@ namespace ICD.Connect.Devices.Proxies.Devices
 			}
 		}
 
-		/// <summary>
+		/*/// <summary>
 		/// Updates the proxy with a node group result.
 		/// </summary>
 		/// <param name="name"></param>
@@ -151,7 +151,7 @@ namespace ICD.Connect.Devices.Proxies.Devices
 
 			switch (name)
 			{
-				/*case DeviceBaseApi.NODE_GROUP_CONTROLS:
+				case DeviceBaseApi.NODE_GROUP_CONTROLS:
 					ApiNodeGroupInfo nodeGroup = result.GetValue<ApiNodeGroupInfo>();
 					foreach (ApiNodeGroupKeyInfo item in nodeGroup)
 					{
@@ -159,17 +159,17 @@ namespace ICD.Connect.Devices.Proxies.Devices
 						IProxyDeviceControl proxy = LazyLoadProxyControl("Controls", (int)item.Key, node);
 						proxy.ParseInfo(node);
 					}
-					break;*/
+					break;
 			}
-		}
+		}*/
 
-		/// <summary>
+		/*/// <summary>
 		/// Creates a proxy control for the given class info if a control with the given id does not exist.
 		/// </summary>
 		/// <param name="group"></param>
 		/// <param name="id"></param>
 		/// <param name="classInfo"></param>
-		/*private IProxyDeviceControl LazyLoadProxyControl(string group, int id, ApiClassInfo classInfo)
+		private IProxyDeviceControl LazyLoadProxyControl(string group, int id, ApiClassInfo classInfo)
 		{
 			if (m_Controls.Contains(id))
 				return m_Controls.GetControl<IProxyDeviceControl>(id);
