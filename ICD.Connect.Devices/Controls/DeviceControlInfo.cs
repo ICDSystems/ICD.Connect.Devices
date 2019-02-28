@@ -10,8 +10,8 @@ namespace ICD.Connect.Devices.Controls
 	/// </summary>
 	public struct DeviceControlInfo : IComparable<DeviceControlInfo>, IEquatable<DeviceControlInfo>
 	{
-		private const string DEVICE_ELEMENT = "Device";
-		private const string CONTROL_ELEMENT = "Control";
+		public const string DEVICE_ELEMENT = "Device";
+		public const string CONTROL_ELEMENT = "Control";
 
 		private readonly int m_DeviceId;
 		private readonly int m_ControlId;
