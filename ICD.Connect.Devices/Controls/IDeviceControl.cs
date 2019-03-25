@@ -7,6 +7,7 @@ using ICD.Common.Utils.Extensions;
 using ICD.Connect.API.Attributes;
 using ICD.Connect.API.Nodes;
 using ICD.Connect.Devices.Proxies.Controls;
+using ICD.Connect.Telemetry;
 
 namespace ICD.Connect.Devices.Controls
 {
@@ -14,7 +15,7 @@ namespace ICD.Connect.Devices.Controls
 	/// IDeviceControl contains the usage features for a parent device.
 	/// </summary>
 	[ApiClass(typeof(ProxyDeviceControl))]
-	public interface IDeviceControl : IConsoleNode, IStateDisposable
+	public interface IDeviceControl : IConsoleNode, IStateDisposable, ITelemetryProvider
 	{
 		/// <summary>
 		/// Gets the parent device for this control.

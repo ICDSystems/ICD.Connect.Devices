@@ -16,6 +16,8 @@ namespace ICD.Connect.Devices.Controls
 	public abstract class AbstractDeviceControl<T> : IDeviceControl
 		where T : IDeviceBase
 	{
+		public event EventHandler OnRequestTelemetryRebuild;
+
 		private readonly T m_Parent;
 		private readonly int m_Id;
 

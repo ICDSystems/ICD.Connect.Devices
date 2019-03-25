@@ -30,6 +30,7 @@ namespace ICD.Connect.Devices
 		/// Gets the controls for this device.
 		/// </summary>
 		[ApiNodeGroup(DeviceBaseApi.NODE_GROUP_CONTROLS, DeviceBaseApi.HELP_NODE_GROUP_CONTROLS)]
+		[CollectionTelemetry("Controls")]
 		DeviceControlsCollection Controls { get; }
 	}
 }
