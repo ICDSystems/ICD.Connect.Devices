@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+ - Added telemetry features to base devices
+ 
+### Changed
+ - Clearer exception when control lookup fails
+
 ## [6.3.2] - 2019-02-07
 ### Changed
  - Better error logging for bad control lookups
