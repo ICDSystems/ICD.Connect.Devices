@@ -8,6 +8,7 @@ using ICD.Connect.API.Attributes;
 using ICD.Connect.API.Nodes;
 using ICD.Connect.Devices.Proxies.Controls;
 using ICD.Connect.Telemetry;
+using ICD.Connect.Telemetry.Attributes;
 
 namespace ICD.Connect.Devices.Controls
 {
@@ -26,12 +27,14 @@ namespace ICD.Connect.Devices.Controls
 		/// Gets the id for this control.
 		/// </summary>
 		[ApiProperty(DeviceControlApi.PROPERTY_ID, DeviceControlApi.HELP_PROPERTY_ID)]
+		[StaticPropertyTelemetry(ControlTelemetryNames.ID)]
 		int Id { get; }
 
 		/// <summary>
 		/// Gets the human readable name for this control.
 		/// </summary>
 		[ApiProperty(DeviceControlApi.PROPERTY_NAME, DeviceControlApi.HELP_PROPERTY_NAME)]
+		[StaticPropertyTelemetry(ControlTelemetryNames.NAME)]
 		string Name { get; }
 
 		/// <summary>
