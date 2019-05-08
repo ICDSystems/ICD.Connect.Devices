@@ -1,4 +1,5 @@
 ﻿using System;
+using ICD.Common.Properties;
 using ICD.Common.Utils;
 using ICD.Common.Utils.Xml;
 
@@ -9,8 +10,8 @@ namespace ICD.Connect.Devices.Controls
 	/// </summary>
 	public struct DeviceControlInfo : IComparable<DeviceControlInfo>, IEquatable<DeviceControlInfo>
 	{
-		private const string DEVICE_ELEMENT = "Device";
-		private const string CONTROL_ELEMENT = "Control";
+		public const string DEVICE_ELEMENT = "Device";
+		public const string CONTROL_ELEMENT = "Control";
 
 		private readonly int m_DeviceId;
 		private readonly int m_ControlId;
@@ -98,13 +99,16 @@ namespace ICD.Connect.Devices.Controls
 			return !a1.Equals(a2);
 		}
 
+		[Pure]
 		public int CompareTo(DeviceControlInfo other)
 		{
-			int result = DeviceId.CompareTo(other.DeviceId);
+// ReSharper disable ImpureMethodCallOnReadonlyValueField
+			int result = m_DeviceId.CompareTo(other.m_DeviceId);
 			if (result != 0)
 				return result;
 
-			return ControlId.CompareTo(other.ControlId);
+			return m_ControlId.CompareTo(other.m_ControlId);
+// ReSharper restore ImpureMethodCallOnReadonlyValueField
 		}
 
 		public bool Equals(DeviceControlInfo other)
@@ -127,6 +131,7 @@ namespace ICD.Connect.Devices.Controls
 		/// Gets the hashcode for this instance.
 		/// </summary>
 		/// <returns></returns>
+		[Pure]
 		public override int GetHashCode()
 		{
 			unchecked
