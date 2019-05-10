@@ -209,19 +209,19 @@ namespace ICD.Connect.Devices.Proxies.Devices
 		/// <summary>
 		/// Subscribe to the proxy events.
 		/// </summary>
-		/// <param name="originator"></param>
-		private void Subscribe(IProxy originator)
+		/// <param name="control"></param>
+		private void Subscribe(IProxy control)
 		{
-			originator.OnCommand += ProxyOnCommand;
+			control.OnCommand += ProxyControlOnCommand;
 		}
 
 		/// <summary>
 		/// Unsubscribe from the proxy events.
 		/// </summary>
-		/// <param name="originator"></param>
-		private void Unsubscribe(IProxy originator)
+		/// <param name="control"></param>
+		private void Unsubscribe(IProxy control)
 		{
-			originator.OnCommand -= ProxyOnCommand;
+			control.OnCommand -= ProxyControlOnCommand;
 		}
 
 		/// <summary>
@@ -229,7 +229,7 @@ namespace ICD.Connect.Devices.Proxies.Devices
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="eventArgs"></param>
-		private void ProxyOnCommand(object sender, ApiClassInfoEventArgs eventArgs)
+		private void ProxyControlOnCommand(object sender, ApiClassInfoEventArgs eventArgs)
 		{
 			IProxy proxy = sender as IProxy;
 			if (proxy == null)
