@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using ICD.Common.Utils;
 using ICD.Common.Utils.Extensions;
 using ICD.Common.Utils.Services.Logging;
@@ -14,6 +15,8 @@ namespace ICD.Connect.Devices.Proxies.Controls
 {
 	public abstract class AbstractProxyDeviceControl : AbstractProxy, IProxyDeviceControl
 	{
+		public event EventHandler OnRequestTelemetryRebuild;
+
 		private readonly int m_Id;
 		private readonly IProxyDeviceBase m_Parent;
 
