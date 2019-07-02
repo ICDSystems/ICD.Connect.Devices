@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using ICD.Common.Properties;
 using ICD.Common.Utils.Extensions;
 using ICD.Common.Utils.Services.Logging;
 using ICD.Connect.API.Commands;
@@ -11,6 +12,13 @@ namespace ICD.Connect.Devices.Controls
 	public abstract class AbstractPowerDeviceControl<TDevice> : AbstractDeviceControl<TDevice>, IPowerDeviceControl
 		where TDevice : IDeviceBase
 	{
+		public delegate void PrePowerOnDelegate();
+
+		public delegate void PostPowerOffDelegate();
+
+		public PrePowerOnDelegate   PrePowerOn   { get; set; }
+		public PostPowerOffDelegate PostPowerOff { get; set; }
+		
 		/// <summary>
 		/// Raised when the powered state changes.
 		/// </summary>
@@ -63,13 +71,47 @@ namespace ICD.Connect.Devices.Controls
 		/// <summary>
 		/// Powers on the device.
 		/// </summary>
-		public abstract void PowerOn();
+		[PublicAPI]
+		public void PowerOn()
+		{
+			if(PrePowerOn != null)
+				PrePowerOn.Invoke();
+			else
+				PowerOnFinal();
+		}
+		
+		[PublicAPI]
+		public void PowerOn(bool bypassPrePowerOn)
+		{
+			if(bypassPrePowerOn)
+				PowerOnFinal();
+			else
+				PowerOn();
+		}
+
+		protected abstract void PowerOnFinal();
 
 		/// <summary>
 		/// Powers off the device.
 		/// </summary>
-		public abstract void PowerOff();
+		[PublicAPI]
+		public void PowerOff()
+		{
+			PowerOffFinal();
+			if(PostPowerOff != null)
+				PostPowerOff.Invoke();
+		}
 
+		[PublicAPI]
+		public void PowerOff(bool bypassPostPowerOff)
+		{
+			if(bypassPostPowerOff)
+				PowerOffFinal();
+			else
+				PowerOff();
+		}
+
+		protected abstract void PowerOffFinal();
 		#endregion
 
 		#region Console

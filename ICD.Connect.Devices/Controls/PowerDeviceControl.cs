@@ -5,12 +5,12 @@
     {
         public PowerDeviceControl(T parent, int id) : base(parent, id) { }
 
-        public override void PowerOn()
+        protected override void PowerOnFinal()
         {
             Parent.PowerOn();
         }
 
-        public override void PowerOff()
+        protected override void PowerOffFinal()
         {
             Parent.PowerOff();
         }
