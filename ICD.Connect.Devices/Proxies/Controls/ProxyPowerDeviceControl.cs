@@ -81,12 +81,22 @@ namespace ICD.Connect.Devices.Proxies.Controls
 			CallMethod(PowerDeviceControlApi.METHOD_POWER_ON);
 		}
 
+		public void PowerOn(bool bypassPrePowerOn)
+		{
+			CallMethod(PowerDeviceControlApi.METHOD_POWER_ON_BYPASS, bypassPrePowerOn);
+		}
+
 		/// <summary>
 		/// Powers off the device.
 		/// </summary>
 		public void PowerOff()
 		{
 			CallMethod(PowerDeviceControlApi.METHOD_POWER_OFF);
+		}
+
+		public void PowerOff(bool bypassPostPowerOff)
+		{
+			CallMethod(PowerDeviceControlApi.METHOD_POWER_OFF_BYPASS, bypassPostPowerOff);
 		}
 
 		#endregion

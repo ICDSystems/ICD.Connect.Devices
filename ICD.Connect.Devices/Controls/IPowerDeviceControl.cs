@@ -25,11 +25,25 @@ namespace ICD.Connect.Devices.Controls
 		/// </summary>
 		[ApiMethod(PowerDeviceControlApi.METHOD_POWER_ON, PowerDeviceControlApi.HELP_METHOD_POWER_ON)]
 		void PowerOn();
+		
+		/// <summary>
+		/// Powers on the device.
+		/// </summary>
+		/// /// <param name="bypassPrePowerOn">If true, skips the pre power on delegate.</param>
+		[ApiMethod(PowerDeviceControlApi.METHOD_POWER_ON_BYPASS, PowerDeviceControlApi.HELP_METHOD_POWER_ON_BYPASS)]
+		void PowerOn(bool bypassPrePowerOn);
 
 		/// <summary>
 		/// Powers off the device.
 		/// </summary>
 		[ApiMethod(PowerDeviceControlApi.METHOD_POWER_OFF, PowerDeviceControlApi.HELP_METHOD_POWER_OFF)]
 		void PowerOff();
+		
+		/// <summary>
+		/// Powers off the device.
+		/// </summary>
+		/// <param name="bypassPostPowerOff">If true, skips the post power off delegate.</param>
+		[ApiMethod(PowerDeviceControlApi.METHOD_POWER_OFF_BYPASS, PowerDeviceControlApi.HELP_METHOD_POWER_OFF_BYPASS)]
+		void PowerOff(bool bypassPostPowerOff);
 	}
 }

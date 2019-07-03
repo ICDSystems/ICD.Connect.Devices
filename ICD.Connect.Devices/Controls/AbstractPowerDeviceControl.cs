@@ -12,12 +12,10 @@ namespace ICD.Connect.Devices.Controls
 	public abstract class AbstractPowerDeviceControl<TDevice> : AbstractDeviceControl<TDevice>, IPowerDeviceControl
 		where TDevice : IDeviceBase
 	{
-		public delegate void PrePowerOnDelegate();
+		public delegate void PrePowerDelegate(Action powerCallback);
 
-		public delegate void PostPowerOffDelegate();
-
-		public PrePowerOnDelegate   PrePowerOn   { get; set; }
-		public PostPowerOffDelegate PostPowerOff { get; set; }
+		public PrePowerDelegate   PrePowerOn   { get; set; }
+		public PrePowerDelegate PrePowerOff { get; set; }
 		
 		/// <summary>
 		/// Raised when the powered state changes.
@@ -75,7 +73,7 @@ namespace ICD.Connect.Devices.Controls
 		public void PowerOn()
 		{
 			if(PrePowerOn != null)
-				PrePowerOn.Invoke();
+				PrePowerOn(PowerOnFinal);
 			else
 				PowerOnFinal();
 		}
@@ -97,9 +95,10 @@ namespace ICD.Connect.Devices.Controls
 		[PublicAPI]
 		public void PowerOff()
 		{
-			PowerOffFinal();
-			if(PostPowerOff != null)
-				PostPowerOff.Invoke();
+			if(PrePowerOff != null)
+				PrePowerOff(PowerOffFinal);
+			else
+				PowerOffFinal();
 		}
 
 		[PublicAPI]
@@ -112,6 +111,7 @@ namespace ICD.Connect.Devices.Controls
 		}
 
 		protected abstract void PowerOffFinal();
+		
 		#endregion
 
 		#region Console
