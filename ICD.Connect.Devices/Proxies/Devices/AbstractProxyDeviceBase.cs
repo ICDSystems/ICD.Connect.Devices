@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using ICD.Common.Properties;
+using ICD.Common.Utils;
 using ICD.Common.Utils.Extensions;
 using ICD.Common.Utils.Services.Logging;
 using ICD.Connect.API;
@@ -22,6 +23,7 @@ namespace ICD.Connect.Devices.Proxies.Devices
 		public event EventHandler<DeviceBaseOnlineStateApiEventArgs> OnIsOnlineStateChanged;
 
 		private readonly DeviceControlsCollection m_Controls;
+		private readonly SafeCriticalSection m_CriticalSection;
 		private readonly Dictionary<IProxy, Func<ApiClassInfo, ApiClassInfo>> m_ProxyBuildCommand;
 
 		private bool m_IsOnline;
@@ -61,6 +63,7 @@ namespace ICD.Connect.Devices.Proxies.Devices
 		protected AbstractProxyDeviceBase()
 		{
 			m_ProxyBuildCommand = new Dictionary<IProxy, Func<ApiClassInfo, ApiClassInfo>>();
+			m_CriticalSection = new SafeCriticalSection();
 			m_Controls = new DeviceControlsCollection();
 		}
 
@@ -102,7 +105,7 @@ namespace ICD.Connect.Devices.Proxies.Devices
 			ApiCommandBuilder.UpdateCommand(command)
 			                 .SubscribeEvent(DeviceBaseApi.EVENT_IS_ONLINE)
 			                 .GetProperty(DeviceBaseApi.PROPERTY_IS_ONLINE)
-			                 //.GetNodeGroup(DeviceBaseApi.NODE_GROUP_CONTROLS)
+			                 .GetNodeGroup(DeviceBaseApi.NODE_GROUP_CONTROLS)
 			                 .Complete();
 		}
 
@@ -140,7 +143,7 @@ namespace ICD.Connect.Devices.Proxies.Devices
 			}
 		}
 
-		/*/// <summary>
+		/// <summary>
 		/// Updates the proxy with a node group result.
 		/// </summary>
 		/// <param name="name"></param>
@@ -155,52 +158,69 @@ namespace ICD.Connect.Devices.Proxies.Devices
 					ApiNodeGroupInfo nodeGroup = result.GetValue<ApiNodeGroupInfo>();
 					foreach (ApiNodeGroupKeyInfo item in nodeGroup)
 					{
-						ApiClassInfo node = item.Node;
-						IProxyDeviceControl proxy = LazyLoadProxyControl("Controls", (int)item.Key, node);
-						proxy.ParseInfo(node);
+						IProxyDeviceControl proxy = InitializeProxyControl((int)item.Key);
+						if (proxy != null)
+							proxy.ParseInfo(item.Node);
 					}
 					break;
 			}
-		}*/
+		}
 
-		/*/// <summary>
-		/// Creates a proxy control for the given class info if a control with the given id does not exist.
+		/// <summary>
+		/// Gets the proxy control with the given id.
+		/// Subscribes and initializes if this is the first time accessing the control.
 		/// </summary>
-		/// <param name="group"></param>
 		/// <param name="id"></param>
-		/// <param name="classInfo"></param>
-		private IProxyDeviceControl LazyLoadProxyControl(string group, int id, ApiClassInfo classInfo)
+		[CanBeNull]
+		private IProxyDeviceControl InitializeProxyControl(int id)
 		{
-			if (m_Controls.Contains(id))
-				return m_Controls.GetControl<IProxyDeviceControl>(id);
+			IDeviceControl control;
+			if (!m_Controls.TryGetControl(id, out control))
+			{
+				IcdConsole.PrintLine(eConsoleColor.Blue, "InitializeProxyControl: {0} has no control at id {1}", this, id);
+				return null;
+			}
 
-			Type proxyType = classInfo.GetProxyTypes().FirstOrDefault();
-			if (proxyType == null)
-				throw new InvalidOperationException(string.Format("No proxy type discovered for control {0}", id));
+			IProxyDeviceControl proxyControl = control as IProxyDeviceControl;
+			if (proxyControl == null)
+			{
+				IcdConsole.PrintLine(eConsoleColor.Blue, "InitializeProxyControl: {0} control at id {1} is a not a proxy", this, id);
+				return null;
+			}
 
-			// Build the control
-			IProxyDeviceControl control = ReflectionUtils.CreateInstance(proxyType, this, id) as IProxyDeviceControl;
-			if (control == null)
-				throw new InvalidOperationException();
+			m_CriticalSection.Enter();
 
-			// Build the root command
-			Func<ApiClassInfo, ApiClassInfo> buildCommand = local =>
-				                                                ApiCommandBuilder.NewCommand()
-				                                                                 .AtNodeGroup(group)
-				                                                                 .AddKey((uint)id, local)
-				                                                                 .Complete();
+			try
+			{
+				if (m_ProxyBuildCommand.ContainsKey(proxyControl))
+					return proxyControl;
 
-			m_ProxyBuildCommand.Add(control, buildCommand);
-			m_Controls.Add(control);
+				// Build the root command
+				Func<ApiClassInfo, ApiClassInfo> buildCommand = local =>
+					ApiCommandBuilder.NewCommand()
+					                 .AtNode("ControlSystem")
+					                 .AtNode("Core")
+					                 .AtNodeGroupKey("Devices", (uint)Id)
+									 .AtNodeGroup("Controls")
+					                 .AddKey((uint)id, local)
+					                 .Complete();
 
-			// Start handling the proxy callbacks
-			Subscribe(control);
+				m_ProxyBuildCommand.Add(proxyControl, buildCommand);
+
+				// Start handling the proxy callbacks
+				Subscribe(proxyControl);
+			}
+			finally
+			{
+				m_CriticalSection.Leave();
+			}
 
 			// Initialize the proxy
-			control.Initialize();
+			IcdConsole.PrintLine(eConsoleColor.Blue, "InitializeProxyControl: {0} initializing proxy control {1}", this, id);
+			proxyControl.Initialize();
 
-			return control;
-		}*/
+			return proxyControl;
+		}
 
 		#endregion
 
