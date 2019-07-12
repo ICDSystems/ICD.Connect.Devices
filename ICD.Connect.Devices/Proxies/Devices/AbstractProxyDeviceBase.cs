@@ -197,13 +197,10 @@ namespace ICD.Connect.Devices.Proxies.Devices
 
 				// Build the root command
 				Func<ApiClassInfo, ApiClassInfo> buildCommand = local =>
-					ApiCommandBuilder.NewCommand()
-					                 .AtNode("ControlSystem")
-					                 .AtNode("Core")
-					                 .AtNodeGroupKey("Devices", (uint)Id)
-									 .AtNodeGroup("Controls")
-					                 .AddKey((uint)id, local)
-					                 .Complete();
+				                                                ApiCommandBuilder.NewCommand()
+				                                                                 .AtNodeGroup("Controls")
+				                                                                 .AddKey((uint)id, local)
+				                                                                 .Complete();
 
 				m_ProxyBuildCommand.Add(proxyControl, buildCommand);
 
