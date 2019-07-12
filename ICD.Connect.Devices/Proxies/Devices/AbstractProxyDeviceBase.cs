@@ -147,15 +147,14 @@ namespace ICD.Connect.Devices.Proxies.Devices
 		/// Updates the proxy with a node group result.
 		/// </summary>
 		/// <param name="name"></param>
-		/// <param name="result"></param>
-		protected override void ParseNodeGroup(string name, ApiResult result)
+		/// <param name="nodeGroup"></param>
+		protected override void ParseNodeGroup(string name, ApiNodeGroupInfo nodeGroup)
 		{
-			base.ParseNodeGroup(name, result);
+			base.ParseNodeGroup(name, nodeGroup);
 
 			switch (name)
 			{
 				case DeviceBaseApi.NODE_GROUP_CONTROLS:
-					ApiNodeGroupInfo nodeGroup = result.GetValue<ApiNodeGroupInfo>();
 					foreach (ApiNodeGroupKeyInfo item in nodeGroup)
 					{
 						IProxyDeviceControl proxy = InitializeProxyControl((int)item.Key);
