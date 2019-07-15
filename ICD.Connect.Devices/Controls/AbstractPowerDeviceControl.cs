@@ -14,9 +14,9 @@ namespace ICD.Connect.Devices.Controls
 	{
 		public delegate void PrePowerDelegate(Action powerCallback);
 
-		public PrePowerDelegate   PrePowerOn   { get; set; }
+		public PrePowerDelegate PrePowerOn { get; set; }
 		public PrePowerDelegate PrePowerOff { get; set; }
-		
+
 		/// <summary>
 		/// Raised when the powered state changes.
 		/// </summary>
@@ -72,16 +72,16 @@ namespace ICD.Connect.Devices.Controls
 		[PublicAPI]
 		public void PowerOn()
 		{
-			if(PrePowerOn != null)
+			if (PrePowerOn != null)
 				PrePowerOn(PowerOnFinal);
 			else
 				PowerOnFinal();
 		}
-		
+
 		[PublicAPI]
 		public void PowerOn(bool bypassPrePowerOn)
 		{
-			if(bypassPrePowerOn)
+			if (bypassPrePowerOn)
 				PowerOnFinal();
 			else
 				PowerOn();
@@ -95,7 +95,7 @@ namespace ICD.Connect.Devices.Controls
 		[PublicAPI]
 		public void PowerOff()
 		{
-			if(PrePowerOff != null)
+			if (PrePowerOff != null)
 				PrePowerOff(PowerOffFinal);
 			else
 				PowerOffFinal();
@@ -104,14 +104,14 @@ namespace ICD.Connect.Devices.Controls
 		[PublicAPI]
 		public void PowerOff(bool bypassPostPowerOff)
 		{
-			if(bypassPostPowerOff)
+			if (bypassPostPowerOff)
 				PowerOffFinal();
 			else
 				PowerOff();
 		}
 
 		protected abstract void PowerOffFinal();
-		
+
 		#endregion
 
 		#region Console
