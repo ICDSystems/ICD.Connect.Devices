@@ -57,20 +57,6 @@ namespace ICD.Connect.Devices.Proxies.Controls
 			base.DisposeFinal(disposing);
 		}
 
-		/// <summary>
-		/// Override to build initialization commands on top of the current class info.
-		/// </summary>
-		/// <param name="command"></param>
-		protected override void Initialize(ApiClassInfo command)
-		{
-			base.Initialize(command);
-
-			ApiCommandBuilder.UpdateCommand(command)
-			                 .SubscribeEvent(PowerDeviceControlApi.EVENT_IS_POWERED)
-			                 .GetProperty(PowerDeviceControlApi.PROPERTY_IS_POWERED)
-			                 .Complete();
-		}
-
 		#region Methods
 
 		/// <summary>
@@ -97,6 +83,41 @@ namespace ICD.Connect.Devices.Proxies.Controls
 		public void PowerOff(bool bypassPostPowerOff)
 		{
 			CallMethod(PowerDeviceControlApi.METHOD_POWER_OFF_BYPASS, bypassPostPowerOff);
+		}
+
+		#endregion
+
+		#region API
+
+		/// <summary>
+		/// Override to build initialization commands on top of the current class info.
+		/// </summary>
+		/// <param name="command"></param>
+		protected override void Initialize(ApiClassInfo command)
+		{
+			base.Initialize(command);
+
+			ApiCommandBuilder.UpdateCommand(command)
+							 .SubscribeEvent(PowerDeviceControlApi.EVENT_IS_POWERED)
+							 .GetProperty(PowerDeviceControlApi.PROPERTY_IS_POWERED)
+							 .Complete();
+		}
+
+		/// <summary>
+		/// Updates the proxy with event feedback info.
+		/// </summary>
+		/// <param name="name"></param>
+		/// <param name="result"></param>
+		protected override void ParseEvent(string name, ApiResult result)
+		{
+			base.ParseEvent(name, result);
+
+			switch (name)
+			{
+				case PowerDeviceControlApi.EVENT_IS_POWERED:
+					IsPowered = result.GetValue<bool>();
+					break;
+			}
 		}
 
 		#endregion
