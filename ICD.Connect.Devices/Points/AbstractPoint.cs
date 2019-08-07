@@ -1,4 +1,8 @@
-﻿using ICD.Connect.Settings;
+﻿using ICD.Common.Utils.Services;
+using ICD.Connect.API.Nodes;
+using ICD.Connect.Devices.Controls;
+using ICD.Connect.Settings;
+using ICD.Connect.Settings.Cores;
 using ICD.Connect.Settings.Originators;
 
 namespace ICD.Connect.Devices.Points
@@ -43,5 +47,22 @@ namespace ICD.Connect.Devices.Points
 		}
 
 		#endregion
+
+		/// <summary>
+		/// Calls the delegate for each console status item.
+		/// </summary>
+		/// <param name="addRow"></param>
+		public override void BuildConsoleStatus(AddStatusRowDelegate addRow)
+		{
+			base.BuildConsoleStatus(addRow);
+
+			addRow("DeviceId", DeviceId);
+			addRow("ControlId", ControlId);
+
+			IDeviceControl control;
+			this.TryGetControl(out control);
+
+			addRow("Control", control);
+		}
 	}
 }
