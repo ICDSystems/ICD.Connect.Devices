@@ -2,6 +2,7 @@
 using ICD.Common.Properties;
 using ICD.Common.Utils;
 using ICD.Common.Utils.Xml;
+using Newtonsoft.Json;
 
 namespace ICD.Connect.Devices.Controls
 {
@@ -31,6 +32,7 @@ namespace ICD.Connect.Devices.Controls
 		/// </summary>
 		/// <param name="deviceId"></param>
 		/// <param name="controlId"></param>
+		[JsonConstructor]
 		public DeviceControlInfo(int deviceId, int controlId)
 		{
 			m_DeviceId = deviceId;
