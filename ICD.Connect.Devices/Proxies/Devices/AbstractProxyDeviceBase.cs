@@ -110,6 +110,17 @@ namespace ICD.Connect.Devices.Proxies.Devices
 		}
 
 		/// <summary>
+		/// Instructs the proxy to clear any initialized values.
+		/// </summary>
+		public override void Deinitialize()
+		{
+			base.Deinitialize();
+
+			foreach (IProxy control in m_CriticalSection.Execute(() => m_ProxyBuildCommand.Keys.ToArray()))
+				DeinitializeProxyControl(control);
+		}
+
+		/// <summary>
 		/// Updates the proxy with event feedback info.
 		/// </summary>
 		/// <param name="name"></param>
@@ -216,6 +227,19 @@ namespace ICD.Connect.Devices.Proxies.Devices
 			proxyControl.Initialize();
 
 			return proxyControl;
+		}
+
+		private void DeinitializeProxyControl(IProxy control)
+		{
+			if (control == null)
+				throw new ArgumentNullException("control");
+
+			if (!m_CriticalSection.Execute(() => m_ProxyBuildCommand.Remove(control)))
+				return;
+
+			// Initialize the proxy
+			IcdConsole.PrintLine(eConsoleColor.Blue, "DeinitializeProxyControl: {0} deinitializing proxy control {1}", this, control);
+			control.Deinitialize();
 		}
 
 		#endregion
