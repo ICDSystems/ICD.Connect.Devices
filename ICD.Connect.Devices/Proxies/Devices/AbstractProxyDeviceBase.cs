@@ -84,12 +84,11 @@ namespace ICD.Connect.Devices.Proxies.Devices
 		{
 			foreach (IProxyDeviceControl control in m_Controls.OfType<IProxyDeviceControl>())
 			{
-				Unsubscribe(control);
+				DeinitializeProxyControl(control);
 				control.Dispose();
 			}
 
 			m_Controls.Dispose();
-			m_ProxyBuildCommand.Clear();
 		}
 
 		#region Private Methods
@@ -239,6 +238,7 @@ namespace ICD.Connect.Devices.Proxies.Devices
 
 			// Initialize the proxy
 			IcdConsole.PrintLine(eConsoleColor.Blue, "DeinitializeProxyControl: {0} deinitializing proxy control {1}", this, control);
+			Unsubscribe(control);
 			control.Deinitialize();
 		}
 
