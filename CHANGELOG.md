@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [8.0.0] - 2019-08-15
+### Added
+ - Added support for device control proxies
+
+### Changed
+ - Substantial changes to the Multi-Krang API, proxies and shims
+
 ## [7.0.0] - 2019-01-10
 ### Changed
  - Originators and settings moved into subdirectories
