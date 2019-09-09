@@ -80,7 +80,9 @@
     <Compile Include="Devices\Simpl\ISimplProxyDeviceBase.cs" />
     <Compile Include="Devices\Simpl\SimplDeviceBaseApi.cs" />
     <Compile Include="DeviceTelemetryNames.cs" />
+    <Compile Include="EventArguments\DeviceBaseControlsAvaliableApiEventArgs.cs" />
     <Compile Include="EventArguments\DeviceBaseOnlineStateApiEventArgs.cs" />
+    <Compile Include="EventArguments\DeviceControlAvaliableApiEventArgs.cs" />
     <Compile Include="EventArguments\PowerDeviceControlPowerStateApiEventArgs.cs" />
     <Compile Include="Proxies\Controls\PowerDeviceControlApi.cs" />
     <Compile Include="Proxies\Controls\ProxyPowerDeviceControl.cs" />

@@ -20,26 +20,26 @@ namespace ICD.Connect.Devices.Controls
 		/// <summary>
 		/// Raised when the powered state changes.
 		/// </summary>
-		public event EventHandler<PowerDeviceControlPowerStateApiEventArgs> OnIsPoweredChanged;
+		public event EventHandler<PowerDeviceControlPowerStateApiEventArgs> OnPowerStateChanged;
 
-		private bool m_IsPowered;
+		private ePowerState m_PowerState;
 
 		/// <summary>
 		/// Gets the powered state of the device.
 		/// </summary>
-		public bool IsPowered
+		public ePowerState PowerState
 		{
-			get { return m_IsPowered; }
+			get { return m_PowerState; }
 			protected set
 			{
-				if (value == m_IsPowered)
+				if (value == m_PowerState)
 					return;
 
-				m_IsPowered = value;
+				m_PowerState = value;
 
-				Log(eSeverity.Informational, "IsPowered set to {0}", m_IsPowered);
+				Log(eSeverity.Informational, "IsPowered set to {0}", m_PowerState);
 
-				OnIsPoweredChanged.Raise(this, new PowerDeviceControlPowerStateApiEventArgs(m_IsPowered));
+				OnPowerStateChanged.Raise(this, new PowerDeviceControlPowerStateApiEventArgs(m_PowerState));
 			}
 		}
 
@@ -59,7 +59,7 @@ namespace ICD.Connect.Devices.Controls
 		/// <param name="disposing"></param>
 		protected override void DisposeFinal(bool disposing)
 		{
-			OnIsPoweredChanged = null;
+			OnPowerStateChanged = null;
 
 			base.DisposeFinal(disposing);
 		}

@@ -30,7 +30,7 @@ namespace ICD.Connect.Devices.Controls
 			if (instance == null)
 				throw new ArgumentNullException("instance");
 
-			addRow("Powered", instance.IsPowered);
+			addRow("PowerState", instance.PowerState);
 		}
 
 		/// <summary>

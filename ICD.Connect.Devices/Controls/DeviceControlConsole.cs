@@ -32,6 +32,7 @@ namespace ICD.Connect.Devices.Controls
 
 			addRow("Id", instance.Id);
 			addRow("Name", instance.Name);
+			addRow("Avaliable", instance.ControlAvaliable);
 		}
 
 		/// <summary>

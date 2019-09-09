@@ -19,6 +19,9 @@ namespace ICD.Connect.Devices
 		[EventTelemetry(DeviceTelemetryNames.ONLINE_STATE_CHANGED)]
 		event EventHandler<DeviceBaseOnlineStateApiEventArgs> OnIsOnlineStateChanged;
 
+		[ApiEvent(DeviceBaseApi.EVENT_CONTROLS_AVALIABLE, DeviceBaseApi.HELP_EVENT_CONTROLS_AVALIABLE)]
+		event EventHandler<DeviceBaseControlsAvaliableApiEventArgs> OnControlsAvaliableChanged;
+
 		/// <summary>
 		/// Returns true if the device hardware is detected by the system.
 		/// </summary>
@@ -32,5 +35,11 @@ namespace ICD.Connect.Devices
 		[ApiNodeGroup(DeviceBaseApi.NODE_GROUP_CONTROLS, DeviceBaseApi.HELP_NODE_GROUP_CONTROLS)]
 		[CollectionTelemetry("Controls")]
 		DeviceControlsCollection Controls { get; }
+
+		/// <summary>
+		/// Gets if controls are avaliable
+		/// </summary>
+		[ApiProperty(DeviceBaseApi.PROPERTY_CONTROLS_AVALIABLE, DeviceBaseApi.HELP_PROPERTY_CONTROLS_AVALIABLE)]
+		bool ControlsAvaliable { get; }
 	}
 }

@@ -6,6 +6,7 @@ using ICD.Common.Utils.Extensions;
 using ICD.Common.Utils.Services.Logging;
 using ICD.Connect.API.Commands;
 using ICD.Connect.API.Nodes;
+using ICD.Connect.Devices.EventArguments;
 
 namespace ICD.Connect.Devices.Controls
 {
@@ -13,13 +14,27 @@ namespace ICD.Connect.Devices.Controls
 	/// Base class for device controls that wrap a specific device type.
 	/// </summary>
 	/// <typeparam name="T"></typeparam>
-	public abstract class AbstractDeviceControl<T> : IDeviceControl
+	public abstract class AbstractDeviceControl<T> : IDeviceControl<T>
 		where T : IDeviceBase
 	{
+
+		#region Events
+
 		public event EventHandler OnRequestTelemetryRebuild;
 
-		private readonly T m_Parent;
+		public event EventHandler<DeviceControlAvaliableApiEventArgs> OnControlAvaliableChanged;
+
+		#endregion
+
+		#region Fields
+
 		private readonly int m_Id;
+
+		private readonly T m_Parent;
+
+		private bool m_ControlAvaliable;
+
+		#endregion
 
 		#region Properties
 
@@ -48,6 +63,23 @@ namespace ICD.Connect.Devices.Controls
 		/// Gets the parent and control id info.
 		/// </summary>
 		public DeviceControlInfo DeviceControlInfo { get { return new DeviceControlInfo(Parent.Id, Id); } }
+
+		/// <summary>
+		/// Gets if the control is currently avaliable or not
+		/// </summary>
+		public bool ControlAvaliable
+		{
+			get { return m_ControlAvaliable; }
+			private set
+			{
+				if (value == m_ControlAvaliable)
+					return;
+
+				m_ControlAvaliable = value;
+
+				OnControlAvaliableChanged.Raise(this, new DeviceControlAvaliableApiEventArgs(ControlAvaliable));
+			}
+		}
 
 		/// <summary>
 		/// Gets the name of the node.
@@ -81,6 +113,8 @@ namespace ICD.Connect.Devices.Controls
 		{
 			m_Id = id;
 			m_Parent = parent;
+
+			Subscribe(Parent);
 		}
 
 		/// <summary>
@@ -126,6 +160,16 @@ namespace ICD.Connect.Devices.Controls
 			Log(severity, message);
 		}
 
+		protected virtual bool GetControlAvaliable()
+		{
+			return Parent.ControlsAvaliable;
+		}
+
+		protected virtual void UpdateCachedControlAvaliable()
+		{
+			ControlAvaliable = GetControlAvaliable();
+		}
+
 		#endregion
 
 		#region Private Methods
@@ -147,9 +191,35 @@ namespace ICD.Connect.Devices.Controls
 		/// <param name="disposing"></param>
 		protected virtual void DisposeFinal(bool disposing)
 		{
+			Unsubscribe(Parent);
 		}
 
 		#endregion
+
+		#region Parent Callbacks
+
+		protected virtual void Subscribe(T parent)
+		{
+			if (parent == null)
+				return;
+
+			parent.OnControlsAvaliableChanged += Parent_OnControlsAvaliableChanged;
+		}
+
+		protected virtual void Unsubscribe(T parent)
+		{
+			if (parent == null)
+				return;
+			parent.OnControlsAvaliableChanged -= Parent_OnControlsAvaliableChanged;
+		}
+
+		private void Parent_OnControlsAvaliableChanged(object sender, DeviceBaseControlsAvaliableApiEventArgs e)
+		{
+			UpdateCachedControlAvaliable();
+		}
+
+		#endregion
+
 
 		#region Console
 

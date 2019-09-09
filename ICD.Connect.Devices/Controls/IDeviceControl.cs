@@ -6,6 +6,7 @@ using ICD.Common.Utils;
 using ICD.Common.Utils.Extensions;
 using ICD.Connect.API.Attributes;
 using ICD.Connect.API.Nodes;
+using ICD.Connect.Devices.EventArguments;
 using ICD.Connect.Devices.Proxies.Controls;
 using ICD.Connect.Telemetry;
 using ICD.Connect.Telemetry.Attributes;
@@ -18,6 +19,12 @@ namespace ICD.Connect.Devices.Controls
 	[ApiClass(typeof(ProxyDeviceControl))]
 	public interface IDeviceControl : IConsoleNode, IStateDisposable, ITelemetryProvider
 	{
+		/// <summary>
+		/// Raised when the Control Avaliability changes
+		/// </summary>
+		[ApiEvent(DeviceControlApi.EVENT_CONTROL_AVALIABLE, DeviceControlApi.HELP_EVENT_CONTROL_AVALIABLE)]
+		event EventHandler<DeviceControlAvaliableApiEventArgs> OnControlAvaliableChanged;
+
 		/// <summary>
 		/// Gets the parent device for this control.
 		/// </summary>
@@ -40,7 +47,19 @@ namespace ICD.Connect.Devices.Controls
 		/// <summary>
 		/// Gets the parent and control id info.
 		/// </summary>
+		[ApiProperty(DeviceControlApi.PROPERTY_CONTROL_AVALIABLE, DeviceControlApi.HELP_PROPERTY_CONTROL_AVALIABLE)]
 		DeviceControlInfo DeviceControlInfo { get; }
+		
+		/// <summary>
+		/// Gets if the control is currently avaliable or not
+		/// </summary>
+		bool ControlAvaliable { get; }
+	}
+
+	public interface IDeviceControl<T> : IDeviceControl
+		where T : IDeviceBase
+	{
+		new T Parent { get; }
 	}
 
 	public static class DeviceControlExtensions

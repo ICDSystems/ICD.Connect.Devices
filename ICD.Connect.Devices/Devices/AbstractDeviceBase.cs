@@ -23,7 +23,14 @@ namespace ICD.Connect.Devices
 		/// </summary>
 		public event EventHandler<DeviceBaseOnlineStateApiEventArgs> OnIsOnlineStateChanged;
 
+		/// <summary>
+		/// Raised when ControlsAvaliable changes
+		/// </summary>
+		public event EventHandler<DeviceBaseControlsAvaliableApiEventArgs> OnControlsAvaliableChanged;
+
 		private bool m_IsOnline;
+
+		private bool m_ControlsAvaliable;
 
 		private readonly DeviceControlsCollection m_Controls;
 
@@ -45,6 +52,8 @@ namespace ICD.Connect.Devices
 				Log(eSeverity.Informational, "Online status changed to {0}", IsOnline);
 
 				OnIsOnlineStateChanged.Raise(this, new DeviceBaseOnlineStateApiEventArgs(IsOnline));
+
+				UpdateCachedControlsAvaliable();
 			}
 		}
 
@@ -52,6 +61,25 @@ namespace ICD.Connect.Devices
 		/// Gets the controls for this device.
 		/// </summary>
 		public DeviceControlsCollection Controls { get { return m_Controls; } }
+
+		/// <summary>
+		/// Gets if controls are avaliable
+		/// </summary>
+		public bool ControlsAvaliable
+		{
+			get { return m_ControlsAvaliable; }
+			private set
+			{
+				if (value == m_ControlsAvaliable)
+					return;
+
+				m_ControlsAvaliable = value;
+
+				Log(eSeverity.Informational, "Controls Avaliable changed to {0}", ControlsAvaliable);
+
+				OnControlsAvaliableChanged.Raise(this, new DeviceBaseControlsAvaliableApiEventArgs(ControlsAvaliable));
+			}
+		}
 
 		#endregion
 
@@ -86,6 +114,16 @@ namespace ICD.Connect.Devices
 		protected abstract bool GetIsOnlineStatus();
 
 		/// <summary>
+		/// Gets the current state of Control Avaliability
+		/// Default implementation is to follow IsOnline;
+		/// </summary>
+		/// <returns></returns>
+		protected virtual bool GetControlsAvaliable()
+		{
+			return IsOnline;
+		}
+
+		/// <summary>
 		/// Updates the cached online status and raises the OnIsOnlineStateChanged event if the cache changes.
 		/// </summary>
 		[PublicAPI]
@@ -93,6 +131,16 @@ namespace ICD.Connect.Devices
 		{
 			IsOnline = GetIsOnlineStatus();
 		}
+
+		/// <summary>
+		/// Updates the cached ControlsAvaliable status and raises the OnControlsAvaliableChanged if the cache chagnes
+		/// </summary>
+		protected virtual void UpdateCachedControlsAvaliable()
+		{
+			ControlsAvaliable = GetControlsAvaliable();
+		}
+
+
 
 		#endregion
 

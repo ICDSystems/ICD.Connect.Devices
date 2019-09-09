@@ -18,8 +18,16 @@ namespace ICD.Connect.Devices.Simpl
 		/// </summary>
 		public event EventHandler<DeviceBaseOnlineStateApiEventArgs> OnIsOnlineStateChanged;
 
+		/// <summary>
+		/// Raised when ControlsAvaliable changes
+		/// </summary>
+		public event EventHandler<DeviceBaseControlsAvaliableApiEventArgs> OnControlsAvaliableChanged;
+
 		private readonly DeviceControlsCollection m_Controls;
+
 		private bool m_IsOnline;
+
+		private bool m_ControlsAvaliable;
 
 		/// <summary>
 		/// Returns true if the device hardware is detected by the system.
@@ -41,6 +49,25 @@ namespace ICD.Connect.Devices.Simpl
 		}
 
 		/// <summary>
+		/// Gets if controls are avaliable
+		/// </summary>
+		public bool ControlsAvaliable
+		{
+			get { return m_ControlsAvaliable; }
+			private set
+			{
+				if (value == m_ControlsAvaliable)
+					return;
+
+				m_ControlsAvaliable = value;
+
+				Log(eSeverity.Informational, "Controls Avaliable changed to {0}", ControlsAvaliable);
+
+				OnControlsAvaliableChanged.Raise(this, new DeviceBaseControlsAvaliableApiEventArgs(ControlsAvaliable));
+			}
+		}
+
+		/// <summary>
 		/// Gets the controls for this device.
 		/// </summary>
 		public DeviceControlsCollection Controls { get { return m_Controls; } }
@@ -58,6 +85,24 @@ namespace ICD.Connect.Devices.Simpl
 		public void SetIsOnline(bool online)
 		{
 			IsOnline = online;
+		}
+
+		/// <summary>
+		/// Gets the current state of Control Avaliability
+		/// Default implementation is to follow IsOnline;
+		/// </summary>
+		/// <returns></returns>
+		protected virtual bool GetControlsAvaliable()
+		{
+			return IsOnline;
+		}
+
+		/// <summary>
+		/// Updates the cached ControlsAvaliable status and raises the OnControlsAvaliableChanged if the cache chagnes
+		/// </summary>
+		protected virtual void UpdateCachedControlsAvaliable()
+		{
+			ControlsAvaliable = GetControlsAvaliable();
 		}
 
 		/// <summary>

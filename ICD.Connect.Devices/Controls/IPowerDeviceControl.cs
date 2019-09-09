@@ -5,20 +5,30 @@ using ICD.Connect.Devices.Proxies.Controls;
 
 namespace ICD.Connect.Devices.Controls
 {
+
+	public enum ePowerState
+	{
+		Unknown,
+		PowerOff,
+		PowerOn,
+		Warming,
+		Cooling
+	}
+
 	[ApiClass(typeof(ProxyPowerDeviceControl), typeof(IDeviceControl))]
 	public interface IPowerDeviceControl : IDeviceControl
 	{
 		/// <summary>
 		/// Raised when the powered state changes.
 		/// </summary>
-		[ApiEvent(PowerDeviceControlApi.EVENT_IS_POWERED, PowerDeviceControlApi.HELP_EVENT_IS_POWERED)]
-		event EventHandler<PowerDeviceControlPowerStateApiEventArgs> OnIsPoweredChanged;
+		[ApiEvent(PowerDeviceControlApi.EVENT_POWER_STATE, PowerDeviceControlApi.HELP_EVENT_POWER_STATE)]
+		event EventHandler<PowerDeviceControlPowerStateApiEventArgs> OnPowerStateChanged;
 
 		/// <summary>
 		/// Gets the powered state of the device.
 		/// </summary>
-		[ApiProperty(PowerDeviceControlApi.PROPERTY_IS_POWERED, PowerDeviceControlApi.HELP_PROPERTY_IS_POWERED)]
-		bool IsPowered { get; }
+		[ApiProperty(PowerDeviceControlApi.PROPERTY_POWER_STATE, PowerDeviceControlApi.HELP_PROPERTY_POWER_STATE)]
+		ePowerState PowerState { get; }
 
 		/// <summary>
 		/// Powers on the device.
