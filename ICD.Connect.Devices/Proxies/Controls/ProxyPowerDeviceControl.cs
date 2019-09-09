@@ -14,25 +14,22 @@ namespace ICD.Connect.Devices.Proxies.Controls
 {
 	public sealed class ProxyPowerDeviceControl : AbstractProxyDeviceControl, IPowerDeviceControl
 	{
-		public event EventHandler<PowerDeviceControlPowerStateApiEventArgs> OnIsPoweredChanged;
+		public event EventHandler<PowerDeviceControlPowerStateApiEventArgs> OnPowerStateChanged;
 
-		private bool m_IsPowered;
+		private ePowerState m_PowerState;
 
-		/// <summary>
-		/// Gets the powered state of the device.
-		/// </summary>
-		public bool IsPowered
+		public ePowerState PowerState
 		{
-			get { return m_IsPowered; }
+			get { return m_PowerState; }
 			[UsedImplicitly]
 			private set
 			{
-				if (value == m_IsPowered)
+				if (value == m_PowerState)
 					return;
 
-				m_IsPowered = value;
+				m_PowerState = value;
 
-				OnIsPoweredChanged.Raise(this, new PowerDeviceControlPowerStateApiEventArgs(m_IsPowered));
+				OnPowerStateChanged.Raise(this, new PowerDeviceControlPowerStateApiEventArgs(m_PowerState));
 			}
 		}
 
@@ -52,7 +49,7 @@ namespace ICD.Connect.Devices.Proxies.Controls
 		/// <param name="disposing"></param>
 		protected override void DisposeFinal(bool disposing)
 		{
-			OnIsPoweredChanged = null;
+			OnPowerStateChanged = null;
 
 			base.DisposeFinal(disposing);
 		}
@@ -98,8 +95,8 @@ namespace ICD.Connect.Devices.Proxies.Controls
 			base.Initialize(command);
 
 			ApiCommandBuilder.UpdateCommand(command)
-							 .SubscribeEvent(PowerDeviceControlApi.EVENT_IS_POWERED)
-							 .GetProperty(PowerDeviceControlApi.PROPERTY_IS_POWERED)
+							 .SubscribeEvent(PowerDeviceControlApi.EVENT_POWER_STATE)
+							 .GetProperty(PowerDeviceControlApi.PROPERTY_POWER_STATE)
 							 .Complete();
 		}
 
@@ -110,12 +107,26 @@ namespace ICD.Connect.Devices.Proxies.Controls
 		/// <param name="result"></param>
 		protected override void ParseEvent(string name, ApiResult result)
 		{
-			base.ParseEvent(name, result);
-
 			switch (name)
 			{
-				case PowerDeviceControlApi.EVENT_IS_POWERED:
-					IsPowered = result.GetValue<bool>();
+				case PowerDeviceControlApi.EVENT_POWER_STATE:
+					PowerState = result.GetValue<ePowerState>();
+					break;
+				default:
+					base.ParseEvent(name, result);
+					break;
+			}
+		}
+
+		protected override void ParseProperty(string name, ApiResult result)
+		{
+			switch (name)
+			{
+				case PowerDeviceControlApi.PROPERTY_POWER_STATE:
+					PowerState = result.GetValue<ePowerState>();
+					break;
+				default:
+					base.ParseProperty(name, result);
 					break;
 			}
 		}

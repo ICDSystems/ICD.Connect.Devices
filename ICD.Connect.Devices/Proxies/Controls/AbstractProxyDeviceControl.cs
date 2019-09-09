@@ -9,6 +9,7 @@ using ICD.Connect.API.Info;
 using ICD.Connect.API.Nodes;
 using ICD.Connect.API.Proxies;
 using ICD.Connect.Devices.Controls;
+using ICD.Connect.Devices.EventArguments;
 using ICD.Connect.Devices.Proxies.Devices;
 
 namespace ICD.Connect.Devices.Proxies.Controls
@@ -19,8 +20,11 @@ namespace ICD.Connect.Devices.Proxies.Controls
 
 		private readonly int m_Id;
 		private readonly IProxyDeviceBase m_Parent;
+		private bool m_ControlAvaliable;
 
 		#region Properties
+
+		public event EventHandler<DeviceControlAvaliableApiEventArgs> OnControlAvaliableChanged;
 
 		/// <summary>
 		/// Gets the parent device for this control.
@@ -41,6 +45,23 @@ namespace ICD.Connect.Devices.Proxies.Controls
 		/// Gets the parent and control id info.
 		/// </summary>
 		public DeviceControlInfo DeviceControlInfo { get { return new DeviceControlInfo(Parent.Id, Id); } }
+
+		/// <summary>
+		/// Gets if the control is currently avaliable or not
+		/// </summary>
+		public bool ControlAvaliable
+		{
+			get { return m_ControlAvaliable; }
+			private set
+			{
+				if (value == m_ControlAvaliable)
+					return;
+
+				m_ControlAvaliable = value;
+
+				OnControlAvaliableChanged.Raise(this, new DeviceControlAvaliableApiEventArgs(ControlAvaliable));
+			}
+		}
 
 		/// <summary>
 		/// Gets the name of the node.
@@ -109,6 +130,7 @@ namespace ICD.Connect.Devices.Proxies.Controls
 
 			ApiCommandBuilder.UpdateCommand(command)
 			                 .GetProperty(DeviceControlApi.PROPERTY_NAME)
+			                 .GetProperty(DeviceControlApi.PROPERTY_CONTROL_AVALIABLE)
 			                 .Complete();
 		}
 
@@ -125,6 +147,26 @@ namespace ICD.Connect.Devices.Proxies.Controls
 			{
 				case DeviceControlApi.PROPERTY_NAME:
 					Name = result.GetValue<string>();
+					break;
+				case DeviceControlApi.PROPERTY_CONTROL_AVALIABLE:
+					ControlAvaliable = result.GetValue<bool>();
+					break;
+			}
+		}
+
+		/// <summary>
+		/// Updates the proxy with event feedback info.
+		/// </summary>
+		/// <param name="name"></param>
+		/// <param name="result"></param>
+		protected override void ParseEvent(string name, ApiResult result)
+		{
+			base.ParseEvent(name, result);
+
+			switch (name)
+			{
+				case DeviceControlApi.EVENT_CONTROL_AVALIABLE:
+					ControlAvaliable = result.GetValue<bool>();
 					break;
 			}
 		}

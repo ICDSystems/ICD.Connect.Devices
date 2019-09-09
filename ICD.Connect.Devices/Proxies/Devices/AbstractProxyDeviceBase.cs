@@ -21,12 +21,14 @@ namespace ICD.Connect.Devices.Proxies.Devices
 		where TSettings : IProxyDeviceBaseSettings
 	{
 		public event EventHandler<DeviceBaseOnlineStateApiEventArgs> OnIsOnlineStateChanged;
+		public event EventHandler<DeviceBaseControlsAvaliableApiEventArgs> OnControlsAvaliableChanged;
 
 		private readonly DeviceControlsCollection m_Controls;
 		private readonly SafeCriticalSection m_CriticalSection;
 		private readonly Dictionary<IProxy, Func<ApiClassInfo, ApiClassInfo>> m_ProxyBuildCommand;
 
 		private bool m_IsOnline;
+		private bool m_ControlsAvaliable;
 
 		#region Properties
 
@@ -54,6 +56,23 @@ namespace ICD.Connect.Devices.Proxies.Devices
 		/// Gets the controls for this device.
 		/// </summary>
 		public DeviceControlsCollection Controls { get { return m_Controls; } }
+
+		/// <summary>
+		/// Gets if controls are avaliable
+		/// </summary>
+		public bool ControlsAvaliable
+		{
+			get { return m_ControlsAvaliable; }
+			set
+			{
+				if (value == m_ControlsAvaliable)
+					return;
+
+				m_ControlsAvaliable = value;
+
+				OnControlsAvaliableChanged.Raise(this, new DeviceBaseControlsAvaliableApiEventArgs(ControlsAvaliable));
+			}
+		}
 
 		#endregion
 
@@ -104,6 +123,7 @@ namespace ICD.Connect.Devices.Proxies.Devices
 			ApiCommandBuilder.UpdateCommand(command)
 			                 .SubscribeEvent(DeviceBaseApi.EVENT_IS_ONLINE)
 			                 .GetProperty(DeviceBaseApi.PROPERTY_IS_ONLINE)
+			                 .GetProperty(DeviceBaseApi.PROPERTY_CONTROLS_AVALIABLE)
 			                 .GetNodeGroup(DeviceBaseApi.NODE_GROUP_CONTROLS)
 			                 .Complete();
 		}
@@ -133,6 +153,9 @@ namespace ICD.Connect.Devices.Proxies.Devices
 				case DeviceBaseApi.EVENT_IS_ONLINE:
 					IsOnline = result.GetValue<bool>();
 					break;
+				case DeviceBaseApi.EVENT_CONTROLS_AVALIABLE:
+					ControlsAvaliable = result.GetValue<bool>();
+					break;
 			}
 		}
 
@@ -149,6 +172,9 @@ namespace ICD.Connect.Devices.Proxies.Devices
 			{
 				case DeviceBaseApi.PROPERTY_IS_ONLINE:
 					IsOnline = result.GetValue<bool>();
+					break;
+				case DeviceBaseApi.PROPERTY_CONTROLS_AVALIABLE:
+					ControlsAvaliable = result.GetValue<bool>();
 					break;
 			}
 		}
