@@ -63,7 +63,7 @@ namespace ICD.Connect.Devices
 		public DeviceControlsCollection Controls { get { return m_Controls; } }
 
 		/// <summary>
-		/// Gets if controls are avaliable
+		/// Gets if controls are available
 		/// </summary>
 		public bool ControlsAvaliable
 		{

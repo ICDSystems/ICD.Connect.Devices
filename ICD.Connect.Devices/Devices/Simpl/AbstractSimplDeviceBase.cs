@@ -49,7 +49,7 @@ namespace ICD.Connect.Devices.Simpl
 		}
 
 		/// <summary>
-		/// Gets if controls are avaliable
+		/// Gets if controls are available
 		/// </summary>
 		public bool ControlsAvaliable
 		{

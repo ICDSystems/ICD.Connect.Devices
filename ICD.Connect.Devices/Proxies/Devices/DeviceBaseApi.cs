@@ -9,9 +9,9 @@
 		public const string NODE_GROUP_CONTROLS = "Controls";
 
 		public const string HELP_EVENT_IS_ONLINE = "Raised when the online state changes.";
-		public const string HELP_EVENT_CONTROLS_AVALIABLE = "Raised when controls avaliable changes.";
+		public const string HELP_EVENT_CONTROLS_AVALIABLE = "Raised when controls available changes.";
 		public const string HELP_PROPERTY_IS_ONLINE = "Gets the online state of the device.";
-		public const string HELP_PROPERTY_CONTROLS_AVALIABLE = "Gets the current state of controls avaliable";
+		public const string HELP_PROPERTY_CONTROLS_AVALIABLE = "Gets the current state of controls available";
 		public const string HELP_NODE_GROUP_CONTROLS = "The controls for this device.";
 	}
 }

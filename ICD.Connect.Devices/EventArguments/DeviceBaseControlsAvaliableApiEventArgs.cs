@@ -9,7 +9,8 @@ namespace ICD.Connect.Devices.EventArguments
 		/// Constructor.
 		/// </summary>
 		/// <param name="data"></param>
-		public DeviceBaseControlsAvaliableApiEventArgs(bool data) : base(DeviceBaseApi.EVENT_CONTROLS_AVALIABLE, data)
+		public DeviceBaseControlsAvaliableApiEventArgs(bool data)
+			: base(DeviceBaseApi.EVENT_CONTROLS_AVALIABLE, data)
 		{
 		}
 	}
