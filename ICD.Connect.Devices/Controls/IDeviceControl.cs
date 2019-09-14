@@ -20,7 +20,7 @@ namespace ICD.Connect.Devices.Controls
 	public interface IDeviceControl : IConsoleNode, IStateDisposable, ITelemetryProvider
 	{
 		/// <summary>
-		/// Raised when the Control Avaliability changes
+		/// Raised when the Control availability changes
 		/// </summary>
 		[ApiEvent(DeviceControlApi.EVENT_CONTROL_AVALIABLE, DeviceControlApi.HELP_EVENT_CONTROL_AVALIABLE)]
 		event EventHandler<DeviceControlAvaliableApiEventArgs> OnControlAvaliableChanged;
@@ -45,25 +45,34 @@ namespace ICD.Connect.Devices.Controls
 		string Name { get; }
 
 		/// <summary>
-		/// Gets the parent and control id info.
+		/// Gets if the control is currently.
 		/// </summary>
 		[ApiProperty(DeviceControlApi.PROPERTY_CONTROL_AVALIABLE, DeviceControlApi.HELP_PROPERTY_CONTROL_AVALIABLE)]
-		DeviceControlInfo DeviceControlInfo { get; }
-		
-		/// <summary>
-		/// Gets if the control is currently avaliable or not
-		/// </summary>
 		bool ControlAvaliable { get; }
 	}
 
 	public interface IDeviceControl<T> : IDeviceControl
 		where T : IDeviceBase
 	{
+		/// <summary>
+		/// Gets the parent device for this control.
+		/// </summary>
 		new T Parent { get; }
 	}
 
 	public static class DeviceControlExtensions
 	{
+		/// <summary>
+		/// Gets the parent and control id info.
+		/// </summary>
+		public static DeviceControlInfo GetDeviceControlInfo(this IDeviceControl extends)
+		{
+			if (extends == null)
+				throw new ArgumentNullException("extends");
+
+			return new DeviceControlInfo(extends.Parent.Id, extends.Id);
+		}
+
 		/// <summary>
 		/// Gets the sibling control with the given id.
 		/// </summary>

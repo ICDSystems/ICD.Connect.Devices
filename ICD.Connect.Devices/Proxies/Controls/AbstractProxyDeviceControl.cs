@@ -42,12 +42,7 @@ namespace ICD.Connect.Devices.Proxies.Controls
 		public string Name { get; set; }
 
 		/// <summary>
-		/// Gets the parent and control id info.
-		/// </summary>
-		public DeviceControlInfo DeviceControlInfo { get { return new DeviceControlInfo(Parent.Id, Id); } }
-
-		/// <summary>
-		/// Gets if the control is currently avaliable or not
+		/// Gets if the control is currently available or not
 		/// </summary>
 		public bool ControlAvaliable
 		{
