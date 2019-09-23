@@ -118,12 +118,22 @@ namespace ICD.Connect.Devices.Proxies.Controls
 			}
 		}
 
+		/// <summary>
+		/// Handles the power state change event from the remote device
+		/// Necessary to preserve the "ExpectedDuration" property
+		/// </summary>
+		/// <param name="data"></param>
 		private void HandlePowerStateChangedEvent(PowerDeviceControlPowerStateEventData data)
 		{
 			if (UpdatePowerState(data.PowerState))
 				OnPowerStateChanged.Raise(this, new PowerDeviceControlPowerStateApiEventArgs(data));
 		}
 
+		/// <summary>
+		/// Updates the power state, and returns true if it chagned
+		/// </summary>
+		/// <param name="powerState">New power state</param>
+		/// <returns>true if changed, else false</returns>
 		private bool UpdatePowerState(ePowerState powerState)
 		{
 			if (powerState == PowerState)
