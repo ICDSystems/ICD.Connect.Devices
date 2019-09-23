@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using ICD.Connect.Devices.Controls;
 
 namespace ICD.Connect.Devices.EventArguments
 {
+	[Serializable]
 	public sealed class PowerDeviceControlPowerStateEventData
 	{
 
