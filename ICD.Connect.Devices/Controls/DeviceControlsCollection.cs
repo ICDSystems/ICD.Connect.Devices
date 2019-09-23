@@ -93,7 +93,7 @@ namespace ICD.Connect.Devices.Controls
 						m_TypeToControls[type] = controls;
 					}
 
-					controls.AddSorted(item, s_ControlComparer);
+					controls.InsertSorted(item, s_ControlComparer);
 				}
 			}
 			finally
