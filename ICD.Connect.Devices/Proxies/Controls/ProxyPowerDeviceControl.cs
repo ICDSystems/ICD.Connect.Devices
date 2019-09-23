@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using ICD.Common.Properties;
 using ICD.Common.Utils.Extensions;
 using ICD.Connect.API;
 using ICD.Connect.API.Commands;
@@ -16,21 +15,9 @@ namespace ICD.Connect.Devices.Proxies.Controls
 	{
 		public event EventHandler<PowerDeviceControlPowerStateApiEventArgs> OnPowerStateChanged;
 
-		private ePowerState m_PowerState;
-
 		public ePowerState PowerState
 		{
-			get { return m_PowerState; }
-			[UsedImplicitly]
-			private set
-			{
-				if (value == m_PowerState)
-					return;
-
-				m_PowerState = value;
-
-				OnPowerStateChanged.Raise(this, new PowerDeviceControlPowerStateApiEventArgs(m_PowerState));
-			}
+			get; private set;
 		}
 
 		/// <summary>
@@ -110,7 +97,7 @@ namespace ICD.Connect.Devices.Proxies.Controls
 			switch (name)
 			{
 				case PowerDeviceControlApi.EVENT_POWER_STATE:
-					PowerState = result.GetValue<ePowerState>();
+					HandlePowerStateChangedEvent(result.GetValue<PowerDeviceControlPowerStateEventData>());
 					break;
 				default:
 					base.ParseEvent(name, result);
@@ -129,6 +116,22 @@ namespace ICD.Connect.Devices.Proxies.Controls
 					base.ParseProperty(name, result);
 					break;
 			}
+		}
+
+		private void HandlePowerStateChangedEvent(PowerDeviceControlPowerStateEventData data)
+		{
+			if (UpdatePowerState(data.PowerState))
+				OnPowerStateChanged.Raise(this, new PowerDeviceControlPowerStateApiEventArgs(data));
+		}
+
+		private bool UpdatePowerState(ePowerState powerState)
+		{
+			if (powerState == PowerState)
+				return false;
+
+			PowerState = powerState;
+
+			return true;
 		}
 
 		#endregion

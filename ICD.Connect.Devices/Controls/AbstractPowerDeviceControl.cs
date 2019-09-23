@@ -39,7 +39,7 @@ namespace ICD.Connect.Devices.Controls
 
 				Log(eSeverity.Informational, "IsPowered set to {0}", m_PowerState);
 
-				OnPowerStateChanged.Raise(this, new PowerDeviceControlPowerStateApiEventArgs(m_PowerState));
+				OnPowerStateChanged.Raise(this, new PowerDeviceControlPowerStateApiEventArgs(m_PowerState, GetExpectedDurationForNewPowerState(m_PowerState)));
 			}
 		}
 
@@ -111,6 +111,17 @@ namespace ICD.Connect.Devices.Controls
 		}
 
 		protected abstract void PowerOffFinal();
+
+
+		/// <summary>
+		/// Override to implement expected durations for various power states
+		/// </summary>
+		/// <param name="state">power state to get duration for</param>
+		/// <returns>Expected duration in milliseconds</returns>
+		protected virtual int GetExpectedDurationForNewPowerState(ePowerState state)
+		{
+			return 0;
+		}
 
 		#endregion
 

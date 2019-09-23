@@ -4,14 +4,30 @@ using ICD.Connect.Devices.Proxies.Controls;
 
 namespace ICD.Connect.Devices.EventArguments
 {
-	public sealed class PowerDeviceControlPowerStateApiEventArgs : AbstractGenericApiEventArgs<ePowerState>
+	public sealed class PowerDeviceControlPowerStateApiEventArgs : AbstractGenericApiEventArgs<PowerDeviceControlPowerStateEventData>
 	{
 		/// <summary>
-		/// Constructor.
 		/// </summary>
 		/// <param name="data"></param>
-		public PowerDeviceControlPowerStateApiEventArgs(ePowerState data)
-			: base(PowerDeviceControlApi.EVENT_POWER_STATE, data)
+		public PowerDeviceControlPowerStateApiEventArgs(PowerDeviceControlPowerStateEventData data) :
+			base(PowerDeviceControlApi.EVENT_POWER_STATE, data)
+		{
+		}
+
+		/// <summary>
+		/// </summary>
+		/// <param name="powerState"></param>
+		/// <param name="expectedDuration"></param>
+		public PowerDeviceControlPowerStateApiEventArgs(ePowerState powerState, int expectedDuration)
+			: this(new PowerDeviceControlPowerStateEventData(powerState, expectedDuration))
+		{
+		}
+
+		/// <summary>
+		/// </summary>
+		/// <param name="powerState"></param>
+		public PowerDeviceControlPowerStateApiEventArgs(ePowerState powerState) 
+			: this(powerState, 0)
 		{
 		}
 	}
