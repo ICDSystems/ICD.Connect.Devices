@@ -32,14 +32,7 @@ namespace ICD.Connect.Devices.Controls
 			get { return m_PowerState; }
 			protected set
 			{
-				if (value == m_PowerState)
-					return;
-
-				m_PowerState = value;
-
-				Log(eSeverity.Informational, "IsPowered set to {0}", m_PowerState);
-
-				OnPowerStateChanged.Raise(this, new PowerDeviceControlPowerStateApiEventArgs(m_PowerState, GetExpectedDurationForNewPowerState(m_PowerState)));
+				SetPowerState(value, GetExpectedDurationForNewPowerState(m_PowerState));
 			}
 		}
 
@@ -121,6 +114,23 @@ namespace ICD.Connect.Devices.Controls
 		protected virtual int GetExpectedDurationForNewPowerState(ePowerState state)
 		{
 			return 0;
+		}
+
+		/// <summary>
+		/// Sets the power state, using the given expected duration in the resulting event
+		/// </summary>
+		/// <param name="powerState"></param>
+		/// <param name="expectedDuration"></param>
+		protected void SetPowerState(ePowerState powerState, int expectedDuration)
+		{
+			if (powerState == m_PowerState)
+				return;
+
+			m_PowerState = powerState;
+
+			Log(eSeverity.Informational, "IsPowered set to {0}", powerState);
+
+			OnPowerStateChanged.Raise(this, new PowerDeviceControlPowerStateApiEventArgs(powerState, expectedDuration));
 		}
 
 		#endregion

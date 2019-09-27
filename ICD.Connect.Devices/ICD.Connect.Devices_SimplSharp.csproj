@@ -84,6 +84,7 @@
     <Compile Include="EventArguments\DeviceBaseOnlineStateApiEventArgs.cs" />
     <Compile Include="EventArguments\DeviceControlAvaliableApiEventArgs.cs" />
     <Compile Include="EventArguments\PowerDeviceControlPowerStateApiEventArgs.cs" />
+    <Compile Include="EventArguments\PowerDeviceControlPowerStateEventData.cs" />
     <Compile Include="Points\AbstractPoint.cs" />
     <Compile Include="Points\AbstractPointSettings.cs" />
     <Compile Include="Points\IPoint.cs" />
