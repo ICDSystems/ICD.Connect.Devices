@@ -9,8 +9,8 @@ namespace ICD.Connect.Devices.EventArguments
 		/// <summary>
 		/// </summary>
 		/// <param name="data"></param>
-		public PowerDeviceControlPowerStateApiEventArgs(PowerDeviceControlPowerStateEventData data) :
-			base(PowerDeviceControlApi.EVENT_POWER_STATE, data)
+		public PowerDeviceControlPowerStateApiEventArgs(PowerDeviceControlPowerStateEventData data)
+			: base(PowerDeviceControlApi.EVENT_POWER_STATE, data)
 		{
 		}
 
@@ -18,7 +18,7 @@ namespace ICD.Connect.Devices.EventArguments
 		/// </summary>
 		/// <param name="powerState"></param>
 		/// <param name="expectedDuration"></param>
-		public PowerDeviceControlPowerStateApiEventArgs(ePowerState powerState, int expectedDuration)
+		public PowerDeviceControlPowerStateApiEventArgs(ePowerState powerState, long expectedDuration)
 			: this(new PowerDeviceControlPowerStateEventData(powerState, expectedDuration))
 		{
 		}

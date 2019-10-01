@@ -6,12 +6,11 @@ namespace ICD.Connect.Devices.EventArguments
 	[Serializable]
 	public sealed class PowerDeviceControlPowerStateEventData
 	{
-
 		public ePowerState PowerState { get; set; }
 
-		public int ExpectedDuration { get; set; }
+		public long ExpectedDuration { get; set; }
 
-		public PowerDeviceControlPowerStateEventData(ePowerState powerState, int expectedDuration)
+		public PowerDeviceControlPowerStateEventData(ePowerState powerState, long expectedDuration)
 		{
 			PowerState = powerState;
 			ExpectedDuration = expectedDuration;

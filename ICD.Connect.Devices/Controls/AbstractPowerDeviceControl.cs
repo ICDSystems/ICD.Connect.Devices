@@ -30,10 +30,7 @@ namespace ICD.Connect.Devices.Controls
 		public ePowerState PowerState
 		{
 			get { return m_PowerState; }
-			protected set
-			{
-				SetPowerState(value, GetExpectedDurationForNewPowerState(m_PowerState));
-			}
+			protected set { SetPowerState(value, GetExpectedDurationForNewPowerState(m_PowerState)); }
 		}
 
 		/// <summary>
@@ -105,13 +102,12 @@ namespace ICD.Connect.Devices.Controls
 
 		protected abstract void PowerOffFinal();
 
-
 		/// <summary>
 		/// Override to implement expected durations for various power states
 		/// </summary>
 		/// <param name="state">power state to get duration for</param>
 		/// <returns>Expected duration in milliseconds</returns>
-		protected virtual int GetExpectedDurationForNewPowerState(ePowerState state)
+		protected virtual long GetExpectedDurationForNewPowerState(ePowerState state)
 		{
 			return 0;
 		}
@@ -121,7 +117,7 @@ namespace ICD.Connect.Devices.Controls
 		/// </summary>
 		/// <param name="powerState"></param>
 		/// <param name="expectedDuration"></param>
-		protected void SetPowerState(ePowerState powerState, int expectedDuration)
+		protected void SetPowerState(ePowerState powerState, long expectedDuration)
 		{
 			if (powerState == m_PowerState)
 				return;
