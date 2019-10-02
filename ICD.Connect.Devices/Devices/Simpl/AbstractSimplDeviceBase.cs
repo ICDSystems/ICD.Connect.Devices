@@ -19,15 +19,15 @@ namespace ICD.Connect.Devices.Simpl
 		public event EventHandler<DeviceBaseOnlineStateApiEventArgs> OnIsOnlineStateChanged;
 
 		/// <summary>
-		/// Raised when ControlsAvaliable changes
+		/// Raised when ControlsAvailable changes
 		/// </summary>
-		public event EventHandler<DeviceBaseControlsAvaliableApiEventArgs> OnControlsAvaliableChanged;
+		public event EventHandler<DeviceBaseControlsAvailableApiEventArgs> OnControlsAvailableChanged;
 
 		private readonly DeviceControlsCollection m_Controls;
 
 		private bool m_IsOnline;
 
-		private bool m_ControlsAvaliable;
+		private bool m_ControlsAvailable;
 
 		/// <summary>
 		/// Returns true if the device hardware is detected by the system.
@@ -51,19 +51,19 @@ namespace ICD.Connect.Devices.Simpl
 		/// <summary>
 		/// Gets if controls are available
 		/// </summary>
-		public bool ControlsAvaliable
+		public bool ControlsAvailable
 		{
-			get { return m_ControlsAvaliable; }
+			get { return m_ControlsAvailable; }
 			private set
 			{
-				if (value == m_ControlsAvaliable)
+				if (value == m_ControlsAvailable)
 					return;
 
-				m_ControlsAvaliable = value;
+				m_ControlsAvailable = value;
 
-				Log(eSeverity.Informational, "Controls Avaliable changed to {0}", ControlsAvaliable);
+				Log(eSeverity.Informational, "Controls Available changed to {0}", ControlsAvailable);
 
-				OnControlsAvaliableChanged.Raise(this, new DeviceBaseControlsAvaliableApiEventArgs(ControlsAvaliable));
+				OnControlsAvailableChanged.Raise(this, new DeviceBaseControlsAvailableApiEventArgs(ControlsAvailable));
 			}
 		}
 
@@ -92,17 +92,17 @@ namespace ICD.Connect.Devices.Simpl
 		/// Default implementation is to follow IsOnline;
 		/// </summary>
 		/// <returns></returns>
-		protected virtual bool GetControlsAvaliable()
+		protected virtual bool GetControlsAvailable()
 		{
 			return IsOnline;
 		}
 
 		/// <summary>
-		/// Updates the cached ControlsAvaliable status and raises the OnControlsAvaliableChanged if the cache chagnes
+		/// Updates the cached ControlsAvailable status and raises the OnControlsAvailableChanged if the cache chagnes
 		/// </summary>
-		protected virtual void UpdateCachedControlsAvaliable()
+		protected virtual void UpdateCachedControlsAvailable()
 		{
-			ControlsAvaliable = GetControlsAvaliable();
+			ControlsAvailable = GetControlsAvailable();
 		}
 
 		/// <summary>

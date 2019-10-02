@@ -22,8 +22,8 @@ namespace ICD.Connect.Devices.Controls
 		/// <summary>
 		/// Raised when the Control availability changes
 		/// </summary>
-		[ApiEvent(DeviceControlApi.EVENT_CONTROL_AVALIABLE, DeviceControlApi.HELP_EVENT_CONTROL_AVALIABLE)]
-		event EventHandler<DeviceControlAvaliableApiEventArgs> OnControlAvaliableChanged;
+		[ApiEvent(DeviceControlApi.EVENT_CONTROL_AVAILABLE, DeviceControlApi.HELP_EVENT_CONTROL_AVAILABLE)]
+		event EventHandler<DeviceControlAvailableApiEventArgs> OnControlAvailableChanged;
 
 		/// <summary>
 		/// Gets the parent device for this control.
@@ -47,8 +47,8 @@ namespace ICD.Connect.Devices.Controls
 		/// <summary>
 		/// Gets if the control is currently.
 		/// </summary>
-		[ApiProperty(DeviceControlApi.PROPERTY_CONTROL_AVALIABLE, DeviceControlApi.HELP_PROPERTY_CONTROL_AVALIABLE)]
-		bool ControlAvaliable { get; }
+		[ApiProperty(DeviceControlApi.PROPERTY_CONTROL_AVAILABLE, DeviceControlApi.HELP_PROPERTY_CONTROL_AVAILABLE)]
+		bool ControlAvailable { get; }
 	}
 
 	public interface IDeviceControl<T> : IDeviceControl

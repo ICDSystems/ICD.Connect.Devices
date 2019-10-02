@@ -21,14 +21,14 @@ namespace ICD.Connect.Devices.Proxies.Devices
 		where TSettings : IProxyDeviceBaseSettings
 	{
 		public event EventHandler<DeviceBaseOnlineStateApiEventArgs> OnIsOnlineStateChanged;
-		public event EventHandler<DeviceBaseControlsAvaliableApiEventArgs> OnControlsAvaliableChanged;
+		public event EventHandler<DeviceBaseControlsAvailableApiEventArgs> OnControlsAvailableChanged;
 
 		private readonly DeviceControlsCollection m_Controls;
 		private readonly SafeCriticalSection m_CriticalSection;
 		private readonly Dictionary<IProxy, Func<ApiClassInfo, ApiClassInfo>> m_ProxyBuildCommand;
 
 		private bool m_IsOnline;
-		private bool m_ControlsAvaliable;
+		private bool m_ControlsAvailable;
 
 		#region Properties
 
@@ -60,17 +60,17 @@ namespace ICD.Connect.Devices.Proxies.Devices
 		/// <summary>
 		/// Gets if controls are available
 		/// </summary>
-		public bool ControlsAvaliable
+		public bool ControlsAvailable
 		{
-			get { return m_ControlsAvaliable; }
+			get { return m_ControlsAvailable; }
 			set
 			{
-				if (value == m_ControlsAvaliable)
+				if (value == m_ControlsAvailable)
 					return;
 
-				m_ControlsAvaliable = value;
+				m_ControlsAvailable = value;
 
-				OnControlsAvaliableChanged.Raise(this, new DeviceBaseControlsAvaliableApiEventArgs(ControlsAvaliable));
+				OnControlsAvailableChanged.Raise(this, new DeviceBaseControlsAvailableApiEventArgs(ControlsAvailable));
 			}
 		}
 
@@ -123,7 +123,7 @@ namespace ICD.Connect.Devices.Proxies.Devices
 			ApiCommandBuilder.UpdateCommand(command)
 			                 .SubscribeEvent(DeviceBaseApi.EVENT_IS_ONLINE)
 			                 .GetProperty(DeviceBaseApi.PROPERTY_IS_ONLINE)
-			                 .GetProperty(DeviceBaseApi.PROPERTY_CONTROLS_AVALIABLE)
+			                 .GetProperty(DeviceBaseApi.PROPERTY_CONTROLS_AVAILABLE)
 			                 .GetNodeGroup(DeviceBaseApi.NODE_GROUP_CONTROLS)
 			                 .Complete();
 		}
@@ -153,8 +153,8 @@ namespace ICD.Connect.Devices.Proxies.Devices
 				case DeviceBaseApi.EVENT_IS_ONLINE:
 					IsOnline = result.GetValue<bool>();
 					break;
-				case DeviceBaseApi.EVENT_CONTROLS_AVALIABLE:
-					ControlsAvaliable = result.GetValue<bool>();
+				case DeviceBaseApi.EVENT_CONTROLS_AVAILABLE:
+					ControlsAvailable = result.GetValue<bool>();
 					break;
 			}
 		}
@@ -173,8 +173,8 @@ namespace ICD.Connect.Devices.Proxies.Devices
 				case DeviceBaseApi.PROPERTY_IS_ONLINE:
 					IsOnline = result.GetValue<bool>();
 					break;
-				case DeviceBaseApi.PROPERTY_CONTROLS_AVALIABLE:
-					ControlsAvaliable = result.GetValue<bool>();
+				case DeviceBaseApi.PROPERTY_CONTROLS_AVAILABLE:
+					ControlsAvailable = result.GetValue<bool>();
 					break;
 			}
 		}

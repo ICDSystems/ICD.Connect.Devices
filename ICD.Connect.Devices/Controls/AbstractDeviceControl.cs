@@ -22,7 +22,7 @@ namespace ICD.Connect.Devices.Controls
 
 		public event EventHandler OnRequestTelemetryRebuild;
 
-		public event EventHandler<DeviceControlAvaliableApiEventArgs> OnControlAvaliableChanged;
+		public event EventHandler<DeviceControlAvailableApiEventArgs> OnControlAvailableChanged;
 
 		#endregion
 
@@ -32,7 +32,7 @@ namespace ICD.Connect.Devices.Controls
 
 		private readonly T m_Parent;
 
-		private bool m_ControlAvaliable;
+		private bool m_ControlAvailable;
 
 		#endregion
 
@@ -62,17 +62,17 @@ namespace ICD.Connect.Devices.Controls
 		/// <summary>
 		/// Gets if the control is currently available or not
 		/// </summary>
-		public bool ControlAvaliable
+		public bool ControlAvailable
 		{
-			get { return m_ControlAvaliable; }
+			get { return m_ControlAvailable; }
 			private set
 			{
-				if (value == m_ControlAvaliable)
+				if (value == m_ControlAvailable)
 					return;
 
-				m_ControlAvaliable = value;
+				m_ControlAvailable = value;
 
-				OnControlAvaliableChanged.Raise(this, new DeviceControlAvaliableApiEventArgs(ControlAvaliable));
+				OnControlAvailableChanged.Raise(this, new DeviceControlAvailableApiEventArgs(ControlAvailable));
 			}
 		}
 
@@ -155,14 +155,14 @@ namespace ICD.Connect.Devices.Controls
 			Log(severity, message);
 		}
 
-		protected virtual bool GetControlAvaliable()
+		protected virtual bool GetControlAvailable()
 		{
-			return Parent.ControlsAvaliable;
+			return Parent.ControlsAvailable;
 		}
 
-		protected virtual void UpdateCachedControlAvaliable()
+		protected virtual void UpdateCachedControlAvailable()
 		{
-			ControlAvaliable = GetControlAvaliable();
+			ControlAvailable = GetControlAvailable();
 		}
 
 		#endregion
@@ -198,19 +198,19 @@ namespace ICD.Connect.Devices.Controls
 			if (parent == null)
 				return;
 
-			parent.OnControlsAvaliableChanged += Parent_OnControlsAvaliableChanged;
+			parent.OnControlsAvailableChanged += Parent_OnControlsAvailableChanged;
 		}
 
 		protected virtual void Unsubscribe(T parent)
 		{
 			if (parent == null)
 				return;
-			parent.OnControlsAvaliableChanged -= Parent_OnControlsAvaliableChanged;
+			parent.OnControlsAvailableChanged -= Parent_OnControlsAvailableChanged;
 		}
 
-		private void Parent_OnControlsAvaliableChanged(object sender, DeviceBaseControlsAvaliableApiEventArgs e)
+		private void Parent_OnControlsAvailableChanged(object sender, DeviceBaseControlsAvailableApiEventArgs e)
 		{
-			UpdateCachedControlAvaliable();
+			UpdateCachedControlAvailable();
 		}
 
 		#endregion

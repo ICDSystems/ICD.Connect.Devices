@@ -22,8 +22,8 @@ namespace ICD.Connect.Devices
 		/// <summary>
 		/// Raised when control availability for the device changes.
 		/// </summary>
-		[ApiEvent(DeviceBaseApi.EVENT_CONTROLS_AVALIABLE, DeviceBaseApi.HELP_EVENT_CONTROLS_AVALIABLE)]
-		event EventHandler<DeviceBaseControlsAvaliableApiEventArgs> OnControlsAvaliableChanged;
+		[ApiEvent(DeviceBaseApi.EVENT_CONTROLS_AVAILABLE, DeviceBaseApi.HELP_EVENT_CONTROLS_AVAILABLE)]
+		event EventHandler<DeviceBaseControlsAvailableApiEventArgs> OnControlsAvailableChanged;
 
 		/// <summary>
 		/// Returns true if the device hardware is detected by the system.
@@ -42,7 +42,7 @@ namespace ICD.Connect.Devices
 		/// <summary>
 		/// Gets if controls are available.
 		/// </summary>
-		[ApiProperty(DeviceBaseApi.PROPERTY_CONTROLS_AVALIABLE, DeviceBaseApi.HELP_PROPERTY_CONTROLS_AVALIABLE)]
-		bool ControlsAvaliable { get; }
+		[ApiProperty(DeviceBaseApi.PROPERTY_CONTROLS_AVAILABLE, DeviceBaseApi.HELP_PROPERTY_CONTROLS_AVAILABLE)]
+		bool ControlsAvailable { get; }
 	}
 }

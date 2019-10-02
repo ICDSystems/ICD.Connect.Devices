@@ -20,11 +20,11 @@ namespace ICD.Connect.Devices.Proxies.Controls
 
 		private readonly int m_Id;
 		private readonly IProxyDeviceBase m_Parent;
-		private bool m_ControlAvaliable;
+		private bool m_ControlAvailable;
 
 		#region Properties
 
-		public event EventHandler<DeviceControlAvaliableApiEventArgs> OnControlAvaliableChanged;
+		public event EventHandler<DeviceControlAvailableApiEventArgs> OnControlAvailableChanged;
 
 		/// <summary>
 		/// Gets the parent device for this control.
@@ -44,17 +44,17 @@ namespace ICD.Connect.Devices.Proxies.Controls
 		/// <summary>
 		/// Gets if the control is currently available or not
 		/// </summary>
-		public bool ControlAvaliable
+		public bool ControlAvailable
 		{
-			get { return m_ControlAvaliable; }
+			get { return m_ControlAvailable; }
 			private set
 			{
-				if (value == m_ControlAvaliable)
+				if (value == m_ControlAvailable)
 					return;
 
-				m_ControlAvaliable = value;
+				m_ControlAvailable = value;
 
-				OnControlAvaliableChanged.Raise(this, new DeviceControlAvaliableApiEventArgs(ControlAvaliable));
+				OnControlAvailableChanged.Raise(this, new DeviceControlAvailableApiEventArgs(ControlAvailable));
 			}
 		}
 
@@ -125,7 +125,7 @@ namespace ICD.Connect.Devices.Proxies.Controls
 
 			ApiCommandBuilder.UpdateCommand(command)
 			                 .GetProperty(DeviceControlApi.PROPERTY_NAME)
-			                 .GetProperty(DeviceControlApi.PROPERTY_CONTROL_AVALIABLE)
+			                 .GetProperty(DeviceControlApi.PROPERTY_CONTROL_AVAILABLE)
 			                 .Complete();
 		}
 
@@ -143,8 +143,8 @@ namespace ICD.Connect.Devices.Proxies.Controls
 				case DeviceControlApi.PROPERTY_NAME:
 					Name = result.GetValue<string>();
 					break;
-				case DeviceControlApi.PROPERTY_CONTROL_AVALIABLE:
-					ControlAvaliable = result.GetValue<bool>();
+				case DeviceControlApi.PROPERTY_CONTROL_AVAILABLE:
+					ControlAvailable = result.GetValue<bool>();
 					break;
 			}
 		}
@@ -160,8 +160,8 @@ namespace ICD.Connect.Devices.Proxies.Controls
 
 			switch (name)
 			{
-				case DeviceControlApi.EVENT_CONTROL_AVALIABLE:
-					ControlAvaliable = result.GetValue<bool>();
+				case DeviceControlApi.EVENT_CONTROL_AVAILABLE:
+					ControlAvailable = result.GetValue<bool>();
 					break;
 			}
 		}
