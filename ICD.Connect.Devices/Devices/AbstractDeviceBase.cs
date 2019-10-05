@@ -114,7 +114,7 @@ namespace ICD.Connect.Devices
 		protected abstract bool GetIsOnlineStatus();
 
 		/// <summary>
-		/// Gets the current state of Control Avaliability
+		/// Gets the current state of Control Availability
 		/// Default implementation is to follow IsOnline;
 		/// </summary>
 		/// <returns></returns>

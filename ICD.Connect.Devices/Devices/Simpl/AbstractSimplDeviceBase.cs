@@ -88,7 +88,7 @@ namespace ICD.Connect.Devices.Simpl
 		}
 
 		/// <summary>
-		/// Gets the current state of Control Avaliability
+		/// Gets the current state of Control Availability
 		/// Default implementation is to follow IsOnline;
 		/// </summary>
 		/// <returns></returns>

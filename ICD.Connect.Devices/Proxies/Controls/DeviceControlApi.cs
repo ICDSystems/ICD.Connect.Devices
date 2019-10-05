@@ -8,7 +8,7 @@
 		public const string PROPERTY_NAME = "Name";
 		public const string PROPERTY_CONTROL_AVAILABLE = "ControlAvailable";
 
-		public const string HELP_EVENT_CONTROL_AVAILABLE = "Raised when the control avaliability changes";
+		public const string HELP_EVENT_CONTROL_AVAILABLE = "Raised when the control availability changes";
 
 		public const string HELP_PROPERTY_ID = "The unique ID of the control within the device.";
 		public const string HELP_PROPERTY_NAME = "The name of the control.";
