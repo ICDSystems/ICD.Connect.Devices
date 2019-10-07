@@ -5,6 +5,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [9.1.0] - 2019-10-07
+### Added
+ - Added point interfaces and abstractions
+ - Added extension methods for getting the control for a given point
+ - Added features for supporting warmup/cooldown states and durations
+
 ### Changed
  - IPowerDeviceControl.OnPowerStateChanged now includes ExpectedDuration in event
 
