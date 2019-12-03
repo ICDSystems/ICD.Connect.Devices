@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+ - Added struct for representing Windows device paths
+
 ## [9.1.0] - 2019-10-07
 ### Added
  - Added point interfaces and abstractions
