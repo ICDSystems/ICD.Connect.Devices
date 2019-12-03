@@ -140,6 +140,7 @@
     <Compile Include="SPlusShims\AbstractSPlusDeviceBaseShim.cs" />
     <Compile Include="SPlusShims\AbstractSPlusDeviceShim.cs" />
     <Compile Include="SPlusShims\ISPlusDeviceBaseShim.cs" />
+    <Compile Include="Windows\IWindowsDevice.cs" />
     <Compile Include="Windows\WindowsDevicePathInfo.cs" />
     <None Include="Properties\ControlSystem.cfg" />
   </ItemGroup>

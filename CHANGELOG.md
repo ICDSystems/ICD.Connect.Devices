@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
  - Added struct for representing Windows device paths
+ - Added IWindowsDevice interface for devices with a windows device path
 
 ## [9.1.0] - 2019-10-07
 ### Added
