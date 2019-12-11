@@ -8,11 +8,22 @@ using ICD.Common.Utils.Collections;
 using ICD.Common.Utils.Comparers;
 using ICD.Common.Utils.Extensions;
 using ICD.Connect.API.Nodes;
+using ICD.Connect.Devices.EventArguments;
 
 namespace ICD.Connect.Devices.Controls
 {
 	public sealed class DeviceControlsCollection : IEnumerable<IDeviceControl>, IStateDisposable, IApiNodeGroup
 	{
+		/// <summary>
+		/// Raised when a control is added to the collection.
+		/// </summary>
+		public event EventHandler<DeviceControlEventArgs> OnControlAdded;
+
+		/// <summary>
+		/// Raised when a control is removed from the collection.
+		/// </summary>
+		public event EventHandler<DeviceControlEventArgs> OnControlRemoved;
+
 		private readonly Dictionary<Type, List<IDeviceControl>> m_TypeToControls;
 		private readonly IcdOrderedDictionary<int, IDeviceControl> m_DeviceControls;
 		private readonly SafeCriticalSection m_DeviceControlsSection;
@@ -33,6 +44,8 @@ namespace ICD.Connect.Devices.Controls
 
 		#endregion
 
+		#region Constructors
+
 		/// <summary>
 		/// Static constructor.
 		/// </summary>
@@ -50,6 +63,8 @@ namespace ICD.Connect.Devices.Controls
 			m_DeviceControls = new IcdOrderedDictionary<int, IDeviceControl>();
 			m_DeviceControlsSection = new SafeCriticalSection();
 		}
+
+		#endregion
 
 		#region Methods
 
@@ -85,21 +100,14 @@ namespace ICD.Connect.Devices.Controls
 				m_DeviceControls.Add(item.Id, item);
 
 				foreach (Type type in item.GetType().GetAllTypes())
-				{
-					List<IDeviceControl> controls;
-					if (!m_TypeToControls.TryGetValue(type, out controls))
-					{
-						controls = new List<IDeviceControl>();
-						m_TypeToControls[type] = controls;
-					}
-
-					controls.InsertSorted(item, s_ControlComparer);
-				}
+					m_TypeToControls.GetOrAddNew(type).AddSorted(item, s_ControlComparer);
 			}
 			finally
 			{
 				m_DeviceControlsSection.Leave();
 			}
+
+			OnControlAdded.Raise(this, new DeviceControlEventArgs(item));
 		}
 
 		/// <summary>
@@ -107,35 +115,32 @@ namespace ICD.Connect.Devices.Controls
 		/// </summary>
 		public void Clear()
 		{
-			m_DeviceControlsSection.Enter();
-
-			try
-			{
-				m_TypeToControls.Clear();
-				m_DeviceControls.Clear();
-			}
-			finally
-			{
-				m_DeviceControlsSection.Leave();
-			}
+			foreach (IDeviceControl control in GetControls())
+				Remove(control);
 		}
 
 		/// <summary>
-		/// Removes the control with the given id from the collection.
+		/// Removes the control from the collection.
 		/// </summary>
-		/// <param name="id"></param>
+		/// <param name="control"></param>
 		/// <returns></returns>
-		public bool Remove(int id)
+		public bool Remove(IDeviceControl control)
 		{
+			if (control == null)
+				throw new ArgumentNullException("control");
+
 			m_DeviceControlsSection.Enter();
 
 			try
 			{
-				IDeviceControl control;
-				if (!m_DeviceControls.TryGetValue(id, out control))
+				IDeviceControl existing;
+				if (!m_DeviceControls.TryGetValue(control.Id, out existing))
 					return false;
 
-				m_DeviceControls.Remove(id);
+				if (control != existing)
+					return false;
+
+				m_DeviceControls.Remove(control.Id);
 
 				foreach (List<IDeviceControl> group in m_TypeToControls.Values)
 					group.Remove(control);
@@ -145,7 +150,20 @@ namespace ICD.Connect.Devices.Controls
 				m_DeviceControlsSection.Leave();
 			}
 
+			OnControlRemoved.Raise(this, new DeviceControlEventArgs(control));
+
 			return true;
+		}
+
+		/// <summary>
+		/// Removes the control with the given id from the collection.
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
+		public bool Remove(int id)
+		{
+			IDeviceControl control;
+			return TryGetControl(id, out control) && Remove(control);
 		}
 
 		/// <summary>
@@ -334,6 +352,9 @@ namespace ICD.Connect.Devices.Controls
 		{
 			if (!disposing)
 				return;
+
+			OnControlAdded = null;
+			OnControlRemoved = null;
 
 			m_DeviceControlsSection.Enter();
 
