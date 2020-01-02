@@ -1,8 +1,7 @@
 ﻿using System;
 using ICD.Common.Properties;
-using ICD.Common.Utils.Services;
 using ICD.Connect.Devices.Controls;
-using ICD.Connect.Settings.Cores;
+using ICD.Connect.Devices.EventArguments;
 using ICD.Connect.Settings.Originators;
 
 namespace ICD.Connect.Devices.Points
@@ -10,80 +9,30 @@ namespace ICD.Connect.Devices.Points
 	public interface IPoint : IOriginator
 	{
 		/// <summary>
-		/// Device id
+		/// Raised when the wrapped control changes.
 		/// </summary>
-		int DeviceId { get; set; }
+		event EventHandler<DeviceControlEventArgs> OnControlChanged; 
 
 		/// <summary>
-		/// Control id.
+		/// Gets/sets the control for this point.
 		/// </summary>
-		int ControlId { get; set; }
-	}
-
-	public static class PointExtensions
-	{
-		/// <summary>
-		/// Gets the control that this point references.
-		/// </summary>
-		/// <param name="extends"></param>
-		/// <returns></returns>
-		[NotNull]
-		public static IDeviceControl GetControl([NotNull] this IPoint extends)
-		{
-			if (extends == null)
-				throw new ArgumentNullException("extends");
-
-			return extends.GetControl<IDeviceControl>();
-		}
+		[CanBeNull]
+		IDeviceControl Control { get; }
 
 		/// <summary>
-		/// Gets the control that this point references.
+		/// Gets the device ID.
 		/// </summary>
-		/// <param name="extends"></param>
-		/// <returns></returns>
-		[NotNull]
-		public static TControl GetControl<TControl>([NotNull] this IPoint extends)
-			where TControl : class, IDeviceControl
-		{
-			if (extends == null)
-				throw new ArgumentNullException("extends");
-
-			return
-				ServiceProvider.GetService<ICore>()
-				               .Originators
-				               .GetChild<IDeviceBase>(extends.DeviceId)
-				               .Controls
-				               .GetControl<TControl>(extends.ControlId);
-		}
+		int DeviceId { get; }
 
 		/// <summary>
-		/// Trys to get the control that this point references.
+		/// Gets the control ID.
 		/// </summary>
-		/// <param name="extends"></param>
-		/// <param name="output"></param>
-		/// <returns></returns>
-		public static bool TryGetControl<TControl>([NotNull] this IPoint extends, out TControl output)
-			where TControl : class, IDeviceControl
-		{
-			if (extends == null)
-				throw new ArgumentNullException("extends");
+		int ControlId { get; }
 
-			output = null;
-
-			IOriginator originator;
-			if (!ServiceProvider.GetService<ICore>().Originators.TryGetChild(extends.DeviceId, out originator))
-				return false;
-
-			IDeviceBase device = originator as IDeviceBase;
-			if (device == null)
-				return false;
-
-			IDeviceControl control;
-			if (!device.Controls.TryGetControl(extends.ControlId, out control))
-				return false;
-
-			output = control as TControl;
-			return output != null;
-		}
+		/// <summary>
+		/// Sets the wrapped control.
+		/// </summary>
+		/// <param name="control"></param>
+		void SetControl([CanBeNull] IDeviceControl control);
 	}
 }
