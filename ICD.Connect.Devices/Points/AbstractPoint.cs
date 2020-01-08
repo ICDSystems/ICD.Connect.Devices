@@ -68,7 +68,14 @@ namespace ICD.Connect.Devices.Points
 				return;
 
 			Unsubscribe(Control);
+
 			Control = control;
+			if (Control != null)
+			{
+				DeviceId = Control.Parent.Id;
+				ControlId = Control.Id;
+			}
+
 			Subscribe(Control);
 
 			OnControlChanged.Raise(this, new DeviceControlEventArgs(control));
@@ -153,6 +160,9 @@ namespace ICD.Connect.Devices.Points
 		protected override void ApplySettingsFinal(TSettings settings, IDeviceFactory factory)
 		{
 			base.ApplySettingsFinal(settings, factory);
+
+			DeviceId = settings.DeviceId;
+			ControlId = settings.ControlId;
 
 			IDeviceBase device = null;
 			TControl control = null;
