@@ -11,6 +11,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
  - Added IWindowsDevice interface for devices with a windows device path
  - Added events to DeviceControlsCollection that are raised when controls are added and removed
 
+### Changed
+ - Points wrap an underlying control and track control changes, such as in the case of DSP config reloads
+
 ## [9.1.0] - 2019-10-07
 ### Added
  - Added point interfaces and abstractions
