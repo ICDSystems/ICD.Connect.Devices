@@ -6,7 +6,6 @@ using ICD.Common.Utils.Services.Logging;
 using ICD.Connect.API.Nodes;
 using ICD.Connect.Devices.Controls;
 using ICD.Connect.Devices.EventArguments;
-using ICD.Connect.Devices.Extensions;
 using ICD.Connect.Settings;
 using ICD.Connect.Settings.Originators;
 
@@ -173,7 +172,7 @@ namespace ICD.Connect.Devices.Points
 			{
 				try
 				{
-					device = factory.GetDeviceById(settings.DeviceId);
+					device = factory.GetOriginatorById<IDeviceBase>(settings.DeviceId);
 				}
 				catch (KeyNotFoundException)
 				{
