@@ -12,6 +12,9 @@ namespace ICD.Connect.Devices.Windows
 		/// </summary>
 		private const string PARSE_REGEX = @"(?'type'\w+)\\(?'deviceId'[\w&]+)\\(?'instanceId'[\w&]+)";
 
+		private const string VENDOR_ID_REGEX = @"(?'vendorId'VID[\w]+)";
+		private const string PRODUCT_ID_REGEX = @"(?'productId'PID[\w]+)";
+
 		/// <summary>
 		/// Characters that are illegal for valid device instances.
 		/// </summary>
@@ -69,11 +72,49 @@ namespace ICD.Connect.Devices.Windows
 		/// <param name="devicePath"></param>
 		public WindowsDevicePathInfo([NotNull] string devicePath)
 		{
-			Match match = ParseDevicePath(devicePath);
+			WindowsDevicePathInfo pathInfo = Parse(devicePath);
 
-			m_Type = match.Groups["type"].Value;
-			m_DeviceId = match.Groups["deviceId"].Value;
-			m_InstanceId = match.Groups["instanceId"].Value;
+			m_Type = pathInfo.Type;
+			m_DeviceId = pathInfo.DeviceId;
+			m_InstanceId = pathInfo.InstanceId;
+		}
+
+		public static WindowsDevicePathInfo Parse(string data)
+		{
+			WindowsDevicePathInfo pathInfo;
+			if (TryParse(data, out pathInfo))
+				return pathInfo;
+
+			throw new FormatException("Unexpected device instance format");
+		}
+
+		public static bool TryParse(string data, out WindowsDevicePathInfo pathInfo)
+		{
+			pathInfo = default(WindowsDevicePathInfo);
+
+			// Zoom - USB Huddly GO Camera
+			// "\\\\?\\usb#vid_2bd9&pid_0011&mi_00#6&a1e91ba&0&0000#{65e8773d-8f56-11d0-a3b9-00a0c9223196}\\global"
+
+			// Windows - USB Huddly GO Camera
+			// USB\VID_2BD9&PID_0011&MI_00\6&A1E91BA&0&0000
+
+			// PCI example
+			// PCI\VEN_1000&DEV_0001&SUBSYS_00000000&REV_02\1&08
+
+			// Replace non alphanumeric, ampersand, or backslash characters with a backslash
+			data = Sanitize(data) ?? string.Empty;
+
+			// Remove leading or trailing nonsense
+			Match match = Regex.Match(data, PARSE_REGEX);
+			if (!match.Success)
+				return false;
+
+			string type = match.Groups["type"].Value;
+			string deviceId = match.Groups["deviceId"].Value;
+			string instanceId = match.Groups["instanceId"].Value;
+
+			pathInfo = new WindowsDevicePathInfo(type, deviceId, instanceId);
+			return true;
 		}
 
 		#endregion
@@ -107,35 +148,22 @@ namespace ICD.Connect.Devices.Windows
 			return value.ToUpper();
 		}
 
-		/// <summary>
-		/// Returns a regex match for the given device instance string.
-		/// </summary>
-		/// <param name="deviceInstance"></param>
-		/// <returns></returns>
-		[NotNull]
-		private static Match ParseDevicePath([NotNull] string deviceInstance)
+		public static WindowsDevicePathInfo SetVendorId(WindowsDevicePathInfo pathInfo, string vendorId)
 		{
-			if (deviceInstance == null)
-				throw new ArgumentNullException("deviceInstance");
+			if (!Regex.IsMatch(vendorId, VENDOR_ID_REGEX))
+				throw new FormatException("Invalid vendor ID");
 
-			// Zoom - USB Huddly GO Camera
-			// "\\\\?\\usb#vid_2bd9&pid_0011&mi_00#6&a1e91ba&0&0000#{65e8773d-8f56-11d0-a3b9-00a0c9223196}\\global"
+			string deviceId = Regex.Replace(pathInfo.DeviceId, VENDOR_ID_REGEX, vendorId);
+			return new WindowsDevicePathInfo(pathInfo.Type, deviceId, pathInfo.InstanceId);
+		}
 
-			// Windows - USB Huddly GO Camera
-			// USB\VID_2BD9&PID_0011&MI_00\6&A1E91BA&0&0000
+		public static WindowsDevicePathInfo SetProductId(WindowsDevicePathInfo pathInfo, string productId)
+		{
+			if (!Regex.IsMatch(productId, PRODUCT_ID_REGEX))
+				throw new FormatException("Invalid product ID");
 
-			// PCI example
-			// PCI\VEN_1000&DEV_0001&SUBSYS_00000000&REV_02\1&08
-
-			// Replace non alphanumeric, ampersand, or backslash characters with a backslash
-			deviceInstance = Sanitize(deviceInstance) ?? string.Empty;
-
-			// Remove leading or trailing nonsense
-			Match match = Regex.Match(deviceInstance, PARSE_REGEX);
-			if (!match.Success)
-				throw new FormatException("Unexpected device instance format");
-
-			return match;
+			string deviceId = Regex.Replace(pathInfo.DeviceId, PRODUCT_ID_REGEX, productId);
+			return new WindowsDevicePathInfo(pathInfo.Type, deviceId, pathInfo.InstanceId);
 		}
 
 		#endregion
