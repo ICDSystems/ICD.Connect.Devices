@@ -31,20 +31,20 @@ namespace ICD.Connect.Devices.Windows
 		/// <summary>
 		/// Gets the type of device, e.g. USB, PCI, etc.
 		/// </summary>
-		[CanBeNull]
-		public string Type { get { return m_Type; } }
+		[NotNull]
+		public string Type { get { return m_Type ?? DEFAULT_TYPE; } }
 
 		/// <summary>
 		/// Gets the identifier for the device.
 		/// </summary>
-		[CanBeNull]
-		public string DeviceId { get { return m_DeviceId; } }
+		[NotNull]
+		public string DeviceId { get { return m_DeviceId ?? DEFAULT_DEVICE_ID; } }
 
 		/// <summary>
 		/// Gets the instance identifier for the device.
 		/// </summary>
-		[CanBeNull]
-		public string InstanceId { get { return m_InstanceId; } }
+		[NotNull]
+		public string InstanceId { get { return m_InstanceId ?? DEFAULT_INSTANCE_ID; } }
 
 		#endregion
 
@@ -86,7 +86,7 @@ namespace ICD.Connect.Devices.Windows
 		/// <returns></returns>
 		public override string ToString()
 		{
-			return string.Format("{0}\\{1}\\{2}", m_Type, m_DeviceId, m_InstanceId);
+			return string.Format("{0}\\{1}\\{2}", Type, DeviceId, InstanceId);
 		}
 
 		/// <summary>
@@ -182,9 +182,9 @@ namespace ICD.Connect.Devices.Windows
 		[Pure]
 		public bool Equals(WindowsDevicePathInfo other)
 		{
-			return m_Type == other.m_Type &&
-			       m_DeviceId == other.m_DeviceId &&
-			       m_InstanceId == other.m_InstanceId;
+			return Type == other.Type &&
+			       DeviceId == other.DeviceId &&
+			       InstanceId == other.InstanceId;
 		}
 
 		/// <summary>
@@ -197,24 +197,24 @@ namespace ICD.Connect.Devices.Windows
 			unchecked
 			{
 				int hash = 17;
-				hash = hash * 23 + (m_Type == null ? 0 : m_Type.GetStableHashCode());
-				hash = hash * 23 + (m_DeviceId == null ? 0 : m_DeviceId.GetStableHashCode());
-				hash = hash * 23 + (m_InstanceId == null ? 0 : m_InstanceId.GetStableHashCode());
+				hash = hash * 23 + Type.GetStableHashCode();
+				hash = hash * 23 + DeviceId.GetStableHashCode();
+				hash = hash * 23 + InstanceId.GetStableHashCode();
 				return hash;
 			}
 		}
 
 		public int CompareTo(WindowsDevicePathInfo other)
 		{
-			int result = string.CompareOrdinal(m_Type, other.m_Type);
+			int result = string.CompareOrdinal(Type, other.Type);
 			if (result != 0)
 				return result;
 
-			result = string.CompareOrdinal(m_DeviceId, other.m_DeviceId);
+			result = string.CompareOrdinal(DeviceId, other.DeviceId);
 			if (result != 0)
 				return result;
 
-			return string.CompareOrdinal(m_InstanceId, other.m_InstanceId);
+			return string.CompareOrdinal(InstanceId, other.InstanceId);
 		}
 
 
