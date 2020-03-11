@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Changed
  - Points wrap an underlying control and track control changes, such as in the case of DSP config reloads
- - Default values, exposed parsing and Vendor/Product ID setting for WindowsDevicePathInfo struct
+ - Exposed Default values, exposed parsing and Device ID setting & improved comparison/equality for WindowsDevicePathInfo struct
 
 ## [9.1.0] - 2019-10-07
 ### Added

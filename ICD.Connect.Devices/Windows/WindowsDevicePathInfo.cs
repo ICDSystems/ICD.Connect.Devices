@@ -12,13 +12,16 @@ namespace ICD.Connect.Devices.Windows
 		/// </summary>
 		private const string PARSE_REGEX = @"(?'type'\w+)\\(?'deviceId'[\w&]+)\\(?'instanceId'[\w&]+)";
 
-		private const string VENDOR_ID_REGEX = @"(?'vendorId'VID[\w]+)";
-		private const string PRODUCT_ID_REGEX = @"(?'productId'PID[\w]+)";
+		private const string DEVICE_ID_REGEX = @"(?'VendorId'VID[\w&]{6})(?'productId'PID[\w&]{6})(?'InterfaceId'MI[\w]{3}|REV[\w]{5})";
 
 		/// <summary>
 		/// Characters that are illegal for valid device instances.
 		/// </summary>
 		private const string INVALID_CHARACTERS_REGEX = @"[^\w&\\]";
+
+		public const string DEFAULT_TYPE = "000";
+		public const string DEFAULT_DEVICE_ID = "VID_0000&PID_0000&MI_00";
+		public const string DEFAULT_INSTANCE_ID = "0&0000000&0&0000";
 
 		[CanBeNull]
 		private readonly string m_Type;
@@ -148,21 +151,11 @@ namespace ICD.Connect.Devices.Windows
 			return value.ToUpper();
 		}
 
-		public static WindowsDevicePathInfo SetVendorId(WindowsDevicePathInfo pathInfo, string vendorId)
+		public static WindowsDevicePathInfo SetDeviceId(WindowsDevicePathInfo pathInfo, string deviceId)
 		{
-			if (!Regex.IsMatch(vendorId, VENDOR_ID_REGEX))
-				throw new FormatException("Invalid vendor ID");
+			if (!Regex.IsMatch(deviceId, DEVICE_ID_REGEX))
+				throw new FormatException("Invalid Device ID");
 
-			string deviceId = Regex.Replace(pathInfo.DeviceId, VENDOR_ID_REGEX, vendorId);
-			return new WindowsDevicePathInfo(pathInfo.Type, deviceId, pathInfo.InstanceId);
-		}
-
-		public static WindowsDevicePathInfo SetProductId(WindowsDevicePathInfo pathInfo, string productId)
-		{
-			if (!Regex.IsMatch(productId, PRODUCT_ID_REGEX))
-				throw new FormatException("Invalid product ID");
-
-			string deviceId = Regex.Replace(pathInfo.DeviceId, PRODUCT_ID_REGEX, productId);
 			return new WindowsDevicePathInfo(pathInfo.Type, deviceId, pathInfo.InstanceId);
 		}
 
@@ -210,9 +203,9 @@ namespace ICD.Connect.Devices.Windows
 		[Pure]
 		public bool Equals(WindowsDevicePathInfo other)
 		{
-			return Type == other.Type &&
-			       DeviceId == other.DeviceId &&
-			       InstanceId == other.InstanceId;
+			return string.Equals(Type, other.Type, StringComparison.OrdinalIgnoreCase) &&
+			       string.Equals(DeviceId, other.DeviceId, StringComparison.OrdinalIgnoreCase) &&
+			       string.Equals(InstanceId, other.InstanceId, StringComparison.OrdinalIgnoreCase);
 		}
 
 		/// <summary>
@@ -225,24 +218,24 @@ namespace ICD.Connect.Devices.Windows
 			unchecked
 			{
 				int hash = 17;
-				hash = hash * 23 + Type.GetStableHashCode();
-				hash = hash * 23 + DeviceId.GetStableHashCode();
-				hash = hash * 23 + InstanceId.GetStableHashCode();
+				hash = hash * 23 + Type.ToUpper().GetStableHashCode();
+				hash = hash * 23 + DeviceId.ToUpper().GetStableHashCode();
+				hash = hash * 23 + InstanceId.ToUpper().GetStableHashCode();
 				return hash;
 			}
 		}
 
 		public int CompareTo(WindowsDevicePathInfo other)
 		{
-			int result = string.CompareOrdinal(Type, other.Type);
+			int result = string.CompareOrdinal(Type.ToUpper(), other.Type.ToUpper());
 			if (result != 0)
 				return result;
 
-			result = string.CompareOrdinal(DeviceId, other.DeviceId);
+			result = string.CompareOrdinal(DeviceId.ToUpper(), other.DeviceId.ToUpper());
 			if (result != 0)
 				return result;
 
-			return string.CompareOrdinal(InstanceId, other.InstanceId);
+			return string.CompareOrdinal(InstanceId.ToUpper(), other.InstanceId.ToUpper());
 		}
 
 
