@@ -29,7 +29,7 @@ namespace ICD.Connect.Devices
 		/// Returns true if the device hardware is detected by the system.
 		/// </summary>
 		[ApiProperty(DeviceBaseApi.PROPERTY_IS_ONLINE, DeviceBaseApi.HELP_PROPERTY_IS_ONLINE)]
-		[DynamicPropertyTelemetry(DeviceTelemetryNames.ONLINE_STATE, DeviceTelemetryNames.ONLINE_STATE_CHANGED)]
+		[DynamicPropertyTelemetry(DeviceTelemetryNames.ONLINE_STATE, null, DeviceTelemetryNames.ONLINE_STATE_CHANGED)]
 		bool IsOnline { get; }
 
 		/// <summary>
