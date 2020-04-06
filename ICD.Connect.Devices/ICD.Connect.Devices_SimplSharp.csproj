@@ -74,6 +74,10 @@
     <Compile Include="Controls\DeviceControlConsole.cs" />
     <Compile Include="Controls\PowerDeviceControlConsole.cs" />
     <Compile Include="Devices\DeviceBaseConsole.cs" />
+    <Compile Include="Devices\Mock\AbstractMockDevice.cs" />
+    <Compile Include="Devices\Mock\AbstractMockDeviceSettings.cs" />
+    <Compile Include="Devices\Mock\IMockDevice.cs" />
+    <Compile Include="Devices\Mock\IMockDeviceSettings.cs" />
     <Compile Include="Devices\Simpl\AbstractSimplProxyDevice.cs" />
     <Compile Include="Devices\Simpl\AbstractSimplProxyDeviceBase.cs" />
     <Compile Include="Devices\Simpl\ISimplProxyDevice.cs" />
