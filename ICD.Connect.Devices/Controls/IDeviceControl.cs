@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using ICD.Common.Logging.LoggingContexts;
 using ICD.Common.Properties;
 using ICD.Common.Utils;
 using ICD.Common.Utils.Extensions;
@@ -49,6 +50,11 @@ namespace ICD.Connect.Devices.Controls
 		/// </summary>
 		[ApiProperty(DeviceControlApi.PROPERTY_CONTROL_AVAILABLE, DeviceControlApi.HELP_PROPERTY_CONTROL_AVAILABLE)]
 		bool ControlAvailable { get; }
+
+		/// <summary>
+		/// Logger for the control.
+		/// </summary>
+		ILoggingContext Logger { get; }
 	}
 
 	public interface IDeviceControl<T> : IDeviceControl

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using ICD.Common.Logging.LoggingContexts;
 using ICD.Common.Utils;
 using ICD.Common.Utils.Extensions;
 using ICD.Common.Utils.Services.Logging;
@@ -16,10 +17,10 @@ namespace ICD.Connect.Devices.Proxies.Controls
 {
 	public abstract class AbstractProxyDeviceControl : AbstractProxy, IProxyDeviceControl
 	{
-		public event EventHandler OnRequestTelemetryRebuild;
-
 		private readonly int m_Id;
 		private readonly IProxyDeviceBase m_Parent;
+		private readonly ILoggingContext m_Logger;
+
 		private bool m_ControlAvailable;
 
 		#region Properties
@@ -54,6 +55,8 @@ namespace ICD.Connect.Devices.Proxies.Controls
 
 				m_ControlAvailable = value;
 
+				Logger.Set("Control Available", eSeverity.Informational, ControlAvailable);
+
 				OnControlAvailableChanged.Raise(this, new DeviceControlAvailableApiEventArgs(ControlAvailable));
 			}
 		}
@@ -71,7 +74,7 @@ namespace ICD.Connect.Devices.Proxies.Controls
 		/// <summary>
 		/// Gets the logger for the control.
 		/// </summary>
-		public ILoggerService Logger { get { return Parent.Logger; } }
+		public ILoggingContext Logger { get { return m_Logger; } }
 
 		#endregion
 
@@ -84,20 +87,10 @@ namespace ICD.Connect.Devices.Proxies.Controls
 		{
 			m_Id = id;
 			m_Parent = parent;
+			m_Logger = new ServiceLoggingContext(this);
 		}
 
 		#region Methods
-
-		public void Log(eSeverity severity, string message)
-		{
-			Logger.AddEntry(severity, "{0} - {1}", this, message);
-		}
-
-		public void Log(eSeverity severity, string message, params object[] args)
-		{
-			message = string.Format(message, args);
-			Log(severity, message);
-		}
 
 		/// <summary>
 		/// Gets the string representation for this instance.

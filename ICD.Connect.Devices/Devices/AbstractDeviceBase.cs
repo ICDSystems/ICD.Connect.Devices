@@ -49,7 +49,7 @@ namespace ICD.Connect.Devices
 
 				m_IsOnline = value;
 
-				Log(eSeverity.Informational, "Online status changed to {0}", IsOnline);
+				Logger.Set("Online", eSeverity.Informational, IsOnline);
 
 				OnIsOnlineStateChanged.Raise(this, new DeviceBaseOnlineStateApiEventArgs(IsOnline));
 
@@ -75,7 +75,7 @@ namespace ICD.Connect.Devices
 
 				m_ControlsAvailable = value;
 
-				Log(eSeverity.Informational, "Controls Available changed to {0}", ControlsAvailable);
+				Logger.Set("Controls Available", eSeverity.Informational, ControlsAvailable);
 
 				OnControlsAvailableChanged.Raise(this, new DeviceBaseControlsAvailableApiEventArgs(ControlsAvailable));
 			}

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using ICD.Common.Logging.LoggingContexts;
 using ICD.Common.Properties;
 using ICD.Common.Utils;
 using ICD.Common.Utils.Extensions;
-using ICD.Common.Utils.Services.Logging;
 using ICD.Connect.API.Commands;
 using ICD.Connect.API.Nodes;
 using ICD.Connect.Devices.EventArguments;
@@ -17,11 +17,11 @@ namespace ICD.Connect.Devices.Controls
 	public abstract class AbstractDeviceControl<T> : IDeviceControl<T>
 		where T : IDeviceBase
 	{
-
 		#region Events
 
-		public event EventHandler OnRequestTelemetryRebuild;
-
+		/// <summary>
+		/// Raised when the Control availability changes
+		/// </summary>
 		public event EventHandler<DeviceControlAvailableApiEventArgs> OnControlAvailableChanged;
 
 		#endregion
@@ -29,8 +29,8 @@ namespace ICD.Connect.Devices.Controls
 		#region Fields
 
 		private readonly int m_Id;
-
 		private readonly T m_Parent;
+		private readonly ILoggingContext m_Logger;
 
 		private bool m_ControlAvailable;
 
@@ -94,8 +94,7 @@ namespace ICD.Connect.Devices.Controls
 		/// <summary>
 		/// Gets the logger for the control.
 		/// </summary>
-		[Obsolete]
-		public ILoggerService Logger { get { return Parent.Logger; } }
+		public ILoggingContext Logger { get { return m_Logger; } }
 
 		#endregion
 
@@ -108,6 +107,7 @@ namespace ICD.Connect.Devices.Controls
 		{
 			m_Id = id;
 			m_Parent = parent;
+			m_Logger = new ServiceLoggingContext(this);
 
 			Subscribe(Parent);
 		}
@@ -142,17 +142,6 @@ namespace ICD.Connect.Devices.Controls
 			builder.AppendProperty("Parent", Parent.Id);
 
 			return builder.ToString();
-		}
-
-		public void Log(eSeverity severity, string message)
-		{
-			Logger.AddEntry(severity, "{0} - {1}", this, message);
-		}
-
-		public void Log(eSeverity severity, string message, params object[] args)
-		{
-			message = string.Format(message, args);
-			Log(severity, message);
 		}
 
 		protected virtual bool GetControlAvailable()

@@ -167,7 +167,7 @@ namespace ICD.Connect.Devices.Points
 			TControl control = null;
 
 			if (settings.DeviceId == 0)
-				Log(eSeverity.Error, "No device id configured");
+				Logger.Log(eSeverity.Error, "No device id configured");
 			else
 			{
 				try
@@ -176,7 +176,7 @@ namespace ICD.Connect.Devices.Points
 				}
 				catch (KeyNotFoundException)
 				{
-					Log(eSeverity.Error, "No device with id {0}", settings.DeviceId);
+					Logger.Log(eSeverity.Error, "No device with id {0}", settings.DeviceId);
 				}
 			}
 
@@ -188,7 +188,7 @@ namespace ICD.Connect.Devices.Points
 				}
 				catch (Exception e)
 				{
-					Log(eSeverity.Error, "Unable to get control {0} from device {1} - {2}", settings.ControlId,
+					Logger.Log(eSeverity.Error, "Unable to get control {0} from device {1} - {2}", settings.ControlId,
 					    settings.DeviceId, e.Message);
 				}
 			}

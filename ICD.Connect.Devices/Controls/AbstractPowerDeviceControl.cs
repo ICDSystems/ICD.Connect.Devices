@@ -124,7 +124,7 @@ namespace ICD.Connect.Devices.Controls
 
 			m_PowerState = powerState;
 
-			Log(eSeverity.Informational, "IsPowered set to {0}", powerState);
+			Logger.Log(eSeverity.Informational, "IsPowered set to {0}", powerState);
 
 			OnPowerStateChanged.Raise(this, new PowerDeviceControlPowerStateApiEventArgs(powerState, expectedDuration));
 		}
