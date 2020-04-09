@@ -36,6 +36,7 @@ namespace ICD.Connect.Devices.Controls
 		/// </summary>
 		[ApiProperty(DeviceControlApi.PROPERTY_ID, DeviceControlApi.HELP_PROPERTY_ID)]
 		[StaticPropertyTelemetry(ControlTelemetryNames.ID)]
+		[TelemetryCollectionIdentity]
 		int Id { get; }
 
 		/// <summary>
