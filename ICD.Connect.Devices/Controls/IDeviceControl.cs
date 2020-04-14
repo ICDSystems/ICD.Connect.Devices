@@ -18,6 +18,7 @@ namespace ICD.Connect.Devices.Controls
 	/// IDeviceControl contains the usage features for a parent device.
 	/// </summary>
 	[ApiClass(typeof(ProxyDeviceControl))]
+	[ExternalTelemetry("Device Control Telemetry", typeof(DeviceControlExternalTelemetryProvider))]
 	public interface IDeviceControl : IConsoleNode, IStateDisposable, ITelemetryProvider
 	{
 		/// <summary>
