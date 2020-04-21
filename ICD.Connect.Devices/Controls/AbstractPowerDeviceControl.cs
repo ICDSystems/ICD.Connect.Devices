@@ -10,7 +10,7 @@ using ICD.Connect.Devices.EventArguments;
 namespace ICD.Connect.Devices.Controls
 {
 	public abstract class AbstractPowerDeviceControl<TDevice> : AbstractDeviceControl<TDevice>, IPowerDeviceControl
-		where TDevice : IDeviceBase
+		where TDevice : IDevice
 	{
 		public delegate void PrePowerDelegate(Action powerCallback);
 

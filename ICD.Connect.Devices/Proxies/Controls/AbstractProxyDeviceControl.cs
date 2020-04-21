@@ -18,7 +18,7 @@ namespace ICD.Connect.Devices.Proxies.Controls
 	public abstract class AbstractProxyDeviceControl : AbstractProxy, IProxyDeviceControl
 	{
 		private readonly int m_Id;
-		private readonly IProxyDeviceBase m_Parent;
+		private readonly IProxyDevice m_Parent;
 		private readonly ILoggingContext m_Logger;
 
 		private bool m_ControlAvailable;
@@ -30,7 +30,7 @@ namespace ICD.Connect.Devices.Proxies.Controls
 		/// <summary>
 		/// Gets the parent device for this control.
 		/// </summary>
-		public IDeviceBase Parent { get { return m_Parent; } }
+		public IDevice Parent { get { return m_Parent; } }
 
 		/// <summary>
 		/// Gets the id for this control.
@@ -83,7 +83,7 @@ namespace ICD.Connect.Devices.Proxies.Controls
 		/// </summary>
 		/// <param name="parent"></param>
 		/// <param name="id"></param>
-		protected AbstractProxyDeviceControl(IProxyDeviceBase parent, int id)
+		protected AbstractProxyDeviceControl(IProxyDevice parent, int id)
 		{
 			m_Id = id;
 			m_Parent = parent;

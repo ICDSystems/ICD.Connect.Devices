@@ -4,9 +4,7 @@ using ICD.Common.Utils.Extensions;
 using ICD.Common.Utils.Services.Logging;
 using ICD.Connect.API.Commands;
 using ICD.Connect.API.Nodes;
-using ICD.Connect.Devices.Controls;
 using ICD.Connect.Devices.EventArguments;
-using ICD.Connect.Settings;
 using ICD.Connect.Settings.Originators.Simpl;
 
 namespace ICD.Connect.Devices.Simpl
@@ -19,16 +17,7 @@ namespace ICD.Connect.Devices.Simpl
 		/// </summary>
 		public event EventHandler<DeviceBaseOnlineStateApiEventArgs> OnIsOnlineStateChanged;
 
-		/// <summary>
-		/// Raised when ControlsAvailable changes
-		/// </summary>
-		public event EventHandler<DeviceBaseControlsAvailableApiEventArgs> OnControlsAvailableChanged;
-
-		private readonly DeviceControlsCollection m_Controls;
-
 		private bool m_IsOnline;
-
-		private bool m_ControlsAvailable;
 
 		#region Properties
 
@@ -47,65 +36,13 @@ namespace ICD.Connect.Devices.Simpl
 
 				Logger.Set("Online", eSeverity.Informational, IsOnline);
 
+				HandleOnlineStateChange(m_IsOnline);
+
 				OnIsOnlineStateChanged.Raise(this, new DeviceBaseOnlineStateApiEventArgs(IsOnline));
 			}
 		}
 
-		/// <summary>
-		/// Gets if controls are available
-		/// </summary>
-		public bool ControlsAvailable
-		{
-			get { return m_ControlsAvailable; }
-			private set
-			{
-				if (value == m_ControlsAvailable)
-					return;
-
-				m_ControlsAvailable = value;
-
-				Logger.Set("Controls Available", eSeverity.Informational, ControlsAvailable);
-
-				OnControlsAvailableChanged.Raise(this, new DeviceBaseControlsAvailableApiEventArgs(ControlsAvailable));
-			}
-		}
-
-		/// <summary>
-		/// Gets/sets the manufacturer for this device.
-		/// </summary>
-		public string Manufacturer { get; set; }
-
-		/// <summary>
-		/// Gets/sets the model number for this device.
-		/// </summary>
-		public string Model { get; set; }
-
-		/// <summary>
-		/// Gets/sets the serial number for this device.
-		/// </summary>
-		public string SerialNumber { get; set; }
-
-		/// <summary>
-		/// Gets/sets the purchase date for this device.
-		/// </summary>
-		public DateTime PurchaseDate { get; set; }
-
-		/// <summary>
-		/// Gets the controls for this device.
-		/// </summary>
-		public DeviceControlsCollection Controls { get { return m_Controls; } }
-
 		#endregion
-
-		/// <summary>
-		/// Constructor.
-		/// </summary>
-		protected AbstractSimplDeviceBase()
-		{
-			m_Controls = new DeviceControlsCollection();
-
-			Name = GetType().Name;
-		}
 
 		/// <summary>
 		/// Release resources.
@@ -113,9 +50,6 @@ namespace ICD.Connect.Devices.Simpl
 		protected override void DisposeFinal(bool disposing)
 		{
 			OnIsOnlineStateChanged = null;
-			OnControlsAvailableChanged = null;
-
-			m_Controls.Dispose();
 
 			base.DisposeFinal(disposing);
 		}
@@ -127,72 +61,12 @@ namespace ICD.Connect.Devices.Simpl
 			IsOnline = online;
 		}
 
-		#endregion
-
-		#region Private Methods
-
 		/// <summary>
-		/// Gets the current state of Control Availability
-		/// Default implementation is to follow IsOnline;
+		/// Override to handle the device going online/offline.
 		/// </summary>
-		/// <returns></returns>
-		protected virtual bool GetControlsAvailable()
+		/// <param name="isOnline"></param>
+		protected virtual void HandleOnlineStateChange(bool isOnline)
 		{
-			return IsOnline;
-		}
-
-		/// <summary>
-		/// Updates the cached ControlsAvailable status and raises the OnControlsAvailableChanged if the cache chagnes
-		/// </summary>
-		protected virtual void UpdateCachedControlsAvailable()
-		{
-			ControlsAvailable = GetControlsAvailable();
-		}
-
-		#endregion
-
-		#region Settings
-
-		/// <summary>
-		/// Override to apply properties to the settings instance.
-		/// </summary>
-		/// <param name="settings"></param>
-		protected override void CopySettingsFinal(TSettings settings)
-		{
-			base.CopySettingsFinal(settings);
-
-			settings.Manufacturer = Manufacturer;
-			settings.Model = Model;
-			settings.SerialNumber = SerialNumber;
-			settings.PurchaseDate = PurchaseDate;
-		}
-
-		/// <summary>
-		/// Override to apply settings to the instance.
-		/// </summary>
-		/// <param name="settings"></param>
-		/// <param name="factory"></param>
-		protected override void ApplySettingsFinal(TSettings settings, IDeviceFactory factory)
-		{
-			base.ApplySettingsFinal(settings, factory);
-
-			Manufacturer = settings.Manufacturer;
-			Model = settings.Model;
-			SerialNumber = settings.SerialNumber;
-			PurchaseDate = settings.PurchaseDate;
-		}
-
-		/// <summary>
-		/// Override to clear the instance settings.
-		/// </summary>
-		protected override void ClearSettingsFinal()
-		{
-			base.ClearSettingsFinal();
-
-			Manufacturer = null;
-			Model = null;
-			SerialNumber = null;
-			PurchaseDate = DateTime.MinValue;
 		}
 
 		#endregion

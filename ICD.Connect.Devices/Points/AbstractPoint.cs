@@ -163,7 +163,7 @@ namespace ICD.Connect.Devices.Points
 			DeviceId = settings.DeviceId;
 			ControlId = settings.ControlId;
 
-			IDeviceBase device = null;
+			IDevice device = null;
 			TControl control = null;
 
 			if (settings.DeviceId == 0)
@@ -172,7 +172,7 @@ namespace ICD.Connect.Devices.Points
 			{
 				try
 				{
-					device = factory.GetOriginatorById<IDeviceBase>(settings.DeviceId);
+					device = factory.GetOriginatorById<IDevice>(settings.DeviceId);
 				}
 				catch (KeyNotFoundException)
 				{

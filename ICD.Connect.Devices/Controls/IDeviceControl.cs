@@ -30,7 +30,7 @@ namespace ICD.Connect.Devices.Controls
 		/// <summary>
 		/// Gets the parent device for this control.
 		/// </summary>
-		IDeviceBase Parent { get; }
+		IDevice Parent { get; }
 
 		/// <summary>
 		/// Gets the id for this control.
@@ -60,7 +60,7 @@ namespace ICD.Connect.Devices.Controls
 	}
 
 	public interface IDeviceControl<T> : IDeviceControl
-		where T : IDeviceBase
+		where T : IDevice
 	{
 		/// <summary>
 		/// Gets the parent device for this control.

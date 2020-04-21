@@ -5,19 +5,19 @@ using ICD.Connect.API.Nodes;
 
 namespace ICD.Connect.Devices
 {
-	public static class DeviceBaseConsole
+	public static class DeviceConsole
 	{
 		/// <summary>
 		/// Gets the child console nodes.
 		/// </summary>
 		/// <param name="instance"></param>
 		/// <returns></returns>
-		public static IEnumerable<IConsoleNodeBase> GetConsoleNodes(IDeviceBase instance)
+		public static IEnumerable<IConsoleNodeBase> GetConsoleNodes(IDevice instance)
 		{
 			if (instance == null)
 				throw new ArgumentNullException("instance");
 
-			yield break;
+			yield return ConsoleNodeGroup.KeyNodeMap("Controls", instance.Controls, c => (uint)c.Id);
 		}
 
 		/// <summary>
@@ -25,12 +25,15 @@ namespace ICD.Connect.Devices
 		/// </summary>
 		/// <param name="instance"></param>
 		/// <param name="addRow"></param>
-		public static void BuildConsoleStatus(IDeviceBase instance, AddStatusRowDelegate addRow)
+		public static void BuildConsoleStatus(IDevice instance, AddStatusRowDelegate addRow)
 		{
 			if (instance == null)
 				throw new ArgumentNullException("instance");
 
-			addRow("Online", instance.IsOnline);
+			addRow("Manufacturer", instance.Manufacturer);
+			addRow("Model", instance.Model);
+			addRow("Serial Number", instance.SerialNumber);
+			addRow("Purchase Date", instance.PurchaseDate);
 		}
 
 		/// <summary>
@@ -38,7 +41,7 @@ namespace ICD.Connect.Devices
 		/// </summary>
 		/// <param name="instance"></param>
 		/// <returns></returns>
-		public static IEnumerable<IConsoleCommand> GetConsoleCommands(IDeviceBase instance)
+		public static IEnumerable<IConsoleCommand> GetConsoleCommands(IDevice instance)
 		{
 			if (instance == null)
 				throw new ArgumentNullException("instance");

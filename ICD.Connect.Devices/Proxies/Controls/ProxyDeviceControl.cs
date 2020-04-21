@@ -9,7 +9,7 @@ namespace ICD.Connect.Devices.Proxies.Controls
 		/// </summary>
 		/// <param name="parent"></param>
 		/// <param name="id"></param>
-		public ProxyDeviceControl(IProxyDeviceBase parent, int id)
+		public ProxyDeviceControl(IProxyDevice parent, int id)
 			: base(parent, id)
 		{
 		}

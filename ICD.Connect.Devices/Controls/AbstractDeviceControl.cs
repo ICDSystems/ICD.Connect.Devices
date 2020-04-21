@@ -15,7 +15,7 @@ namespace ICD.Connect.Devices.Controls
 	/// </summary>
 	/// <typeparam name="T"></typeparam>
 	public abstract class AbstractDeviceControl<T> : IDeviceControl<T>
-		where T : IDeviceBase
+		where T : IDevice
 	{
 		#region Events
 
@@ -41,7 +41,7 @@ namespace ICD.Connect.Devices.Controls
 		/// <summary>
 		/// Gets the parent device for this control.
 		/// </summary>
-		IDeviceBase IDeviceControl.Parent { get { return Parent; } }
+		IDevice IDeviceControl.Parent { get { return Parent; } }
 
 		/// <summary>
 		/// Gets the id for this control.

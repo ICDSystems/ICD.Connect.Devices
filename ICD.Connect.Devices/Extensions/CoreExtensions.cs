@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using ICD.Common.Properties;
 using ICD.Connect.Devices.Controls;
 using ICD.Connect.Settings.Cores;
@@ -45,7 +44,7 @@ namespace ICD.Connect.Devices.Extensions
 			if (!extends.Originators.TryGetChild(deviceId, out originator))
 				throw new KeyNotFoundException(string.Format("No device with id {0}", deviceId));
 
-			IDeviceBase device = originator as IDeviceBase;
+			IDevice device = originator as IDevice;
 			if (device == null)
 				throw new KeyNotFoundException(string.Format("{0} is not of type {1}", originator, typeof(IDeviceBase).Name));
 
@@ -86,27 +85,8 @@ namespace ICD.Connect.Devices.Extensions
 			if (extends == null)
 				throw new ArgumentNullException("extends");
 
-			IDeviceBase originator = extends.Originators.GetChild<IDeviceBase>(device);
+			IDevice originator = extends.Originators.GetChild<IDevice>(device);
 			return originator.Controls.GetControl<T>(control);
-		}
-
-		/// <summary>
-		/// Gets the control with the given device and control ids.
-		/// </summary>
-		/// <param name="extends"></param>
-		/// <param name="controlInfo"></param>
-		/// <returns></returns>
-		[NotNull]
-		public static IEnumerable<T> GetControls<T>(this ICore extends, IEnumerable<DeviceControlInfo> controlInfo)
-			where T : class, IDeviceControl
-		{
-			if (extends == null)
-				throw new ArgumentNullException("extends");
-
-			if (extends == null)
-				throw new ArgumentNullException("controlInfo");
-
-			return controlInfo.Select(c => extends.GetControl<T>(c));
 		}
 	}
 }
