@@ -44,5 +44,29 @@ namespace ICD.Connect.Devices
 		/// </summary>
 		[ApiProperty(DeviceBaseApi.PROPERTY_CONTROLS_AVAILABLE, DeviceBaseApi.HELP_PROPERTY_CONTROLS_AVAILABLE)]
 		bool ControlsAvailable { get; }
+
+		/// <summary>
+		/// Gets/sets the manufacturer for this device.
+		/// </summary>
+		[StaticPropertyTelemetry(DeviceTelemetryNames.MANUFACTURER)]
+		string Manufacturer { get; set; }
+
+		/// <summary>
+		/// Gets/sets the model number for this device.
+		/// </summary>
+		[StaticPropertyTelemetry(DeviceTelemetryNames.MODEL)]
+		string Model { get; set; }
+
+		/// <summary>
+		/// Gets/sets the serial number for this device.
+		/// </summary>
+		[StaticPropertyTelemetry(DeviceTelemetryNames.SERIAL_NUMBER)]
+		string SerialNumber { get; set; }
+
+		/// <summary>
+		/// Gets/sets the purchase date for this device.
+		/// </summary>
+		[StaticPropertyTelemetry(DeviceTelemetryNames.PURCHASE_DATE)]
+		DateTime PurchaseDate { get; set; }
 	}
 }

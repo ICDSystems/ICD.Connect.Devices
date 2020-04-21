@@ -76,6 +76,26 @@ namespace ICD.Connect.Devices.Proxies.Devices
 			}
 		}
 
+		/// <summary>
+		/// Gets/sets the manufacturer for this device.
+		/// </summary>
+		public string Manufacturer { get; set; }
+
+		/// <summary>
+		/// Gets/sets the model number for this device.
+		/// </summary>
+		public string Model { get; set; }
+
+		/// <summary>
+		/// Gets/sets the serial number for this device.
+		/// </summary>
+		public string SerialNumber { get; set; }
+
+		/// <summary>
+		/// Gets/sets the purchase date for this device.
+		/// </summary>
+		public DateTime PurchaseDate { get; set; }
+
 		#endregion
 
 		/// <summary>

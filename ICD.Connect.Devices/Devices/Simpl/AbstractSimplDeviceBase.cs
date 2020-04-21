@@ -6,6 +6,7 @@ using ICD.Connect.API.Commands;
 using ICD.Connect.API.Nodes;
 using ICD.Connect.Devices.Controls;
 using ICD.Connect.Devices.EventArguments;
+using ICD.Connect.Settings;
 using ICD.Connect.Settings.Originators.Simpl;
 
 namespace ICD.Connect.Devices.Simpl
@@ -28,6 +29,8 @@ namespace ICD.Connect.Devices.Simpl
 		private bool m_IsOnline;
 
 		private bool m_ControlsAvailable;
+
+		#region Properties
 
 		/// <summary>
 		/// Returns true if the device hardware is detected by the system.
@@ -68,9 +71,31 @@ namespace ICD.Connect.Devices.Simpl
 		}
 
 		/// <summary>
+		/// Gets/sets the manufacturer for this device.
+		/// </summary>
+		public string Manufacturer { get; set; }
+
+		/// <summary>
+		/// Gets/sets the model number for this device.
+		/// </summary>
+		public string Model { get; set; }
+
+		/// <summary>
+		/// Gets/sets the serial number for this device.
+		/// </summary>
+		public string SerialNumber { get; set; }
+
+		/// <summary>
+		/// Gets/sets the purchase date for this device.
+		/// </summary>
+		public DateTime PurchaseDate { get; set; }
+
+		/// <summary>
 		/// Gets the controls for this device.
 		/// </summary>
 		public DeviceControlsCollection Controls { get { return m_Controls; } }
+
+		#endregion
 
 		/// <summary>
 		/// Constructor.
@@ -82,10 +107,29 @@ namespace ICD.Connect.Devices.Simpl
 			Name = GetType().Name;
 		}
 
+		/// <summary>
+		/// Release resources.
+		/// </summary>
+		protected override void DisposeFinal(bool disposing)
+		{
+			OnIsOnlineStateChanged = null;
+			OnControlsAvailableChanged = null;
+
+			m_Controls.Dispose();
+
+			base.DisposeFinal(disposing);
+		}
+
+		#region Methods
+
 		public void SetIsOnline(bool online)
 		{
 			IsOnline = online;
 		}
+
+		#endregion
+
+		#region Private Methods
 
 		/// <summary>
 		/// Gets the current state of Control Availability
@@ -105,17 +149,53 @@ namespace ICD.Connect.Devices.Simpl
 			ControlsAvailable = GetControlsAvailable();
 		}
 
+		#endregion
+
+		#region Settings
+
 		/// <summary>
-		/// Release resources.
+		/// Override to apply properties to the settings instance.
 		/// </summary>
-		protected override void DisposeFinal(bool disposing)
+		/// <param name="settings"></param>
+		protected override void CopySettingsFinal(TSettings settings)
 		{
-			OnIsOnlineStateChanged = null;
+			base.CopySettingsFinal(settings);
 
-			m_Controls.Dispose();
-
-			base.DisposeFinal(disposing);
+			settings.Manufacturer = Manufacturer;
+			settings.Model = Model;
+			settings.SerialNumber = SerialNumber;
+			settings.PurchaseDate = PurchaseDate;
 		}
+
+		/// <summary>
+		/// Override to apply settings to the instance.
+		/// </summary>
+		/// <param name="settings"></param>
+		/// <param name="factory"></param>
+		protected override void ApplySettingsFinal(TSettings settings, IDeviceFactory factory)
+		{
+			base.ApplySettingsFinal(settings, factory);
+
+			Manufacturer = settings.Manufacturer;
+			Model = settings.Model;
+			SerialNumber = settings.SerialNumber;
+			PurchaseDate = settings.PurchaseDate;
+		}
+
+		/// <summary>
+		/// Override to clear the instance settings.
+		/// </summary>
+		protected override void ClearSettingsFinal()
+		{
+			base.ClearSettingsFinal();
+
+			Manufacturer = null;
+			Model = null;
+			SerialNumber = null;
+			PurchaseDate = DateTime.MinValue;
+		}
+
+		#endregion
 
 		#region Console
 

@@ -31,6 +31,10 @@ namespace ICD.Connect.Devices
 				throw new ArgumentNullException("instance");
 
 			addRow("Online", instance.IsOnline);
+			addRow("Manufacturer", instance.Manufacturer);
+			addRow("Model", instance.Model);
+			addRow("Serial Number", instance.SerialNumber);
+			addRow("Purchase Date", instance.PurchaseDate);
 		}
 
 		/// <summary>

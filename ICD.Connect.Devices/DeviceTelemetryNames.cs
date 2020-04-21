@@ -2,6 +2,11 @@
 {
 	public static class DeviceTelemetryNames
 	{
+		public const string MANUFACTURER = "Manufacturer";
+		public const string MODEL = "Model";
+		public const string SERIAL_NUMBER = "SerialNumber";
+		public const string PURCHASE_DATE = "PurchaseDate";
+
 		public const string POWER_STATE = "IsPowered";
 		public const string POWER_ON = "PowerOn";
 		public const string POWER_OFF = "PowerOff";

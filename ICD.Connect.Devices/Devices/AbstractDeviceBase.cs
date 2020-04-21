@@ -16,7 +16,7 @@ namespace ICD.Connect.Devices
 	/// Base class for devices.
 	/// </summary>
 	public abstract class AbstractDeviceBase<T> : AbstractOriginator<T>, IDeviceBase
-		where T : ISettings, new()
+		where T : IDeviceBaseSettings, new()
 	{
 		/// <summary>
 		/// Raised when the device becomes online/offline.
@@ -80,6 +80,26 @@ namespace ICD.Connect.Devices
 				OnControlsAvailableChanged.Raise(this, new DeviceBaseControlsAvailableApiEventArgs(ControlsAvailable));
 			}
 		}
+
+		/// <summary>
+		/// Gets/sets the manufacturer for this device.
+		/// </summary>
+		public string Manufacturer { get; set; }
+
+		/// <summary>
+		/// Gets/sets the model number for this device.
+		/// </summary>
+		public string Model { get; set; }
+
+		/// <summary>
+		/// Gets/sets the serial number for this device.
+		/// </summary>
+		public string SerialNumber { get; set; }
+
+		/// <summary>
+		/// Gets/sets the purchase date for this device.
+		/// </summary>
+		public DateTime PurchaseDate { get; set; }
 
 		#endregion
 
@@ -147,6 +167,21 @@ namespace ICD.Connect.Devices
 		#region Settings
 
 		/// <summary>
+		/// Override to clear the instance settings.
+		/// </summary>
+		protected override void ClearSettingsFinal()
+		{
+			base.ClearSettingsFinal();
+
+			Manufacturer = null;
+			Model = null;
+			SerialNumber = null;
+			PurchaseDate = DateTime.MinValue;
+
+			UpdateCachedOnlineStatus();
+		}
+
+		/// <summary>
 		/// Override to apply settings to the instance.
 		/// </summary>
 		/// <param name="settings"></param>
@@ -155,7 +190,26 @@ namespace ICD.Connect.Devices
 		{
 			base.ApplySettingsFinal(settings, factory);
 
+			Manufacturer = settings.Manufacturer;
+			Model = settings.Model;
+			SerialNumber = settings.SerialNumber;
+			PurchaseDate = settings.PurchaseDate;
+
 			UpdateCachedOnlineStatus();
+		}
+
+		/// <summary>
+		/// Override to apply properties to the settings instance.
+		/// </summary>
+		/// <param name="settings"></param>
+		protected override void CopySettingsFinal(T settings)
+		{
+			base.CopySettingsFinal(settings);
+
+			settings.Manufacturer = Manufacturer;
+			settings.Model = Model;
+			settings.SerialNumber = SerialNumber;
+			settings.PurchaseDate = PurchaseDate;
 		}
 
 		#endregion
