@@ -8,7 +8,6 @@ using ICD.Connect.Telemetry.Attributes;
 
 namespace ICD.Connect.Devices
 {
-	[ApiClass(typeof(ProxyDeviceBase), typeof(IOriginator))]
 	public interface IDeviceBase : IOriginator, IStateDisposable
 	{
 		/// <summary>
