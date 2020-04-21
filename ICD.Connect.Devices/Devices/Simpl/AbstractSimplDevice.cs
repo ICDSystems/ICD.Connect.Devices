@@ -25,6 +25,11 @@ namespace ICD.Connect.Devices.Simpl
 		#region Properties
 
 		/// <summary>
+		/// Gets the category for this originator type (e.g. Device, Port, etc)
+		/// </summary>
+		public override string Category { get { return "Device"; } }
+
+		/// <summary>
 		/// Gets if controls are available
 		/// </summary>
 		public bool ControlsAvailable
