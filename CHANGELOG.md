@@ -44,6 +44,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Changed
  - Originators and settings moved into subdirectories
 
+## [6.6.0] - 2020-04-30
+### Added
+ - Added additional telemetry names for common attributes (network info, model, serial, software info)
+
 ## [6.5.0] - 2019-07-16
 ### Added
  - Power controls support pre-on/off delegates for ad-hoc devices (e.g. projector lifts)
