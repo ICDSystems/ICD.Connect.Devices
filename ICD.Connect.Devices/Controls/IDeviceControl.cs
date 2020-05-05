@@ -36,7 +36,7 @@ namespace ICD.Connect.Devices.Controls
 		/// Gets the id for this control.
 		/// </summary>
 		[ApiProperty(DeviceControlApi.PROPERTY_ID, DeviceControlApi.HELP_PROPERTY_ID)]
-		[StaticPropertyTelemetry(ControlTelemetryNames.ID)]
+		[PropertyTelemetry(ControlTelemetryNames.ID, null, null)]
 		[TelemetryCollectionIdentity]
 		int Id { get; }
 
@@ -44,7 +44,7 @@ namespace ICD.Connect.Devices.Controls
 		/// Gets the human readable name for this control.
 		/// </summary>
 		[ApiProperty(DeviceControlApi.PROPERTY_NAME, DeviceControlApi.HELP_PROPERTY_NAME)]
-		[StaticPropertyTelemetry(ControlTelemetryNames.NAME)]
+		[PropertyTelemetry(ControlTelemetryNames.NAME, null, null)]
 		string Name { get; }
 
 		/// <summary>

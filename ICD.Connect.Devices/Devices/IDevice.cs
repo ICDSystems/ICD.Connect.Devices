@@ -35,25 +35,25 @@ namespace ICD.Connect.Devices
 		/// <summary>
 		/// Gets/sets the manufacturer for this device.
 		/// </summary>
-		[StaticPropertyTelemetry(DeviceTelemetryNames.MANUFACTURER)]
+		[PropertyTelemetry(DeviceTelemetryNames.MANUFACTURER, null, null)]
 		string Manufacturer { get; set; }
 
 		/// <summary>
 		/// Gets/sets the model number for this device.
 		/// </summary>
-		[StaticPropertyTelemetry(DeviceTelemetryNames.MODEL)]
+		[PropertyTelemetry(DeviceTelemetryNames.MODEL, null, null)]
 		string Model { get; set; }
 
 		/// <summary>
 		/// Gets/sets the serial number for this device.
 		/// </summary>
-		[StaticPropertyTelemetry(DeviceTelemetryNames.SERIAL_NUMBER)]
+		[PropertyTelemetry(DeviceTelemetryNames.SERIAL_NUMBER, null, null)]
 		string SerialNumber { get; set; }
 
 		/// <summary>
 		/// Gets/sets the purchase date for this device.
 		/// </summary>
-		[StaticPropertyTelemetry(DeviceTelemetryNames.PURCHASE_DATE)]
+		[PropertyTelemetry(DeviceTelemetryNames.PURCHASE_DATE, null, null)]
 		DateTime PurchaseDate { get; set; }
 	}
 }

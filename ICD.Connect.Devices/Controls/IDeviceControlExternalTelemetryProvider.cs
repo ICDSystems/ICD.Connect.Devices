@@ -1,6 +1,7 @@
 ﻿using ICD.Common.Utils.Extensions;
 using ICD.Connect.Telemetry;
 using ICD.Connect.Telemetry.Attributes;
+using ICD.Connect.Telemetry.Nodes.External;
 
 namespace ICD.Connect.Devices.Controls
 {
@@ -22,7 +23,7 @@ namespace ICD.Connect.Devices.Controls
 
 	public interface IDeviceControlExternalTelemetryProvider : IExternalTelemetryProvider
 	{
-		[StaticPropertyTelemetry("DeviceControlType")]
+		[PropertyTelemetry("DeviceControlType", null, null)]
 		string DeviceControlType { get; }
 	}
 }
