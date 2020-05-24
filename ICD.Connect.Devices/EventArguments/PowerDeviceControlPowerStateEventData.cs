@@ -1,5 +1,6 @@
 ﻿using System;
 using ICD.Connect.Devices.Controls;
+using Newtonsoft.Json;
 
 namespace ICD.Connect.Devices.EventArguments
 {
@@ -10,16 +11,25 @@ namespace ICD.Connect.Devices.EventArguments
 
 		public long ExpectedDuration { get; set; }
 
+		/// <summary>
+		/// Constructor.
+		/// </summary>
+		/// <param name="powerState"></param>
+		public PowerDeviceControlPowerStateEventData(ePowerState powerState)
+			: this(powerState, 0)
+		{
+		}
+
+		/// <summary>
+		/// Constructor.
+		/// </summary>
+		/// <param name="powerState"></param>
+		/// <param name="expectedDuration"></param>
+		[JsonConstructor]
 		public PowerDeviceControlPowerStateEventData(ePowerState powerState, long expectedDuration)
 		{
 			PowerState = powerState;
 			ExpectedDuration = expectedDuration;
-		}
-
-		public PowerDeviceControlPowerStateEventData(ePowerState powerState)
-		{
-			PowerState = powerState;
-			ExpectedDuration = 0;
 		}
 	}
 }
