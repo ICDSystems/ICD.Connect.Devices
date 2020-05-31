@@ -9,8 +9,8 @@ using ICD.Connect.API.Attributes;
 using ICD.Connect.API.Nodes;
 using ICD.Connect.Devices.EventArguments;
 using ICD.Connect.Devices.Proxies.Controls;
-using ICD.Connect.Telemetry;
 using ICD.Connect.Telemetry.Attributes;
+using ICD.Connect.Telemetry.Providers;
 
 namespace ICD.Connect.Devices.Controls
 {
