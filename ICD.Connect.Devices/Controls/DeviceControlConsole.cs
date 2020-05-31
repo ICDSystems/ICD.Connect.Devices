@@ -31,6 +31,7 @@ namespace ICD.Connect.Devices.Controls
 				throw new ArgumentNullException("instance");
 
 			addRow("Id", instance.Id);
+			addRow("UUID", instance.Uuid);
 			addRow("Name", instance.Name);
 			addRow("Available", instance.ControlAvailable);
 		}

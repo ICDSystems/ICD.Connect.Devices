@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using ICD.Common.Logging.LoggingContexts;
+using ICD.Common.Properties;
 using ICD.Common.Utils;
 using ICD.Common.Utils.Extensions;
 using ICD.Common.Utils.Services.Logging;
@@ -12,12 +13,14 @@ using ICD.Connect.API.Proxies;
 using ICD.Connect.Devices.Controls;
 using ICD.Connect.Devices.EventArguments;
 using ICD.Connect.Devices.Proxies.Devices;
+using ICD.Connect.Devices.Utils;
 
 namespace ICD.Connect.Devices.Proxies.Controls
 {
 	public abstract class AbstractProxyDeviceControl : AbstractProxy, IProxyDeviceControl
 	{
 		private readonly int m_Id;
+		private readonly Guid m_Uuid;
 		private readonly IProxyDevice m_Parent;
 		private readonly ILoggingContext m_Logger;
 
@@ -36,6 +39,11 @@ namespace ICD.Connect.Devices.Proxies.Controls
 		/// Gets the id for this control.
 		/// </summary>
 		public int Id { get { return m_Id; } }
+
+		/// <summary>
+		/// Unique ID for the control.
+		/// </summary>
+		public Guid Uuid { get { return m_Uuid; } }
 
 		/// <summary>
 		/// Gets the human readable name for this control.
@@ -83,9 +91,24 @@ namespace ICD.Connect.Devices.Proxies.Controls
 		/// </summary>
 		/// <param name="parent"></param>
 		/// <param name="id"></param>
-		protected AbstractProxyDeviceControl(IProxyDevice parent, int id)
+		protected AbstractProxyDeviceControl([NotNull] IProxyDevice parent, int id)
+			: this(parent, id, DeviceControlUtils.GenerateUuid(parent, id))
 		{
+		}
+
+		/// <summary>
+		/// Constructor.
+		/// </summary>
+		/// <param name="parent"></param>
+		/// <param name="id"></param>
+		/// <param name="uuid"></param>
+		protected AbstractProxyDeviceControl([NotNull] IProxyDevice parent, int id, Guid uuid)
+		{
+			if (parent == null)
+				throw new ArgumentNullException("parent");
+
 			m_Id = id;
+			m_Uuid = uuid;
 			m_Parent = parent;
 			m_Logger = new ServiceLoggingContext(this);
 		}
@@ -98,15 +121,15 @@ namespace ICD.Connect.Devices.Proxies.Controls
 		/// <returns></returns>
 		public override string ToString()
 		{
-			ReprBuilder builder = new ReprBuilder(this);
-
-			builder.AppendProperty("Id", Id);
-			builder.AppendProperty("Parent", Parent.Id);
-
-			return builder.ToString();
+			return new ReprBuilder(this)
+				.AppendProperty("Id", Id)
+				.AppendProperty("Parent", Parent.Id)
+				.ToString();
 		}
 
 		#endregion
+
+		#region Private Methods
 
 		/// <summary>
 		/// Override to build initialization commands on top of the current class info.
@@ -158,6 +181,8 @@ namespace ICD.Connect.Devices.Proxies.Controls
 					break;
 			}
 		}
+
+		#endregion
 
 		#region Console
 

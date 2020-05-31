@@ -33,8 +33,15 @@ namespace ICD.Connect.Devices.Controls
 		/// </summary>
 		[ApiProperty(DeviceControlApi.PROPERTY_ID, DeviceControlApi.HELP_PROPERTY_ID)]
 		[PropertyTelemetry(ControlTelemetryNames.ID, null, null)]
-		[TelemetryCollectionIdentity]
 		int Id { get; }
+
+		/// <summary>
+		/// Unique ID for the control.
+		/// </summary>
+		[ApiProperty(DeviceControlApi.PROPERTY_UUID, DeviceControlApi.HELP_PROPERTY_UUID)]
+		[PropertyTelemetry(ControlTelemetryNames.UUID, null, null)]
+		[TelemetryCollectionIdentity]
+		Guid Uuid { get; }
 
 		/// <summary>
 		/// Gets the human readable name for this control.

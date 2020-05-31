@@ -7,6 +7,7 @@ using ICD.Common.Utils.Extensions;
 using ICD.Connect.API.Commands;
 using ICD.Connect.API.Nodes;
 using ICD.Connect.Devices.EventArguments;
+using ICD.Connect.Devices.Utils;
 
 namespace ICD.Connect.Devices.Controls
 {
@@ -29,6 +30,7 @@ namespace ICD.Connect.Devices.Controls
 		#region Fields
 
 		private readonly int m_Id;
+		private readonly Guid m_Uuid;
 		private readonly T m_Parent;
 		private readonly ILoggingContext m_Logger;
 
@@ -47,6 +49,11 @@ namespace ICD.Connect.Devices.Controls
 		/// Gets the id for this control.
 		/// </summary>
 		public int Id { get { return m_Id; } }
+
+		/// <summary>
+		/// Unique ID for the control.
+		/// </summary>
+		public Guid Uuid { get { return m_Uuid; } }
 
 		/// <summary>
 		/// Gets the parent device for this control.
@@ -103,9 +110,24 @@ namespace ICD.Connect.Devices.Controls
 		/// </summary>
 		/// <param name="parent"></param>
 		/// <param name="id"></param>
-		protected AbstractDeviceControl(T parent, int id)
+		protected AbstractDeviceControl([NotNull] T parent, int id)
+			: this(parent, id, DeviceControlUtils.GenerateUuid(parent, id))
 		{
+		}
+
+		/// <summary>
+		/// Constructor.
+		/// </summary>
+		/// <param name="parent"></param>
+		/// <param name="id"></param>
+		/// <param name="uuid"></param>
+		protected AbstractDeviceControl([NotNull] T parent, int id, Guid uuid)
+		{
+			if (parent == null)
+				throw new ArgumentNullException("parent");
+
 			m_Id = id;
+			m_Uuid = uuid;
 			m_Parent = parent;
 			m_Logger = new ServiceLoggingContext(this);
 
@@ -203,7 +225,6 @@ namespace ICD.Connect.Devices.Controls
 		}
 
 		#endregion
-
 
 		#region Console
 
