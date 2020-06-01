@@ -2,10 +2,10 @@
 {
 	public static class DeviceTelemetryNames
 	{
-		public const string MANUFACTURER = "Manufacturer";
-		public const string MODEL = "Model";
-		public const string SERIAL_NUMBER = "SerialNumber";
-		public const string PURCHASE_DATE = "PurchaseDate";
+		public const string CONFIGURED_MANUFACTURER = "Configured Manufacturer";
+		public const string CONFIGURED_MODEL = "Configured Model";
+		public const string CONFIGURED_SERIAL_NUMBER = "Configured SerialNumber";
+		public const string CONFIGURED_PURCHASE_DATE = "Configured PurchaseDate";
 
 		public const string POWER_STATE = "IsPowered";
 		public const string POWER_ON = "PowerOn";
@@ -27,13 +27,13 @@
 		public const string DEVICE_MAC_ADDRESS = "MAC Address";
 		public const string DEVICE_MAC_ADDRESS_CHANGED = "MAC Address Changed";
 
-		public const string DEVICE_IP_ADDRESS = "Ip Address";
+		public const string DEVICE_IP_ADDRESS = "IP Address";
 		public const string DEVICE_IP_ADDRESS_CHANGED = "Ip Address Changed";
 
-		public const string DEVICE_IP_SUBNET = "Ip Subnet";
+		public const string DEVICE_IP_SUBNET = "IP Subnet";
 		public const string DEVICE_IP_SUBNET_CHANGED = "Ip Subnet Changed";
 
-		public const string DEVICE_IP_GATEWAY = "Ip Gateway";
+		public const string DEVICE_IP_GATEWAY = "IP Gateway";
 		public const string DEVICE_IP_GATEWAY_CHANGED = "Ip Gateway Changed";
 
 		public const string DEVICE_HOSTNAME = "Hostname";
@@ -45,14 +45,14 @@
 		public const string DEVICE_MAC_ADDRESS_SECONDARY = "Secondary MAC Address";
 		public const string DEVICE_MAC_ADDRESS_SECONDARY_CHANGED = "Secondary MAC Address Changed";
 
-		public const string DEVICE_IP_ADDRESS_SECONDARY = "Secondary Ip Address";
+		public const string DEVICE_IP_ADDRESS_SECONDARY = "Secondary IP Address";
 		public const string DEVICE_IP_ADDRESS_SECONDARY_CHANGED = "Secondary IP Changed";
 
-		public const string DEVICE_IP_SUBNET_SECONDARY = "Secondary Ip Subnet";
-		public const string DEVICE_IP_SUBNET_SECONDARY_CHANGED = "Secondary Ip Subnet Changed";
+		public const string DEVICE_IP_SUBNET_SECONDARY = "Secondary IP Subnet";
+		public const string DEVICE_IP_SUBNET_SECONDARY_CHANGED = "Secondary IP Subnet Changed";
 
-		public const string DEVICE_IP_GATEWAY_SECONDARY = "Secondary Ip Gateway";
-		public const string DEVICE_IP_GATEWAY_SECONDARY_CHANGED = "Secondary Ip Gateway Changed";
+		public const string DEVICE_IP_GATEWAY_SECONDARY = "Secondary IP Gateway";
+		public const string DEVICE_IP_GATEWAY_SECONDARY_CHANGED = "Secondary IP Gateway Changed";
 
 		public const string DEVICE_HOSTNAME_SECONDARY = "Secondary Hostname";
 		public const string DEVICE_HOSTNAME_SECONDARY_CHANGED = "Secondary Hostname Changed";

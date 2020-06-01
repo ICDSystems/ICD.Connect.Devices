@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using ICD.Common.Utils.EventArguments;
 using ICD.Common.Utils.Extensions;
 using ICD.Common.Utils.Services.Logging;
 using ICD.Connect.API.Commands;
@@ -21,8 +22,21 @@ namespace ICD.Connect.Devices
 		/// </summary>
 		public event EventHandler<DeviceBaseControlsAvailableApiEventArgs> OnControlsAvailableChanged;
 
+		/// <summary>
+		/// Raised when the model changes.
+		/// </summary>
+		public event EventHandler<StringEventArgs> OnModelChanged;
+
+		/// <summary>
+		/// Raised when the serial number changes.
+		/// </summary>
+		public event EventHandler<StringEventArgs> OnSerialNumberChanged;
+
 		private readonly DeviceControlsCollection m_Controls;
+
 		private bool m_ControlsAvailable;
+		private string m_Model;
+		private string m_SerialNumber;
 
 		#region Properties
 
@@ -58,22 +72,56 @@ namespace ICD.Connect.Devices
 		/// <summary>
 		/// Gets/sets the manufacturer for this device.
 		/// </summary>
-		public string Manufacturer { get; set; }
+		public string ConfiguredManufacturer { get; set; }
 
 		/// <summary>
 		/// Gets/sets the model number for this device.
 		/// </summary>
-		public string Model { get; set; }
+		public string ConfiguredModel { get; set; }
 
 		/// <summary>
 		/// Gets/sets the serial number for this device.
 		/// </summary>
-		public string SerialNumber { get; set; }
+		public string ConfiguredSerialNumber { get; set; }
 
 		/// <summary>
 		/// Gets/sets the purchase date for this device.
 		/// </summary>
-		public DateTime PurchaseDate { get; set; }
+		public DateTime ConfiguredPurchaseDate { get; set; }
+
+		/// <summary>
+		/// Gets the discovered model.
+		/// </summary>
+		public string Model
+		{
+			get { return m_Model; }
+			protected set
+			{
+				if (m_Model == value)
+					return;
+
+				m_Model = value;
+
+				OnModelChanged.Raise(this, new StringEventArgs(value));
+			}
+		}
+
+		/// <summary>
+		/// Gets the discovered serial number.
+		/// </summary>
+		public string SerialNumber
+		{
+			get { return m_SerialNumber; }
+			protected set
+			{
+				if (m_SerialNumber == value)
+					return;
+
+				m_SerialNumber = value;
+
+				OnSerialNumberChanged.Raise(this, new StringEventArgs(value));
+			}
+		}
 
 		#endregion
 
@@ -93,6 +141,8 @@ namespace ICD.Connect.Devices
 		protected override void DisposeFinal(bool disposing)
 		{
 			OnControlsAvailableChanged = null;
+			OnModelChanged = null;
+			OnSerialNumberChanged = null;
 
 			Controls.Dispose();
 
@@ -139,10 +189,10 @@ namespace ICD.Connect.Devices
 		{
 			base.ClearSettingsFinal();
 
-			Manufacturer = null;
-			Model = null;
-			SerialNumber = null;
-			PurchaseDate = DateTime.MinValue;
+			ConfiguredManufacturer = null;
+			ConfiguredModel = null;
+			ConfiguredSerialNumber = null;
+			ConfiguredPurchaseDate = DateTime.MinValue;
 		}
 
 		/// <summary>
@@ -154,10 +204,10 @@ namespace ICD.Connect.Devices
 		{
 			base.ApplySettingsFinal(settings, factory);
 
-			Manufacturer = settings.Manufacturer;
-			Model = settings.Model;
-			SerialNumber = settings.SerialNumber;
-			PurchaseDate = settings.PurchaseDate;
+			ConfiguredManufacturer = settings.Manufacturer;
+			ConfiguredModel = settings.Model;
+			ConfiguredSerialNumber = settings.SerialNumber;
+			ConfiguredPurchaseDate = settings.PurchaseDate;
 		}
 
 		/// <summary>
@@ -168,10 +218,10 @@ namespace ICD.Connect.Devices
 		{
 			base.CopySettingsFinal(settings);
 
-			settings.Manufacturer = Manufacturer;
-			settings.Model = Model;
-			settings.SerialNumber = SerialNumber;
-			settings.PurchaseDate = PurchaseDate;
+			settings.Manufacturer = ConfiguredManufacturer;
+			settings.Model = ConfiguredModel;
+			settings.SerialNumber = ConfiguredSerialNumber;
+			settings.PurchaseDate = ConfiguredPurchaseDate;
 		}
 
 		#endregion

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using ICD.Common.Properties;
 using ICD.Common.Utils;
+using ICD.Common.Utils.EventArguments;
 using ICD.Common.Utils.Extensions;
 using ICD.Common.Utils.Services.Logging;
 using ICD.Connect.API;
@@ -20,13 +21,28 @@ namespace ICD.Connect.Devices.Simpl
 	public abstract class AbstractSimplProxyDevice<TSettings> : AbstractSimplProxyDeviceBase<TSettings>, ISimplProxyDevice
 		where TSettings : IProxyDeviceBaseSettings
 	{
+		/// <summary>
+		/// Raised when control availability for the device changes.
+		/// </summary>
 		public event EventHandler<DeviceBaseControlsAvailableApiEventArgs> OnControlsAvailableChanged;
+
+		/// <summary>
+		/// Raised when the model changes.
+		/// </summary>
+		public event EventHandler<StringEventArgs> OnModelChanged;
+
+		/// <summary>
+		/// Raised when the serial number changes.
+		/// </summary>
+		public event EventHandler<StringEventArgs> OnSerialNumberChanged;
 
 		private readonly DeviceControlsCollection m_Controls;
 		private readonly SafeCriticalSection m_CriticalSection;
 		private readonly Dictionary<IProxy, Func<ApiClassInfo, ApiClassInfo>> m_ProxyBuildCommand;
 
 		private bool m_ControlsAvailable;
+		private string m_Model;
+		private string m_SerialNumber;
 
 		#region Properties
 
@@ -62,22 +78,56 @@ namespace ICD.Connect.Devices.Simpl
 		/// <summary>
 		/// Gets/sets the manufacturer for this device.
 		/// </summary>
-		public string Manufacturer { get; set; }
+		public string ConfiguredManufacturer { get; set; }
 
 		/// <summary>
 		/// Gets/sets the model number for this device.
 		/// </summary>
-		public string Model { get; set; }
+		public string ConfiguredModel { get; set; }
 
 		/// <summary>
 		/// Gets/sets the serial number for this device.
 		/// </summary>
-		public string SerialNumber { get; set; }
+		public string ConfiguredSerialNumber { get; set; }
 
 		/// <summary>
 		/// Gets/sets the purchase date for this device.
 		/// </summary>
-		public DateTime PurchaseDate { get; set; }
+		public DateTime ConfiguredPurchaseDate { get; set; }
+
+		/// <summary>
+		/// Gets the discovered model.
+		/// </summary>
+		public string Model
+		{
+			get { return m_Model; }
+			protected set
+			{
+				if (m_Model == value)
+					return;
+
+				m_Model = value;
+
+				OnModelChanged.Raise(this, new StringEventArgs(value));
+			}
+		}
+
+		/// <summary>
+		/// Gets the discovered serial number.
+		/// </summary>
+		public string SerialNumber
+		{
+			get { return m_SerialNumber; }
+			protected set
+			{
+				if (m_SerialNumber == value)
+					return;
+
+				m_SerialNumber = value;
+
+				OnSerialNumberChanged.Raise(this, new StringEventArgs(value));
+			}
+		}
 
 		#endregion
 
@@ -98,6 +148,8 @@ namespace ICD.Connect.Devices.Simpl
 		protected override void DisposeFinal(bool disposing)
 		{
 			OnControlsAvailableChanged = null;
+			OnModelChanged = null;
+			OnSerialNumberChanged = null;
 
 			base.DisposeFinal(disposing);
 
