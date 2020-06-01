@@ -8,6 +8,7 @@ using ICD.Connect.API.Nodes;
 using ICD.Connect.Devices.Controls;
 using ICD.Connect.Devices.EventArguments;
 using ICD.Connect.Settings;
+using ICD.Common.Logging.LoggingContexts;
 
 namespace ICD.Connect.Devices.Simpl
 {
@@ -55,7 +56,7 @@ namespace ICD.Connect.Devices.Simpl
 
 				m_ControlsAvailable = value;
 
-				Logger.Set("Controls Available", eSeverity.Informational, ControlsAvailable);
+				Logger.LogSetTo(eSeverity.Informational, "ControlsAvailable", m_ControlsAvailable);
 
 				OnControlsAvailableChanged.Raise(this, new DeviceBaseControlsAvailableApiEventArgs(ControlsAvailable));
 			}
@@ -74,6 +75,8 @@ namespace ICD.Connect.Devices.Simpl
 
 				m_Model = value;
 
+				Logger.LogSetTo(eSeverity.Informational, "Model", m_Model);
+
 				OnModelChanged.Raise(this, new StringEventArgs(value));
 			}
 		}
@@ -90,6 +93,8 @@ namespace ICD.Connect.Devices.Simpl
 					return;
 
 				m_SerialNumber = value;
+
+				Logger.LogSetTo(eSeverity.Informational, "SerialNumber", m_SerialNumber);
 
 				OnSerialNumberChanged.Raise(this, new StringEventArgs(value));
 			}

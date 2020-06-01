@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using ICD.Common.Logging.Activities;
 using ICD.Common.Logging.LoggingContexts;
 using ICD.Common.Properties;
 using ICD.Common.Utils;
@@ -23,6 +24,7 @@ namespace ICD.Connect.Devices.Proxies.Controls
 		private readonly Guid m_Uuid;
 		private readonly IProxyDevice m_Parent;
 		private readonly ILoggingContext m_Logger;
+		private readonly IActivityContext m_Activities;
 
 		private bool m_ControlAvailable;
 
@@ -63,7 +65,7 @@ namespace ICD.Connect.Devices.Proxies.Controls
 
 				m_ControlAvailable = value;
 
-				Logger.Set("Control Available", eSeverity.Informational, ControlAvailable);
+				Logger.LogSetTo(eSeverity.Informational, "ControlAvailable", m_ControlAvailable);
 
 				OnControlAvailableChanged.Raise(this, new DeviceControlAvailableApiEventArgs(ControlAvailable));
 			}
@@ -83,6 +85,11 @@ namespace ICD.Connect.Devices.Proxies.Controls
 		/// Gets the logger for the control.
 		/// </summary>
 		public ILoggingContext Logger { get { return m_Logger; } }
+
+		/// <summary>
+		/// Gets the activities for this instance.
+		/// </summary>
+		public IActivityContext Activities { get { return m_Activities; } }
 
 		#endregion
 
@@ -111,6 +118,7 @@ namespace ICD.Connect.Devices.Proxies.Controls
 			m_Uuid = uuid;
 			m_Parent = parent;
 			m_Logger = new ServiceLoggingContext(this);
+			m_Activities = new ActivityContext();
 		}
 
 		#region Methods

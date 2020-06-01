@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using ICD.Common.Properties;
 using ICD.Common.Utils.Extensions;
+using ICD.Common.Logging.LoggingContexts;
 using ICD.Common.Utils.Services.Logging;
 using ICD.Connect.API;
 using ICD.Connect.API.Commands;
@@ -35,7 +36,8 @@ namespace ICD.Connect.Devices.Proxies.Devices
 
 				m_IsOnline = value;
 
-				Logger.Set("Online", eSeverity.Informational, IsOnline);
+				Logger.LogSetTo(eSeverity.Informational, "IsOnline", m_IsOnline);
+				Activities.LogActivity(DeviceBaseActivities.GetIsOnlineActivity(m_IsOnline));
 
 				OnIsOnlineStateChanged.Raise(this, new DeviceBaseOnlineStateApiEventArgs(m_IsOnline));
 			}

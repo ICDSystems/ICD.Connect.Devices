@@ -69,7 +69,7 @@ namespace ICD.Connect.Devices.Proxies.Devices
 
 				m_ControlsAvailable = value;
 
-				Logger.Set("Controls Available", eSeverity.Informational, ControlsAvailable);
+				Logger.LogSetTo(eSeverity.Informational, "ControlsAvailable", m_ControlsAvailable);
 
 				OnControlsAvailableChanged.Raise(this, new DeviceBaseControlsAvailableApiEventArgs(ControlsAvailable));
 			}
@@ -108,6 +108,8 @@ namespace ICD.Connect.Devices.Proxies.Devices
 
 				m_Model = value;
 
+				Logger.LogSetTo(eSeverity.Informational, "Model", m_Model);
+
 				OnModelChanged.Raise(this, new StringEventArgs(value));
 			}
 		}
@@ -124,6 +126,8 @@ namespace ICD.Connect.Devices.Proxies.Devices
 					return;
 
 				m_SerialNumber = value;
+
+				Logger.LogSetTo(eSeverity.Informational, "Serial Number", m_SerialNumber);
 
 				OnSerialNumberChanged.Raise(this, new StringEventArgs(value));
 			}

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using ICD.Common.Logging.LoggingContexts;
 using ICD.Common.Properties;
 using ICD.Common.Utils.Extensions;
 using ICD.Common.Utils.Services.Logging;
@@ -39,7 +40,8 @@ namespace ICD.Connect.Devices
 
 				m_IsOnline = value;
 
-				Logger.Set("Online", eSeverity.Informational, IsOnline);
+				Logger.LogSetTo(m_IsOnline ? eSeverity.Informational : eSeverity.Error, "IsOnline", m_IsOnline);
+				Activities.LogActivity(DeviceBaseActivities.GetIsOnlineActivity(m_IsOnline));
 
 				HandleOnlineStateChange(m_IsOnline);
 

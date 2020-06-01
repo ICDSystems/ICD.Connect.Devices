@@ -15,7 +15,7 @@ namespace ICD.Connect.Devices.Controls
 	/// </summary>
 	[ApiClass(typeof(ProxyDeviceControl))]
 	[ExternalTelemetry("Device Control Telemetry", typeof(DeviceControlExternalTelemetryProvider))]
-	public interface IDeviceControl : IConsoleNode, IStateDisposable, ITelemetryProvider
+	public interface IDeviceControl : IConsoleNode, IStateDisposable, IActivityTelemetryProvider
 	{
 		/// <summary>
 		/// Raised when the Control availability changes

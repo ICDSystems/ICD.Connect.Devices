@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using ICD.Common.Logging.LoggingContexts;
 using ICD.Common.Utils.EventArguments;
 using ICD.Common.Utils.Extensions;
 using ICD.Common.Utils.Services.Logging;
@@ -16,7 +17,7 @@ namespace ICD.Connect.Devices
 	/// </summary>
 	public abstract class AbstractDevice<T> : AbstractDeviceBase<T>, IDevice
 		where T : IDeviceSettings, new()
-	{
+	{      
 		/// <summary>
 		/// Raised when ControlsAvailable changes
 		/// </summary>
@@ -63,7 +64,7 @@ namespace ICD.Connect.Devices
 
 				m_ControlsAvailable = value;
 
-				Logger.Set("Controls Available", eSeverity.Informational, ControlsAvailable);
+				Logger.LogSetTo(eSeverity.Informational, "ControlsAvailable", m_ControlsAvailable);
 
 				OnControlsAvailableChanged.Raise(this, new DeviceBaseControlsAvailableApiEventArgs(ControlsAvailable));
 			}
@@ -102,6 +103,8 @@ namespace ICD.Connect.Devices
 
 				m_Model = value;
 
+				Logger.LogSetTo(eSeverity.Informational, "Model", m_Model);
+
 				OnModelChanged.Raise(this, new StringEventArgs(value));
 			}
 		}
@@ -118,6 +121,8 @@ namespace ICD.Connect.Devices
 					return;
 
 				m_SerialNumber = value;
+
+				Logger.LogSetTo(eSeverity.Informational, "SerialNumber", m_SerialNumber);
 
 				OnSerialNumberChanged.Raise(this, new StringEventArgs(value));
 			}

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using ICD.Common.Logging.Activities;
 using ICD.Common.Logging.LoggingContexts;
 using ICD.Common.Properties;
 using ICD.Common.Utils;
@@ -33,6 +34,7 @@ namespace ICD.Connect.Devices.Controls
 		private readonly Guid m_Uuid;
 		private readonly T m_Parent;
 		private readonly ILoggingContext m_Logger;
+		private readonly IActivityContext m_Activities;
 
 		private bool m_ControlAvailable;
 
@@ -102,6 +104,11 @@ namespace ICD.Connect.Devices.Controls
 		/// Gets the logger for the control.
 		/// </summary>
 		public ILoggingContext Logger { get { return m_Logger; } }
+
+		/// <summary>
+		/// Gets the activities for this instance.
+		/// </summary>
+		public IActivityContext Activities { get { return m_Activities; } }
 
 		#endregion
 

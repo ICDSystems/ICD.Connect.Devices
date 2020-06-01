@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using ICD.Common.Properties;
 using ICD.Common.Utils.Extensions;
+using ICD.Common.Logging.LoggingContexts;
 using ICD.Common.Utils.Services.Logging;
 using ICD.Connect.API.Commands;
 using ICD.Connect.API.Nodes;
@@ -124,7 +125,8 @@ namespace ICD.Connect.Devices.Controls
 
 			m_PowerState = powerState;
 
-			Logger.Set("Powered", eSeverity.Informational, powerState);
+			Logger.LogSetTo(eSeverity.Informational, "PowerState", m_PowerState);
+			Activities.LogActivity(PowerDeviceControlActivities.GetPowerActivity(m_PowerState));
 
 			OnPowerStateChanged.Raise(this, new PowerDeviceControlPowerStateApiEventArgs(powerState, expectedDuration));
 		}
