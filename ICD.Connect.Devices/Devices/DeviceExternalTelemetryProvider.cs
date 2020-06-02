@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using ICD.Common.Properties;
 using ICD.Common.Utils;
 using ICD.Common.Utils.Collections;
 using ICD.Common.Utils.Extensions;
@@ -12,6 +13,7 @@ namespace ICD.Connect.Devices
 {
 	public sealed class DeviceExternalTelemetryProvider : AbstractExternalTelemetryProvider<IDevice>
 	{
+		[PublicAPI("DAV-PRO")]
 		[EventTelemetry("OnControlIdsChanged")]
 		public event EventHandler OnControlIdsChanged;
 
@@ -20,6 +22,7 @@ namespace ICD.Connect.Devices
 
 		#region Properties
 
+		[PublicAPI("DAV-PRO")]
 		[PropertyTelemetry("ControlIds", null, "OnControlIdsChanged")]
 		public IEnumerable<Guid> ControlIds { get { return m_ControlIdsSection.Execute(() => m_ControlIds.ToArray()); } }
 		
