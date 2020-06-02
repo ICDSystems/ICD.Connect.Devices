@@ -111,51 +111,6 @@ namespace ICD.Connect.Devices.Controls
 		}
 
 		/// <summary>
-		/// Removes all controls from the collection.
-		/// </summary>
-		public void Clear()
-		{
-			foreach (IDeviceControl control in GetControls())
-				Remove(control);
-		}
-
-		/// <summary>
-		/// Removes the control from the collection.
-		/// </summary>
-		/// <param name="control"></param>
-		/// <returns></returns>
-		public bool Remove(IDeviceControl control)
-		{
-			if (control == null)
-				throw new ArgumentNullException("control");
-
-			m_DeviceControlsSection.Enter();
-
-			try
-			{
-				IDeviceControl existing;
-				if (!m_DeviceControls.TryGetValue(control.Id, out existing))
-					return false;
-
-				if (control != existing)
-					return false;
-
-				m_DeviceControls.Remove(control.Id);
-
-				foreach (List<IDeviceControl> group in m_TypeToControls.Values)
-					group.Remove(control);
-			}
-			finally
-			{
-				m_DeviceControlsSection.Leave();
-			}
-
-			OnControlRemoved.Raise(this, new DeviceControlEventArgs(control));
-
-			return true;
-		}
-
-		/// <summary>
 		/// Removes the control with the given id from the collection.
 		/// </summary>
 		/// <param name="id"></param>
@@ -163,7 +118,37 @@ namespace ICD.Connect.Devices.Controls
 		public bool Remove(int id)
 		{
 			IDeviceControl control;
-			return TryGetControl(id, out control) && Remove(control);
+
+			m_DeviceControlsSection.Enter();
+
+			try
+			{
+				if (!m_DeviceControls.TryGetValue(id, out control))
+					return false;
+
+				m_DeviceControls.Remove(id);
+
+				foreach (List<IDeviceControl> group in m_TypeToControls.Values)
+					group.RemoveSorted(control, s_ControlComparer);
+			}
+			finally
+			{
+				m_DeviceControlsSection.Leave();
+			}
+
+			OnControlRemoved.Raise(this, new DeviceControlEventArgs(control));
+			control.Dispose();
+
+			return true;
+		}
+
+		/// <summary>
+		/// Removes all controls from the collection.
+		/// </summary>
+		public void Clear()
+		{
+			foreach (int id in m_DeviceControlsSection.Execute(() => m_DeviceControls.Keys.ToArray()))
+				Remove(id);
 		}
 
 		/// <summary>
@@ -237,20 +222,11 @@ namespace ICD.Connect.Devices.Controls
 		[NotNull]
 		public IDeviceControl GetControl(int id)
 		{
-			m_DeviceControlsSection.Enter();
+			IDeviceControl control;
+			if (TryGetControl(id, out control))
+				return control;
 
-			try
-			{
-				IDeviceControl control;
-				if (m_DeviceControls.TryGetValue(id, out control))
-					return control;
-
-				throw new KeyNotFoundException(string.Format("{0} does not contain control with id {1}", GetType().Name, id));
-			}
-			finally
-			{
-				m_DeviceControlsSection.Leave();
-			}
+			throw new KeyNotFoundException(string.Format("{0} does not contain control with id {1}", GetType().Name, id));
 		}
 
 		/// <summary>
@@ -309,18 +285,7 @@ namespace ICD.Connect.Devices.Controls
 
 		public IEnumerator<IDeviceControl> GetEnumerator()
 		{
-			m_DeviceControlsSection.Enter();
-
-			try
-			{
-				return m_DeviceControls.Values
-				                       .ToList(m_DeviceControls.Count)
-				                       .GetEnumerator();
-			}
-			finally
-			{
-				m_DeviceControlsSection.Leave();
-			}
+			return GetControls().GetEnumerator();
 		}
 
 		IEnumerator IEnumerable.GetEnumerator()
@@ -356,18 +321,7 @@ namespace ICD.Connect.Devices.Controls
 			OnControlAdded = null;
 			OnControlRemoved = null;
 
-			m_DeviceControlsSection.Enter();
-
-			try
-			{
-				foreach (IDeviceControl control in m_DeviceControls.Values)
-					control.Dispose();
-				Clear();
-			}
-			finally
-			{
-				m_DeviceControlsSection.Leave();
-			}
+			Clear();
 		}
 
 		#endregion
