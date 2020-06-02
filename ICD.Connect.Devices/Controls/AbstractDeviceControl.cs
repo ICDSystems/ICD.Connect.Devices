@@ -137,6 +137,7 @@ namespace ICD.Connect.Devices.Controls
 			m_Uuid = uuid;
 			m_Parent = parent;
 			m_Logger = new ServiceLoggingContext(this);
+			m_Activities = new ActivityContext();
 
 			Subscribe(Parent);
 		}
