@@ -78,6 +78,7 @@
     <Compile Include="Devices\DeviceBaseActivities.cs" />
     <Compile Include="Devices\DeviceConsole.cs" />
     <Compile Include="Devices\DeviceBaseConsole.cs" />
+    <Compile Include="Devices\DeviceExternalTelemetryProvider.cs" />
     <Compile Include="Devices\Mock\AbstractMockDevice.cs" />
     <Compile Include="Devices\Mock\AbstractMockDeviceSettings.cs" />
     <Compile Include="Devices\Mock\IMockDevice.cs" />

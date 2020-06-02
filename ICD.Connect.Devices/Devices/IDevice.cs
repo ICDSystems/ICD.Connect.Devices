@@ -12,6 +12,7 @@ namespace ICD.Connect.Devices
 	/// Interface for all hardware devices.
 	/// </summary>
 	[ApiClass(typeof(ProxyDevice), typeof(IDeviceBase))]
+	[ExternalTelemetry("Device Telemetry", typeof(DeviceExternalTelemetryProvider))]
 	public interface IDevice : IDeviceBase
 	{
 		/// <summary>
