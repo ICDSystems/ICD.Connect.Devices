@@ -198,6 +198,8 @@ namespace ICD.Connect.Devices
 			ConfiguredModel = null;
 			ConfiguredSerialNumber = null;
 			ConfiguredPurchaseDate = DateTime.MinValue;
+
+			Controls.Clear();
 		}
 
 		/// <summary>
@@ -213,6 +215,18 @@ namespace ICD.Connect.Devices
 			ConfiguredModel = settings.Model;
 			ConfiguredSerialNumber = settings.SerialNumber;
 			ConfiguredPurchaseDate = settings.PurchaseDate;
+
+			AddControls(settings, factory, Controls.Add);
+		}
+
+		/// <summary>
+		/// Override to add controls to the device.
+		/// </summary>
+		/// <param name="settings"></param>
+		/// <param name="factory"></param>
+		/// <param name="addControl"></param>
+		protected virtual void AddControls(T settings, IDeviceFactory factory, Action<IDeviceControl> addControl)
+		{
 		}
 
 		/// <summary>

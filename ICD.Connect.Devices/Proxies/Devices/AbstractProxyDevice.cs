@@ -15,6 +15,7 @@ using ICD.Connect.API.Proxies;
 using ICD.Connect.Devices.Controls;
 using ICD.Connect.Devices.EventArguments;
 using ICD.Connect.Devices.Proxies.Controls;
+using ICD.Connect.Settings;
 
 namespace ICD.Connect.Devices.Proxies.Devices
 {
@@ -362,6 +363,42 @@ namespace ICD.Connect.Devices.Proxies.Devices
 		}
 
 		#endregion
+
+		#region Settings
+
+	    /// <summary>
+	    /// Override to clear the instance settings.
+	    /// </summary>
+	    protected override void ClearSettingsFinal()
+	    {
+		    base.ClearSettingsFinal();
+
+			Controls.Clear();
+	    }
+
+	    /// <summary>
+	    /// Override to apply settings to the instance.
+	    /// </summary>
+	    /// <param name="settings"></param>
+	    /// <param name="factory"></param>
+	    protected override void ApplySettingsFinal(TSettings settings, IDeviceFactory factory)
+	    {
+		    base.ApplySettingsFinal(settings, factory);
+
+			AddControls(settings, factory, Controls.Add);
+	    }
+
+		/// <summary>
+		/// Override to add controls to the device.
+		/// </summary>
+		/// <param name="settings"></param>
+		/// <param name="factory"></param>
+		/// <param name="addControl"></param>
+		protected virtual void AddControls(TSettings settings, IDeviceFactory factory, Action<IDeviceControl> addControl)
+		{
+		}
+
+	    #endregion
 
 		#region Console
 
