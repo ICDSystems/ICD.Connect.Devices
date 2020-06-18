@@ -6,11 +6,20 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [11.0.0] - 2020-06-18
 ### Added
  - Added MockDevice interfaces/classes to allow Mock devices to be set online/offline from console and be configured to start offline from settings
+ - Added Manufacturer, Model, Serial Number and Purchase date to device and device settings
+ - Controls have UUIDs
+ - Devices push reported Manufacturer, Model, Serial Number, etc to telemetry
+ - Devices push their list of control ids to telemetry
 
 ### Changed
  - Using new logging context
+ - Controls moved from IDeviceBase to IDevice
+ - Added missing proxy intialization step to simpl shims
+ - Fixed JSON deserialization for PowerDeviceControlPowerStateEventData
+ - Controls are instantiated on ApplySettings and disposed on ClearSettings
 
 ## [10.0.0] - 2020-03-20
 ### Added
