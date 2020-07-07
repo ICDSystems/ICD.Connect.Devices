@@ -59,6 +59,17 @@ namespace ICD.Connect.Devices.Simpl
 		/// </summary>
 		public IMonitoredDeviceInfoTelemetry MonitoredDeviceInfo { get { return m_MonitoredDeviceInfo; } }
 
+		/// <summary>
+		/// Device Info Telemetry, returns both monitored and configured telemetry
+		/// </summary>
+		public IEnumerable<IDeviceInfoTelemetry> DeviceInfo {
+			get
+			{
+				yield return ConfiguredDeviceInfo;
+				yield return MonitoredDeviceInfo;
+			}
+		}
+
 		#endregion
 
 		protected AbstractSimplDeviceBase()

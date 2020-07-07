@@ -64,6 +64,12 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo
 			get { return NetworkInfo; }
 		}
 
+		/// <summary>
+		/// Identifies the node for telemetry
+		/// Should be "Monitored" or "Configured"
+		/// </summary>
+		public abstract string NodeIdentifier { get; }
+
 		public TNetworkInfo NetworkInfo { get { return m_NetworkInfo; } }
 
 		protected AbstractDeviceInfoTelemetry(TNetworkInfo networkInfo)

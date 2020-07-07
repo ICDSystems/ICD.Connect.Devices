@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using ICD.Common.Utils;
 using ICD.Connect.API.Attributes;
 using ICD.Connect.Devices.EventArguments;
@@ -14,14 +15,18 @@ namespace ICD.Connect.Devices
 		/// <summary>
 		/// Device Info Telemetry, configured from DAV
 		/// </summary>
-		[CollectionTelemetry("ConfiguredDeviceInfo")]
 		IConfiguredDeviceInfoTelemetry ConfiguredDeviceInfo { get; }
 
 		/// <summary>
 		/// Device Info Telemetry, monitored from the device itself
 		/// </summary>
-		[CollectionTelemetry("MonitoredDeviceInfo")]
 		IMonitoredDeviceInfoTelemetry MonitoredDeviceInfo { get; }
+
+		/// <summary>
+		/// Device Info Telemetry, returns both monitored and configured telemetry
+		/// </summary>
+		[CollectionTelemetry("DeviceInfo")]
+		IEnumerable<IDeviceInfoTelemetry> DeviceInfo { get; }
 
 		/// <summary>
 		/// Raised when the device goes online/offline.

@@ -16,11 +16,11 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo
 
 		#endregion
 
-		#region Events
-
 		public ConfiguredDeviceInfoTelemetry() : base(new ConfiguredNetworkDeviceInfoTelemetry())
 		{
 		}
+
+		#region Events
 
 		public override event EventHandler<StringEventArgs> OnMakeChanged;
 		public override event EventHandler<StringEventArgs> OnModelChanged;
@@ -45,6 +45,12 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo
 				OnPurchaseDateChanged.Raise(this, new DateTimeNullableEventArgs(value));
 			}
 		}
+
+		/// <summary>
+		/// Identifies the node for telemetry
+		/// Should be "Monitored" or "Configured"
+		/// </summary>
+		public override string NodeIdentifier { get { return "Configured"; } }
 
 		#endregion
 

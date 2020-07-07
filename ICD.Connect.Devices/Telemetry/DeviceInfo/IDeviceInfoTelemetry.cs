@@ -35,6 +35,13 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo
 		[NotNull]
 		[CollectionTelemetry("NetworkInfo")]
 		INetworkDeviceInfoTelemetry NetworkInfo { get; }
+
+		/// <summary>
+		/// Identifies the node for telemetry
+		/// Should be "Monitored" or "Configured"
+		/// </summary>
+		[TelemetryCollectionIdentity]
+		string NodeIdentifier { get; }
 	}
 
 	public interface IDeviceInfoTelemetry<TNetworkInfo> : IDeviceInfoTelemetry
