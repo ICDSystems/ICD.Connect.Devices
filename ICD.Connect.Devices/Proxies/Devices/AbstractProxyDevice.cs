@@ -15,6 +15,9 @@ using ICD.Connect.API.Proxies;
 using ICD.Connect.Devices.Controls;
 using ICD.Connect.Devices.EventArguments;
 using ICD.Connect.Devices.Proxies.Controls;
+using ICD.Connect.Devices.Telemetry.DeviceInfo;
+using ICD.Connect.Devices.Telemetry.DeviceInfo.Configured;
+using ICD.Connect.Devices.Telemetry.DeviceInfo.Monitored;
 using ICD.Connect.Settings;
 
 namespace ICD.Connect.Devices.Proxies.Devices
@@ -40,6 +43,8 @@ namespace ICD.Connect.Devices.Proxies.Devices
 		private readonly DeviceControlsCollection m_Controls;
 		private readonly SafeCriticalSection m_CriticalSection;
 		private readonly Dictionary<IProxy, Func<ApiClassInfo, ApiClassInfo>> m_ProxyBuildCommand;
+		private readonly ConfiguredDeviceInfo m_ConfiguredDeviceInfo;
+		private readonly MonitoredDeviceInfo m_MonitoredDeviceInfo;
 
 		private bool m_ControlsAvailable;
 	    private string m_Model;
@@ -134,6 +139,30 @@ namespace ICD.Connect.Devices.Proxies.Devices
 			}
 		}
 
+		/// <summary>
+		/// Device Info Telemetry, configured from DAV
+		/// Todo: Make this work over proxy?
+		/// </summary>
+		public IConfiguredDeviceInfo ConfiguredDeviceInfo { get { return m_ConfiguredDeviceInfo; } }
+
+		/// <summary>
+		/// Device Info Telemetry, monitored from the device itself
+		/// Todo: Make this work over proxy?
+		/// </summary>
+		public IMonitoredDeviceInfo MonitoredDeviceInfo { get { return m_MonitoredDeviceInfo; } }
+
+		/// <summary>
+		/// Device Info Telemetry, returns both monitored and configured telemetry
+		/// </summary>
+		public IEnumerable<IDeviceInfo> DeviceInfo
+		{
+			get
+			{
+				yield return ConfiguredDeviceInfo;
+				yield return MonitoredDeviceInfo;
+			}
+		}
+
 		#endregion
 
 		/// <summary>
@@ -144,6 +173,8 @@ namespace ICD.Connect.Devices.Proxies.Devices
 			m_ProxyBuildCommand = new Dictionary<IProxy, Func<ApiClassInfo, ApiClassInfo>>();
 			m_CriticalSection = new SafeCriticalSection();
 			m_Controls = new DeviceControlsCollection();
+			m_ConfiguredDeviceInfo = new ConfiguredDeviceInfo();
+			m_MonitoredDeviceInfo = new MonitoredDeviceInfo();
 		}
 
 		/// <summary>
@@ -373,6 +404,8 @@ namespace ICD.Connect.Devices.Proxies.Devices
 	    {
 		    base.ClearSettingsFinal();
 
+			ConfiguredDeviceInfo.ClearSettings();
+
 			Controls.Clear();
 	    }
 
@@ -385,10 +418,23 @@ namespace ICD.Connect.Devices.Proxies.Devices
 	    {
 		    base.ApplySettingsFinal(settings, factory);
 
+			ConfiguredDeviceInfo.ApplySettings(settings.ConfiguredDeviceInfo);
+
 			AddControls(settings, factory, Controls.Add);
 	    }
 
-		/// <summary>
+	    /// <summary>
+	    /// Override to apply properties to the settings instance.
+	    /// </summary>
+	    /// <param name="settings"></param>
+	    protected override void CopySettingsFinal(TSettings settings)
+	    {
+		    base.CopySettingsFinal(settings);
+
+			ConfiguredDeviceInfo.CopySettings(settings.ConfiguredDeviceInfo);
+	    }
+
+	    /// <summary>
 		/// Override to add controls to the device.
 		/// </summary>
 		/// <param name="settings"></param>

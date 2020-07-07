@@ -7,9 +7,6 @@ using ICD.Common.Utils.Services.Logging;
 using ICD.Connect.API.Commands;
 using ICD.Connect.API.Nodes;
 using ICD.Connect.Devices.EventArguments;
-using ICD.Connect.Devices.Telemetry.DeviceInfo;
-using ICD.Connect.Devices.Telemetry.DeviceInfo.Configured;
-using ICD.Connect.Devices.Telemetry.DeviceInfo.Monitored;
 using ICD.Connect.Settings;
 using ICD.Connect.Settings.Originators;
 
@@ -29,8 +26,6 @@ namespace ICD.Connect.Devices
 		#region Fields
 
 		private bool m_IsOnline;
-		private readonly ConfiguredDeviceInfo m_ConfiguredDeviceInfo;
-		private readonly MonitoredDeviceInfo m_MonitoredDeviceInfo;
 
 		#endregion
 
@@ -58,35 +53,9 @@ namespace ICD.Connect.Devices
 			}
 		}
 
-		/// <summary>
-		/// Device Info Telemetry, configured from DAV
-		/// </summary>
-		public IConfiguredDeviceInfo ConfiguredDeviceInfo { get { return m_ConfiguredDeviceInfo; } }
-
-		/// <summary>
-		/// Device Info Telemetry, monitored from the device itself
-		/// </summary>
-		public IMonitoredDeviceInfo MonitoredDeviceInfo { get { return m_MonitoredDeviceInfo; } }
-
-		/// <summary>
-		/// Device Info Telemetry, returns both monitored and configured telemetry
-		/// </summary>
-		public IEnumerable<IDeviceInfo> DeviceInfo
-		{
-			get
-			{
-				yield return ConfiguredDeviceInfo;
-				yield return MonitoredDeviceInfo;
-			}
-		}
+		
 
 		#endregion
-
-		public AbstractDeviceBase()
-		{
-			m_ConfiguredDeviceInfo = new ConfiguredDeviceInfo();
-			m_MonitoredDeviceInfo = new MonitoredDeviceInfo();
-		}
 
 		#region Private Methods
 
@@ -134,7 +103,7 @@ namespace ICD.Connect.Devices
 		{
 			base.ClearSettingsFinal();
 
-			ConfiguredDeviceInfo.ClearSettings();
+			
 
 			UpdateCachedOnlineStatus();
 		}
@@ -148,20 +117,7 @@ namespace ICD.Connect.Devices
 		{
 			base.ApplySettingsFinal(settings, factory);
 
-			ConfiguredDeviceInfo.ApplySettings(settings.ConfiguredDeviceInfo);
-
 			UpdateCachedOnlineStatus();
-		}
-
-		/// <summary>
-		/// Override to apply properties to the settings instance.
-		/// </summary>
-		/// <param name="settings"></param>
-		protected override void CopySettingsFinal(T settings)
-		{
-			base.CopySettingsFinal(settings);
-
-			ConfiguredDeviceInfo.CopySettings(settings.ConfiguredDeviceInfo);
 		}
 
 		#endregion

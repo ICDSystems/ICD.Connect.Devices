@@ -1,5 +1,6 @@
 ﻿using System;
 using ICD.Common.Utils.Xml;
+using ICD.Connect.Devices.Telemetry.DeviceInfo.Configured.Settings;
 
 namespace ICD.Connect.Devices
 {
@@ -10,7 +11,11 @@ namespace ICD.Connect.Devices
 		private const string ELEMENT_SERIAL_NUMBER = "SerialNumber";
 		private const string ELEMENT_PURCHASE_DATE = "PurchaseDate";
 
+		private readonly ConfiguredDeviceInfoSettings m_ConfiguredDeviceInfo;
+
 		#region Properties
+
+		public ConfiguredDeviceInfoSettings ConfiguredDeviceInfo { get { return m_ConfiguredDeviceInfo; } }
 
 		/// <summary>
 		/// Gets/sets the manufacturer for this device.
@@ -34,6 +39,11 @@ namespace ICD.Connect.Devices
 
 		#endregion
 
+		protected AbstractDeviceSettings()
+		{
+			m_ConfiguredDeviceInfo = new ConfiguredDeviceInfoSettings();
+		}
+
 		#region Methods
 
 		/// <summary>
@@ -43,6 +53,8 @@ namespace ICD.Connect.Devices
 		protected override void WriteElements(IcdXmlTextWriter writer)
 		{
 			base.WriteElements(writer);
+
+			ConfiguredDeviceInfo.WriteElements(writer);
 
 			writer.WriteElementString(ELEMENT_MANUFACTURER, Manufacturer);
 			writer.WriteElementString(ELEMENT_MODEL, Model);
@@ -62,6 +74,8 @@ namespace ICD.Connect.Devices
 			Model = XmlUtils.TryReadChildElementContentAsString(xml, ELEMENT_MODEL);
 			SerialNumber = XmlUtils.TryReadChildElementContentAsString(xml, ELEMENT_SERIAL_NUMBER);
 			PurchaseDate = XmlUtils.TryReadChildElementContentAsDateTime(xml, ELEMENT_PURCHASE_DATE) ?? DateTime.MinValue;
+
+			ConfiguredDeviceInfo.ParseXml(xml);
 		}
 
 		#endregion

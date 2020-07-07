@@ -23,9 +23,6 @@ namespace ICD.Connect.Devices.Simpl
 
 		private bool m_IsOnline;
 
-		private readonly ConfiguredDeviceInfo m_ConfiguredDeviceInfo;
-		private readonly MonitoredDeviceInfo m_MonitoredDeviceInfo;
-
 		#region Properties
 
 		/// <summary>
@@ -50,34 +47,9 @@ namespace ICD.Connect.Devices.Simpl
 			}
 		}
 
-		/// <summary>
-		/// Device Info Telemetry, configured from DAV
-		/// </summary>
-		public IConfiguredDeviceInfo ConfiguredDeviceInfo { get { return m_ConfiguredDeviceInfo; } }
-
-		/// <summary>
-		/// Device Info Telemetry, monitored from the device itself
-		/// </summary>
-		public IMonitoredDeviceInfo MonitoredDeviceInfo { get { return m_MonitoredDeviceInfo; } }
-
-		/// <summary>
-		/// Device Info Telemetry, returns both monitored and configured telemetry
-		/// </summary>
-		public IEnumerable<IDeviceInfo> DeviceInfo {
-			get
-			{
-				yield return ConfiguredDeviceInfo;
-				yield return MonitoredDeviceInfo;
-			}
-		}
+		
 
 		#endregion
-
-		protected AbstractSimplDeviceBase()
-		{
-			m_ConfiguredDeviceInfo = new ConfiguredDeviceInfo();
-			m_MonitoredDeviceInfo = new MonitoredDeviceInfo();
-		}
 
 		#region Methods
 

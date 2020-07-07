@@ -7,6 +7,9 @@ using ICD.Connect.API.Commands;
 using ICD.Connect.API.Nodes;
 using ICD.Connect.Devices.Controls;
 using ICD.Connect.Devices.EventArguments;
+using ICD.Connect.Devices.Telemetry.DeviceInfo;
+using ICD.Connect.Devices.Telemetry.DeviceInfo.Configured;
+using ICD.Connect.Devices.Telemetry.DeviceInfo.Monitored;
 using ICD.Connect.Settings;
 using ICD.Common.Logging.LoggingContexts;
 
@@ -35,8 +38,32 @@ namespace ICD.Connect.Devices.Simpl
 		private bool m_ControlsAvailable;
 		private string m_Model;
 		private string m_SerialNumber;
+		private readonly ConfiguredDeviceInfo m_ConfiguredDeviceInfo;
+		private readonly MonitoredDeviceInfo m_MonitoredDeviceInfo;
 
 		#region Properties
+
+		/// <summary>
+		/// Device Info Telemetry, configured from DAV
+		/// </summary>
+		public IConfiguredDeviceInfo ConfiguredDeviceInfo { get { return m_ConfiguredDeviceInfo; } }
+
+		/// <summary>
+		/// Device Info Telemetry, monitored from the device itself
+		/// </summary>
+		public IMonitoredDeviceInfo MonitoredDeviceInfo { get { return m_MonitoredDeviceInfo; } }
+
+		/// <summary>
+		/// Device Info Telemetry, returns both monitored and configured telemetry
+		/// </summary>
+		public IEnumerable<IDeviceInfo> DeviceInfo
+		{
+			get
+			{
+				yield return ConfiguredDeviceInfo;
+				yield return MonitoredDeviceInfo;
+			}
+		}
 
 		/// <summary>
 		/// Gets the category for this originator type (e.g. Device, Port, etc)
@@ -132,7 +159,9 @@ namespace ICD.Connect.Devices.Simpl
 		/// </summary>
 		protected AbstractSimplDevice()
 		{
-			m_Controls = new DeviceControlsCollection();
+			m_Controls = new DeviceControlsCollection();		
+			m_ConfiguredDeviceInfo = new ConfiguredDeviceInfo();
+			m_MonitoredDeviceInfo = new MonitoredDeviceInfo();
 		}
 
 		/// <summary>
@@ -192,6 +221,8 @@ namespace ICD.Connect.Devices.Simpl
 		{
 			base.CopySettingsFinal(settings);
 
+			ConfiguredDeviceInfo.CopySettings(settings.ConfiguredDeviceInfo);
+
 			settings.Manufacturer = ConfiguredManufacturer;
 			settings.Model = ConfiguredModel;
 			settings.SerialNumber = ConfiguredSerialNumber;
@@ -207,6 +238,8 @@ namespace ICD.Connect.Devices.Simpl
 		{
 			base.ApplySettingsFinal(settings, factory);
 
+			ConfiguredDeviceInfo.ApplySettings(settings.ConfiguredDeviceInfo);
+
 			ConfiguredManufacturer = settings.Manufacturer;
 			ConfiguredModel = settings.Model;
 			ConfiguredSerialNumber = settings.SerialNumber;
@@ -221,6 +254,8 @@ namespace ICD.Connect.Devices.Simpl
 		protected override void ClearSettingsFinal()
 		{
 			base.ClearSettingsFinal();
+
+			ConfiguredDeviceInfo.ClearSettings();
 
 			ConfiguredManufacturer = null;
 			ConfiguredModel = null;

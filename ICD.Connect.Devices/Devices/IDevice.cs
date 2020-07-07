@@ -1,13 +1,18 @@
 using System;
+using System.Collections.Generic;
 using ICD.Common.Utils.EventArguments;
 using ICD.Connect.API.Attributes;
 using ICD.Connect.Devices.Controls;
 using ICD.Connect.Devices.EventArguments;
 using ICD.Connect.Devices.Proxies.Devices;
+using ICD.Connect.Devices.Telemetry.DeviceInfo;
+using ICD.Connect.Devices.Telemetry.DeviceInfo.Configured;
+using ICD.Connect.Devices.Telemetry.DeviceInfo.Monitored;
 using ICD.Connect.Telemetry.Attributes;
 
 namespace ICD.Connect.Devices
 {
+
 	/// <summary>
 	/// Interface for all hardware devices.
 	/// </summary>
@@ -15,6 +20,23 @@ namespace ICD.Connect.Devices
 	[ExternalTelemetry("Device Telemetry", typeof(DeviceExternalTelemetryProvider))]
 	public interface IDevice : IDeviceBase
 	{
+
+		/// <summary>
+		/// Device Info Telemetry, configured from DAV
+		/// </summary>
+		IConfiguredDeviceInfo ConfiguredDeviceInfo { get; }
+
+		/// <summary>
+		/// Device Info Telemetry, monitored from the device itself
+		/// </summary>
+		IMonitoredDeviceInfo MonitoredDeviceInfo { get; }
+
+		/// <summary>
+		/// Device Info Telemetry, returns both monitored and configured telemetry
+		/// </summary>
+		[CollectionTelemetry("DeviceInfo")]
+		IEnumerable<IDeviceInfo> DeviceInfo { get; }
+
 		/// <summary>
 		/// Raised when control availability for the device changes.
 		/// </summary>

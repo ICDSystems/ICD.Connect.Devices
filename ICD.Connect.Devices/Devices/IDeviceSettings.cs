@@ -1,4 +1,5 @@
 ﻿using System;
+using ICD.Connect.Devices.Telemetry.DeviceInfo.Configured.Settings;
 
 namespace ICD.Connect.Devices
 {
@@ -23,5 +24,7 @@ namespace ICD.Connect.Devices
 		/// Gets/sets the purchase date for this device.
 		/// </summary>
 		DateTime PurchaseDate { get; set; }
+
+		ConfiguredDeviceInfoSettings ConfiguredDeviceInfo { get; }
 	}
 }
