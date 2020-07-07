@@ -26,6 +26,7 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo.NetworkInfo.AdapterInfo
 		event EventHandler<StringEventArgs> OnIpv4GatewayChanged;
 
 		[PropertyTelemetry(DeviceTelemetryNames.DEVICE_NETWORK_ADAPTER_ADDRESS, null, null)]
+		[TelemetryCollectionIdentity]
 		int Address { get; }
 
 		[PropertyTelemetry(DeviceTelemetryNames.DEVICE_NETWORK_ADAPTER_NAME, null, DeviceTelemetryNames.DEVICE_NETWORK_ADAPTER_NAME_CHANGED)]
