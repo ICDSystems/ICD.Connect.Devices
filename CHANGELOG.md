@@ -5,6 +5,16 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+ - Added MonitoredDeviceInfo and ConfiguredDeviceInfo property to IDevice and implementations
+ - Added DeviceInfo enumerable property to IDevice, used for Telemetry
+### Changed
+ - Configured Make/Model/Serial/PurchaseDate in IDeviceSettings implementations now just access ConfiguredDeviceInfo
+ - AbstractDevice Model and SerialNumber properties now just access MonitoredDeviceInfo
+ 
+ ## Removed
+ - Removed Configured Make/Model/Serial/PurchaseDate from IDevice and all implemetations
+ - Removed Make/Model from IDevice and all unused implementaions
 
 ## [11.0.0] - 2020-06-18
 ### Added
