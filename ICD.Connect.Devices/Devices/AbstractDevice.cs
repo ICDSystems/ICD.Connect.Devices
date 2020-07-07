@@ -77,26 +77,6 @@ namespace ICD.Connect.Devices
 		}
 
 		/// <summary>
-		/// Gets/sets the manufacturer for this device.
-		/// </summary>
-		public string ConfiguredManufacturer { get; set; }
-
-		/// <summary>
-		/// Gets/sets the model number for this device.
-		/// </summary>
-		public string ConfiguredModel { get; set; }
-
-		/// <summary>
-		/// Gets/sets the serial number for this device.
-		/// </summary>
-		public string ConfiguredSerialNumber { get; set; }
-
-		/// <summary>
-		/// Gets/sets the purchase date for this device.
-		/// </summary>
-		public DateTime ConfiguredPurchaseDate { get; set; }
-
-		/// <summary>
 		/// Gets the discovered model.
 		/// </summary>
 		public string Model
@@ -224,11 +204,6 @@ namespace ICD.Connect.Devices
 		{
 			base.ClearSettingsFinal();
 
-			ConfiguredManufacturer = null;
-			ConfiguredModel = null;
-			ConfiguredSerialNumber = null;
-			ConfiguredPurchaseDate = DateTime.MinValue;
-
 			ConfiguredDeviceInfo.ClearSettings();
 
 			Controls.Clear();
@@ -242,11 +217,6 @@ namespace ICD.Connect.Devices
 		protected override void ApplySettingsFinal(T settings, IDeviceFactory factory)
 		{
 			base.ApplySettingsFinal(settings, factory);
-
-			ConfiguredManufacturer = settings.Manufacturer;
-			ConfiguredModel = settings.Model;
-			ConfiguredSerialNumber = settings.SerialNumber;
-			ConfiguredPurchaseDate = settings.PurchaseDate;
 
 			ConfiguredDeviceInfo.ApplySettings(settings.ConfiguredDeviceInfo);
 
@@ -270,11 +240,6 @@ namespace ICD.Connect.Devices
 		protected override void CopySettingsFinal(T settings)
 		{
 			base.CopySettingsFinal(settings);
-
-			settings.Manufacturer = ConfiguredManufacturer;
-			settings.Model = ConfiguredModel;
-			settings.SerialNumber = ConfiguredSerialNumber;
-			settings.PurchaseDate = ConfiguredPurchaseDate;
 
 			ConfiguredDeviceInfo.CopySettings(settings.ConfiguredDeviceInfo);
 		}

@@ -6,12 +6,6 @@ namespace ICD.Connect.Devices.Simpl
 {
 	public abstract class AbstractSimplDeviceSettings : AbstractSimplDeviceBaseSettings, ISimplDeviceSettings
 	{
-		private const string ELEMENT_MANUFACTURER = "Manufacturer";
-		private const string ELEMENT_MODEL = "Model";
-		private const string ELEMENT_SERIAL_NUMBER = "SerialNumber";
-		private const string ELEMENT_PURCHASE_DATE = "PurchaseDate";
-
-
 		private readonly ConfiguredDeviceInfoSettings m_ConfiguredDeviceInfo;
 
 		#region Properties
@@ -21,22 +15,38 @@ namespace ICD.Connect.Devices.Simpl
 		/// <summary>
 		/// Gets/sets the manufacturer for this device.
 		/// </summary>
-		public string Manufacturer { get; set; }
+		public string Manufacturer
+		{
+			get { return ConfiguredDeviceInfo.Make; }
+			set { ConfiguredDeviceInfo.Make = value; }
+		}
 
 		/// <summary>
 		/// Gets/sets the model number for this device.
 		/// </summary>
-		public string Model { get; set; }
+		public string Model
+		{
+			get { return ConfiguredDeviceInfo.Model; }
+			set { ConfiguredDeviceInfo.Model = value; }
+		}
 
 		/// <summary>
 		/// Gets/sets the serial number for this device.
 		/// </summary>
-		public string SerialNumber { get; set; }
+		public string SerialNumber
+		{
+			get { return ConfiguredDeviceInfo.SerialNumber; }
+			set { ConfiguredDeviceInfo.SerialNumber = value; }
+		}
 
 		/// <summary>
 		/// Gets/sets the purchase date for this device.
 		/// </summary>
-		public DateTime PurchaseDate { get; set; }
+		public DateTime PurchaseDate
+		{
+			get { return ConfiguredDeviceInfo.PurchaseDate ?? default(DateTime); }
+			set { ConfiguredDeviceInfo.PurchaseDate = value; }
+		}
 
 		#endregion
 
@@ -56,11 +66,6 @@ namespace ICD.Connect.Devices.Simpl
 			base.WriteElements(writer);
 
 			ConfiguredDeviceInfo.WriteElements(writer);
-
-			writer.WriteElementString(ELEMENT_MANUFACTURER, Manufacturer);
-			writer.WriteElementString(ELEMENT_MODEL, Model);
-			writer.WriteElementString(ELEMENT_SERIAL_NUMBER, SerialNumber);
-			writer.WriteElementString(ELEMENT_PURCHASE_DATE, IcdXmlConvert.ToString(PurchaseDate));
 		}
 
 		/// <summary>
@@ -70,11 +75,6 @@ namespace ICD.Connect.Devices.Simpl
 		public override void ParseXml(string xml)
 		{
 			base.ParseXml(xml);
-
-			Manufacturer = XmlUtils.TryReadChildElementContentAsString(xml, ELEMENT_MANUFACTURER);
-			Model = XmlUtils.TryReadChildElementContentAsString(xml, ELEMENT_MODEL);
-			SerialNumber = XmlUtils.TryReadChildElementContentAsString(xml, ELEMENT_SERIAL_NUMBER);
-			PurchaseDate = XmlUtils.TryReadChildElementContentAsDateTime(xml, ELEMENT_PURCHASE_DATE) ?? DateTime.MinValue;
 
 			ConfiguredDeviceInfo.ParseXml(xml);
 		}

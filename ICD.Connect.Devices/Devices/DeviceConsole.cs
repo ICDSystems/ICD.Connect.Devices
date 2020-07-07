@@ -30,12 +30,6 @@ namespace ICD.Connect.Devices
 			if (instance == null)
 				throw new ArgumentNullException("instance");
 
-			addRow("Configured Manufacturer", instance.ConfiguredManufacturer);
-			addRow("Configured Model", instance.ConfiguredModel);
-			addRow("Configured Serial Number", instance.ConfiguredSerialNumber);
-			addRow("Configured Purchase Date", instance.ConfiguredPurchaseDate);
-
-
 			addRow("Model", instance.Model);
 			addRow("Serial Number", instance.SerialNumber);
 		}

@@ -128,26 +128,6 @@ namespace ICD.Connect.Devices.Simpl
 		}
 
 		/// <summary>
-		/// Gets/sets the manufacturer for this device.
-		/// </summary>
-		public string ConfiguredManufacturer { get; set; }
-
-		/// <summary>
-		/// Gets/sets the model number for this device.
-		/// </summary>
-		public string ConfiguredModel { get; set; }
-
-		/// <summary>
-		/// Gets/sets the serial number for this device.
-		/// </summary>
-		public string ConfiguredSerialNumber { get; set; }
-
-		/// <summary>
-		/// Gets/sets the purchase date for this device.
-		/// </summary>
-		public DateTime ConfiguredPurchaseDate { get; set; }
-
-		/// <summary>
 		/// Gets the controls for this device.
 		/// </summary>
 		public DeviceControlsCollection Controls { get { return m_Controls; } }
@@ -222,11 +202,6 @@ namespace ICD.Connect.Devices.Simpl
 			base.CopySettingsFinal(settings);
 
 			ConfiguredDeviceInfo.CopySettings(settings.ConfiguredDeviceInfo);
-
-			settings.Manufacturer = ConfiguredManufacturer;
-			settings.Model = ConfiguredModel;
-			settings.SerialNumber = ConfiguredSerialNumber;
-			settings.PurchaseDate = ConfiguredPurchaseDate;
 		}
 
 		/// <summary>
@@ -240,11 +215,6 @@ namespace ICD.Connect.Devices.Simpl
 
 			ConfiguredDeviceInfo.ApplySettings(settings.ConfiguredDeviceInfo);
 
-			ConfiguredManufacturer = settings.Manufacturer;
-			ConfiguredModel = settings.Model;
-			ConfiguredSerialNumber = settings.SerialNumber;
-			ConfiguredPurchaseDate = settings.PurchaseDate;
-
 			AddControls(settings, factory, Controls.Add);
 		}
 
@@ -256,11 +226,6 @@ namespace ICD.Connect.Devices.Simpl
 			base.ClearSettingsFinal();
 
 			ConfiguredDeviceInfo.ClearSettings();
-
-			ConfiguredManufacturer = null;
-			ConfiguredModel = null;
-			ConfiguredSerialNumber = null;
-			ConfiguredPurchaseDate = DateTime.MinValue;
 
 			Controls.Clear();
 		}

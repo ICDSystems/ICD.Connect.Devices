@@ -69,30 +69,6 @@ namespace ICD.Connect.Devices
 		bool ControlsAvailable { get; }
 
 		/// <summary>
-		/// Gets/sets the manufacturer for this device.
-		/// </summary>
-		[PropertyTelemetry(DeviceTelemetryNames.CONFIGURED_MANUFACTURER, null, null)]
-		string ConfiguredManufacturer { get; set; }
-
-		/// <summary>
-		/// Gets/sets the model number for this device.
-		/// </summary>
-		[PropertyTelemetry(DeviceTelemetryNames.CONFIGURED_MODEL, null, null)]
-		string ConfiguredModel { get; set; }
-
-		/// <summary>
-		/// Gets/sets the serial number for this device.
-		/// </summary>
-		[PropertyTelemetry(DeviceTelemetryNames.CONFIGURED_SERIAL_NUMBER, null, null)]
-		string ConfiguredSerialNumber { get; set; }
-
-		/// <summary>
-		/// Gets/sets the purchase date for this device.
-		/// </summary>
-		[PropertyTelemetry(DeviceTelemetryNames.CONFIGURED_PURCHASE_DATE, null, null)]
-		DateTime ConfiguredPurchaseDate { get; set; }
-
-		/// <summary>
 		/// Gets the discovered model.
 		/// </summary>
 		[PropertyTelemetry(DeviceTelemetryNames.DEVICE_MODEL, null, DeviceTelemetryNames.DEVICE_MODEL_CHANGED)]

@@ -13,22 +13,38 @@ namespace ICD.Connect.Devices.Proxies.Devices
 		/// <summary>
 		/// Gets/sets the manufacturer for this device.
 		/// </summary>
-		string IDeviceSettings.Manufacturer { get; set; }
+		string IDeviceSettings.Manufacturer
+		{
+			get { return ConfiguredDeviceInfo.Make; }
+			set { ConfiguredDeviceInfo.Make = value; }
+		}
 
 		/// <summary>
 		/// Gets/sets the model number for this device.
 		/// </summary>
-		string IDeviceSettings.Model { get; set; }
+		string IDeviceSettings.Model
+		{
+			get { return ConfiguredDeviceInfo.Model; }
+			set { ConfiguredDeviceInfo.Model = value; }
+		}
 
 		/// <summary>
 		/// Gets/sets the serial number for this device.
 		/// </summary>
-		string IDeviceSettings.SerialNumber { get; set; }
+		string IDeviceSettings.SerialNumber
+		{
+			get { return ConfiguredDeviceInfo.SerialNumber; }
+			set { ConfiguredDeviceInfo.SerialNumber = value; }
+		}
 
 		/// <summary>
 		/// Gets/sets the purchase date for this device.
 		/// </summary>
-		DateTime IDeviceSettings.PurchaseDate { get; set; }
+		DateTime IDeviceSettings.PurchaseDate
+		{
+			get { return ConfiguredDeviceInfo.PurchaseDate ?? default(DateTime); }
+			set { ConfiguredDeviceInfo.PurchaseDate = value; }
+		}
 
 		public ConfiguredDeviceInfoSettings ConfiguredDeviceInfo { get { return m_ConfiguredDeviceInfo; } }
 

@@ -104,26 +104,6 @@ namespace ICD.Connect.Devices.Simpl
 		}
 
 		/// <summary>
-		/// Gets/sets the manufacturer for this device.
-		/// </summary>
-		public string ConfiguredManufacturer { get; set; }
-
-		/// <summary>
-		/// Gets/sets the model number for this device.
-		/// </summary>
-		public string ConfiguredModel { get; set; }
-
-		/// <summary>
-		/// Gets/sets the serial number for this device.
-		/// </summary>
-		public string ConfiguredSerialNumber { get; set; }
-
-		/// <summary>
-		/// Gets/sets the purchase date for this device.
-		/// </summary>
-		public DateTime ConfiguredPurchaseDate { get; set; }
-
-		/// <summary>
 		/// Gets the discovered model.
 		/// </summary>
 		public string Model
