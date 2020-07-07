@@ -29,9 +29,6 @@ namespace ICD.Connect.Devices
 		{
 			if (instance == null)
 				throw new ArgumentNullException("instance");
-
-			addRow("Model", instance.Model);
-			addRow("Serial Number", instance.SerialNumber);
 		}
 
 		/// <summary>

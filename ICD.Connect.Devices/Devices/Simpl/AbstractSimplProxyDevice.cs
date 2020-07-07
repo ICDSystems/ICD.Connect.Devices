@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using ICD.Common.Properties;
 using ICD.Common.Utils;
-using ICD.Common.Utils.EventArguments;
 using ICD.Common.Utils.Extensions;
 using ICD.Common.Logging.LoggingContexts;
 using ICD.Common.Utils.Services.Logging;
@@ -30,16 +29,6 @@ namespace ICD.Connect.Devices.Simpl
 		/// </summary>
 		public event EventHandler<DeviceBaseControlsAvailableApiEventArgs> OnControlsAvailableChanged;
 
-		/// <summary>
-		/// Raised when the model changes.
-		/// </summary>
-		public event EventHandler<StringEventArgs> OnModelChanged;
-
-		/// <summary>
-		/// Raised when the serial number changes.
-		/// </summary>
-		public event EventHandler<StringEventArgs> OnSerialNumberChanged;
-
 		private readonly DeviceControlsCollection m_Controls;
 		private readonly SafeCriticalSection m_CriticalSection;
 		private readonly Dictionary<IProxy, Func<ApiClassInfo, ApiClassInfo>> m_ProxyBuildCommand;
@@ -47,8 +36,6 @@ namespace ICD.Connect.Devices.Simpl
 		private readonly MonitoredDeviceInfo m_MonitoredDeviceInfo;
 
 		private bool m_ControlsAvailable;
-		private string m_Model;
-		private string m_SerialNumber;
 
 		#region Properties
 
@@ -103,44 +90,6 @@ namespace ICD.Connect.Devices.Simpl
 			}
 		}
 
-		/// <summary>
-		/// Gets the discovered model.
-		/// </summary>
-		public string Model
-		{
-			get { return m_Model; }
-			protected set
-			{
-				if (m_Model == value)
-					return;
-
-				m_Model = value;
-
-				Logger.LogSetTo(eSeverity.Informational, "Model", m_Model);
-
-				OnModelChanged.Raise(this, new StringEventArgs(value));
-			}
-		}
-
-		/// <summary>
-		/// Gets the discovered serial number.
-		/// </summary>
-		public string SerialNumber
-		{
-			get { return m_SerialNumber; }
-			protected set
-			{
-				if (m_SerialNumber == value)
-					return;
-
-				m_SerialNumber = value;
-
-				Logger.LogSetTo(eSeverity.Informational, "SerialNumber", m_SerialNumber);
-
-				OnSerialNumberChanged.Raise(this, new StringEventArgs(value));
-			}
-		}
-
 		#endregion
 
 		/// <summary>
@@ -162,8 +111,6 @@ namespace ICD.Connect.Devices.Simpl
 		protected override void DisposeFinal(bool disposing)
 		{
 			OnControlsAvailableChanged = null;
-			OnModelChanged = null;
-			OnSerialNumberChanged = null;
 
 			base.DisposeFinal(disposing);
 

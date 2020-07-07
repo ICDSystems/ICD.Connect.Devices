@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using ICD.Common.Logging.LoggingContexts;
-using ICD.Common.Utils.EventArguments;
 using ICD.Common.Utils.Extensions;
 using ICD.Common.Utils.Services.Logging;
 using ICD.Connect.API.Commands;
@@ -26,21 +25,9 @@ namespace ICD.Connect.Devices
 		/// </summary>
 		public event EventHandler<DeviceBaseControlsAvailableApiEventArgs> OnControlsAvailableChanged;
 
-		/// <summary>
-		/// Raised when the model changes.
-		/// </summary>
-		public event EventHandler<StringEventArgs> OnModelChanged;
-
-		/// <summary>
-		/// Raised when the serial number changes.
-		/// </summary>
-		public event EventHandler<StringEventArgs> OnSerialNumberChanged;
-
 		private readonly DeviceControlsCollection m_Controls;
 
 		private bool m_ControlsAvailable;
-		private string m_Model;
-		private string m_SerialNumber;
 
 		private readonly ConfiguredDeviceInfo m_ConfiguredDeviceInfo;
 		private readonly MonitoredDeviceInfo m_MonitoredDeviceInfo;
@@ -78,40 +65,24 @@ namespace ICD.Connect.Devices
 
 		/// <summary>
 		/// Gets the discovered model.
+		/// Legacy - Hooks MonitoredDeviceInfo for Convinence
 		/// </summary>
-		public string Model
+		[Obsolete("Use MonitoredDeviceInfo Instead")]
+		protected string Model
 		{
-			get { return m_Model; }
-			protected set
-			{
-				if (m_Model == value)
-					return;
-
-				m_Model = value;
-
-				Logger.LogSetTo(eSeverity.Informational, "Model", m_Model);
-
-				OnModelChanged.Raise(this, new StringEventArgs(value));
-			}
+			get { return MonitoredDeviceInfo.Model; }
+			set { MonitoredDeviceInfo.Model = value; }
 		}
 
 		/// <summary>
 		/// Gets the discovered serial number.
+		/// Legacy - Hooks MonitoredDeviceInfo for Convinence
 		/// </summary>
-		public string SerialNumber
+		[Obsolete("Use MonitoredDeviceInfo Instead")]
+		protected string SerialNumber
 		{
-			get { return m_SerialNumber; }
-			protected set
-			{
-				if (m_SerialNumber == value)
-					return;
-
-				m_SerialNumber = value;
-
-				Logger.LogSetTo(eSeverity.Informational, "SerialNumber", m_SerialNumber);
-
-				OnSerialNumberChanged.Raise(this, new StringEventArgs(value));
-			}
+			get { return MonitoredDeviceInfo.SerialNumber; }
+			set { MonitoredDeviceInfo.SerialNumber = value; }
 		}
 
 		/// <summary>
@@ -156,8 +127,6 @@ namespace ICD.Connect.Devices
 		protected override void DisposeFinal(bool disposing)
 		{
 			OnControlsAvailableChanged = null;
-			OnModelChanged = null;
-			OnSerialNumberChanged = null;
 
 			Controls.Dispose();
 
