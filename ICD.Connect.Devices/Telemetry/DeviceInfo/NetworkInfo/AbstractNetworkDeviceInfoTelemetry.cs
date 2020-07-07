@@ -56,6 +56,8 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo.NetworkInfo
 			}
 		}
 
+		public string NodeIdentifier { get { return "0"; } }
+
 		public IEnumerable<TAdapterInfo> Adapters { get { return m_Adapters.Values.ToList(m_Adapters.Count); } }
 
 		#endregion
