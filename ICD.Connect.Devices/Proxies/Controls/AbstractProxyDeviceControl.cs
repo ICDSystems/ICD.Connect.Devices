@@ -135,6 +135,13 @@ namespace ICD.Connect.Devices.Proxies.Controls
 				.ToString();
 		}
 
+		/// <summary>
+		/// Initializes the current telemetry state.
+		/// </summary>
+		public virtual void InitializeTelemetry()
+		{
+		}
+
 		#endregion
 
 		#region Private Methods

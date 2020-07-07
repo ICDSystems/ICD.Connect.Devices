@@ -174,6 +174,13 @@ namespace ICD.Connect.Devices.Controls
 			return builder.ToString();
 		}
 
+		/// <summary>
+		/// Initializes the current telemetry state.
+		/// </summary>
+		public virtual void InitializeTelemetry()
+		{
+		}
+
 		protected virtual bool GetControlAvailable()
 		{
 			return Parent.ControlsAvailable;
