@@ -47,12 +47,6 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo.Configured
 			}
 		}
 
-		/// <summary>
-		/// Identifies the node for telemetry
-		/// Should be "Monitored" or "Configured"
-		/// </summary>
-		public override string NodeIdentifier { get { return "Configured"; } }
-
 		#endregion
 
 		/// <summary>

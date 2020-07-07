@@ -15,7 +15,6 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo
 		[EventTelemetry(DeviceTelemetryNames.DEVICE_NETWORK_DNS_CHANGED)]
 		event EventHandler<StringEventArgs> OnDnsChanged;
 
-
 		event EventHandler OnAdaptersChanged;
 
 		[PropertyTelemetry(DeviceTelemetryNames.DEVICE_HOSTNAME, null, DeviceTelemetryNames.DEVICE_HOSTNAME_CHANGED)]
@@ -23,21 +22,11 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo
 		
 		[PropertyTelemetry(DeviceTelemetryNames.DEVICE_NETWORK_DNS, null, DeviceTelemetryNames.DEVICE_NETWORK_DNS_CHANGED)]
 		string Dns { get; set; }
-
-
-		/// <summary>
-		/// This identifies the node for telemetry
-		/// Hack because we don't have a single-node telemetry option yet
-		/// This should be '0' for now
-		/// </summary>
-		[TelemetryCollectionIdentity]
-		string NodeIdentifier { get; }
 	}
 
 	public interface INetworkDeviceInfo<TAdapterInfo> : INetworkDeviceInfo
 		where TAdapterInfo : IAdapterNetworkDeviceInfo
 	{
-
 		[CollectionTelemetry("Adapters")]
 		IEnumerable<TAdapterInfo> Adapters { get; }
 

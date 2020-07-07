@@ -15,7 +15,6 @@ using ICD.Connect.Devices.Controls;
 using ICD.Connect.Devices.EventArguments;
 using ICD.Connect.Devices.Proxies.Controls;
 using ICD.Connect.Devices.Proxies.Devices;
-using ICD.Connect.Devices.Telemetry.DeviceInfo;
 using ICD.Connect.Devices.Telemetry.DeviceInfo.Configured;
 using ICD.Connect.Devices.Telemetry.DeviceInfo.Monitored;
 
@@ -48,18 +47,6 @@ namespace ICD.Connect.Devices.Simpl
 		/// Device Info Telemetry, monitored from the device itself
 		/// </summary>
 		public IMonitoredDeviceInfo MonitoredDeviceInfo { get { return m_MonitoredDeviceInfo; } }
-
-		/// <summary>
-		/// Device Info Telemetry, returns both monitored and configured telemetry
-		/// </summary>
-		public IEnumerable<IDeviceInfo> DeviceInfo
-		{
-			get
-			{
-				yield return ConfiguredDeviceInfo;
-				yield return MonitoredDeviceInfo;
-			}
-		}
 
 	    /// <summary>
 	    /// Gets the category for this originator type (e.g. Device, Port, etc)

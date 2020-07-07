@@ -14,7 +14,6 @@ using ICD.Connect.API.Proxies;
 using ICD.Connect.Devices.Controls;
 using ICD.Connect.Devices.EventArguments;
 using ICD.Connect.Devices.Proxies.Controls;
-using ICD.Connect.Devices.Telemetry.DeviceInfo;
 using ICD.Connect.Devices.Telemetry.DeviceInfo.Configured;
 using ICD.Connect.Devices.Telemetry.DeviceInfo.Monitored;
 using ICD.Connect.Settings;
@@ -36,8 +35,6 @@ namespace ICD.Connect.Devices.Proxies.Devices
 		private readonly MonitoredDeviceInfo m_MonitoredDeviceInfo;
 
 		private bool m_ControlsAvailable;
-	    private string m_Model;
-	    private string m_SerialNumber;
 
 	    #region Properties
 
@@ -81,18 +78,6 @@ namespace ICD.Connect.Devices.Proxies.Devices
 		/// Todo: Make this work over proxy?
 		/// </summary>
 		public IMonitoredDeviceInfo MonitoredDeviceInfo { get { return m_MonitoredDeviceInfo; } }
-
-		/// <summary>
-		/// Device Info Telemetry, returns both monitored and configured telemetry
-		/// </summary>
-		public IEnumerable<IDeviceInfo> DeviceInfo
-		{
-			get
-			{
-				yield return ConfiguredDeviceInfo;
-				yield return MonitoredDeviceInfo;
-			}
-		}
 
 		#endregion
 

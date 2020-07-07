@@ -13,8 +13,6 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo.Configured.Settings
 		private const string ELEMENT_IPV4_SUBNET = "Ipv4Subnet";
 		private const string ELEMENT_IPV4_GATEWAY = "Ipv4Gateway";
 
-
-
 		public int Address { get; set; }
 
 		public string Name { get; set; }

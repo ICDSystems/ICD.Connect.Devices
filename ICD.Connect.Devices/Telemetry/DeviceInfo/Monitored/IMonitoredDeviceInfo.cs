@@ -26,17 +26,15 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo.Monitored
 		[CanBeNull]
 		[PropertyTelemetry(DeviceTelemetryNames.DEVICE_FIRMWARE_DATE, null, DeviceTelemetryNames.DEVICE_FIRMWARE_DATE_CHANGED)]
 		DateTime? FirmwareDate { get; set; }
-		
-		[PropertyTelemetry(DeviceTelemetryNames.DEVICE_UPTIME, null, DeviceTelemetryNames.DEVICE_UPTIME_CHANGED)]
-		[CanBeNull]
-		DateTime? UptimeStart { get; set; }
 
+		[CanBeNull]
+		[PropertyTelemetry(DeviceTelemetryNames.DEVICE_UPTIME, null, DeviceTelemetryNames.DEVICE_UPTIME_CHANGED)]
+		DateTime? UptimeStart { get; set; }
 
 		[PropertyTelemetry(DeviceTelemetryNames.DEVICE_REBOOT_SUPPORTED, null, DeviceTelemetryNames.DEVICE_REBOOT_SUPPORTED_CHANGED)]
 		bool RebootSupported { get; set; }
 
 		[MethodTelemetry(DeviceTelemetryNames.DEVICE_REBOOT)]
 		void Reboot();
-
 	}
 }

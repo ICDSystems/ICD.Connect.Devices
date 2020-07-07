@@ -6,8 +6,6 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo.Configured
 {
 	public sealed class ConfiguredAdapterNetworkDeviceInfo : AbstractAdapterNetworkDeviceInfo, IConfiguredAdapterNetworkDeviceInfo
 	{
-
-
 		public ConfiguredAdapterNetworkDeviceInfo(int address) : base(address)
 		{
 		}

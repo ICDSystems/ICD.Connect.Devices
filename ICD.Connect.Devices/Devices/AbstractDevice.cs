@@ -7,7 +7,6 @@ using ICD.Connect.API.Commands;
 using ICD.Connect.API.Nodes;
 using ICD.Connect.Devices.Controls;
 using ICD.Connect.Devices.EventArguments;
-using ICD.Connect.Devices.Telemetry.DeviceInfo;
 using ICD.Connect.Devices.Telemetry.DeviceInfo.Configured;
 using ICD.Connect.Devices.Telemetry.DeviceInfo.Monitored;
 using ICD.Connect.Settings;
@@ -94,18 +93,6 @@ namespace ICD.Connect.Devices
 		/// Device Info Telemetry, monitored from the device itself
 		/// </summary>
 		public IMonitoredDeviceInfo MonitoredDeviceInfo { get { return m_MonitoredDeviceInfo; } }
-
-		/// <summary>
-		/// Device Info Telemetry, returns both monitored and configured telemetry
-		/// </summary>
-		public IEnumerable<IDeviceInfo> DeviceInfo
-		{
-			get
-			{
-				yield return ConfiguredDeviceInfo;
-				yield return MonitoredDeviceInfo;
-			}
-		}
 
 		#endregion
 

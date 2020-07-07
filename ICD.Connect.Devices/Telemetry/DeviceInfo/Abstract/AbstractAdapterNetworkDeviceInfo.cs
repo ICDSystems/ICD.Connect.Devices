@@ -6,13 +6,6 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo.Abstract
 {
 	public abstract class AbstractAdapterNetworkDeviceInfo : IAdapterNetworkDeviceInfo
 	{
-		private readonly int m_Address;
-		private string m_Name;
-		private string m_MacAddress;
-		private bool? m_Dhcp;
-		private string m_Ipv4Address;
-		private string m_Ipv4SubnetMask;
-		private string m_Ipv4Gateway;
 		public event EventHandler<StringEventArgs> OnNameChanged;
 		public event EventHandler<StringEventArgs> OnMacAddressChanged;
 		public event EventHandler<GenericEventArgs<bool?>> OnDhcpChanged;
@@ -20,6 +13,14 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo.Abstract
 		public event EventHandler<StringEventArgs> OnIpv4SubnetMaskChanged;
 		public event EventHandler<StringEventArgs> OnIpv4GatewayChanged;
 
+		private readonly int m_Address;
+
+		private string m_Name;
+		private string m_MacAddress;
+		private bool? m_Dhcp;
+		private string m_Ipv4Address;
+		private string m_Ipv4SubnetMask;
+		private string m_Ipv4Gateway;
 
 		public int Address
 		{
@@ -113,6 +114,13 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo.Abstract
 		protected AbstractAdapterNetworkDeviceInfo(int address)
 		{
 			m_Address = address;
+		}
+
+		/// <summary>
+		/// Initializes the current telemetry state.
+		/// </summary>
+		public void InitializeTelemetry()
+		{
 		}
 	}
 }

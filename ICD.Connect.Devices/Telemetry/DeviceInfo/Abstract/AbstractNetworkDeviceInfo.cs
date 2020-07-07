@@ -55,8 +55,6 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo.Abstract
 			}
 		}
 
-		public string NodeIdentifier { get { return "0"; } }
-
 		public IEnumerable<TAdapterInfo> Adapters { get { return m_Adapters.Values.ToList(m_Adapters.Count); } }
 
 		#endregion
@@ -97,5 +95,11 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo.Abstract
 			m_Adapters.AddRange(adapters, a => a.Address);
 		}
 
+		/// <summary>
+		/// Initializes the current telemetry state.
+		/// </summary>
+		public void InitializeTelemetry()
+		{
+		}
 	}
 }

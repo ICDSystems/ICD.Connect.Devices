@@ -14,6 +14,5 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo.Configured
 		[PropertyTelemetry(DeviceTelemetryNames.DEVICE_PURCHASE_DATE, null, DeviceTelemetryNames.DEVICE_PURCHASE_DATE_CHANGED)]
 		[CanBeNull]
 		DateTime? PurchaseDate { get; set; }
-		
 	}
 }

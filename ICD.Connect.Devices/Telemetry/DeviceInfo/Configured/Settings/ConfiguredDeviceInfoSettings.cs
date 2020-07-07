@@ -12,7 +12,6 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo.Configured.Settings
 		private const string ELEMENT_SERIAL_NUMBER = "SerialNumber";
 		private const string ELEMENT_PURCHASE_DATE = "PurchaseDate";
 		
-
 		private readonly ConfiguredNetworkDeviceInfoSettings m_NetworkInfo;
 
 		[CanBeNull]
@@ -51,8 +50,6 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo.Configured.Settings
 
 				NetworkInfo.WriteElements(writer);
 			}
-
-			
 		}
 
 		/// <summary>
@@ -66,7 +63,6 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo.Configured.Settings
 			if (String.IsNullOrEmpty(xml))
 				return;
 
-			
 			string innerXml;
 			XmlUtils.TryGetChildElementAsString(xml, ELEMENT_CONFIGURED_DEVICE_INFO, out innerXml);
 			if (!String.IsNullOrEmpty(innerXml))

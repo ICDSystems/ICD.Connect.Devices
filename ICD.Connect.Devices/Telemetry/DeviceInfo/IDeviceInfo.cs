@@ -27,26 +27,20 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo
 		[CanBeNull]
 		[PropertyTelemetry(DeviceTelemetryNames.DEVICE_MODEL, null, DeviceTelemetryNames.DEVICE_MODEL_CHANGED)]
 		string Model { get; set; }
+
 		[CanBeNull]
 		[PropertyTelemetry(DeviceTelemetryNames.DEVICE_SERIAL_NUMBER, null, DeviceTelemetryNames.DEVICE_SERIAL_NUMBER_CHANGED)]
 		string SerialNumber { get; set; }
 
 		[NotNull]
-		[CollectionTelemetry("NetworkInfo")]
+		[NodeTelemetry("NetworkInfo")]
 		INetworkDeviceInfo NetworkInfo { get; }
-
-		/// <summary>
-		/// Identifies the node for telemetry
-		/// Should be "Monitored" or "Configured"
-		/// </summary>
-		[TelemetryCollectionIdentity]
-		string NodeIdentifier { get; }
 	}
 
 	public interface IDeviceInfo<TNetworkInfo> : IDeviceInfo
 		where TNetworkInfo : INetworkDeviceInfo
 	{
 		[NotNull]
-		TNetworkInfo NetworkInfo { get; }
+		new TNetworkInfo NetworkInfo { get; }
 	}
 }

@@ -6,8 +6,6 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo.Configured
 {
 	public sealed class ConfiguredNetworkDeviceInfo : AbstractNetworkDeviceInfo<ConfiguredAdapterNetworkDeviceInfo>, IConfiguredNetworkDeviceInfo
 	{
-
-
 		protected override ConfiguredAdapterNetworkDeviceInfo CreateNewAdapter(int address)
 		{
 			return new ConfiguredAdapterNetworkDeviceInfo(address);
@@ -22,7 +20,6 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo.Configured
 			Hostname = settings.Hostname;
 			Dns = settings.Dns;
 			
-
 			ApplyAdapterSettings(settings.Adapters);
 		}
 
@@ -60,8 +57,6 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo.Configured
 				adapter.ApplySettings(adapterSettings);
 			}
 		}
-
-
 
 		/// <summary>
 		/// Clear the items from settings
