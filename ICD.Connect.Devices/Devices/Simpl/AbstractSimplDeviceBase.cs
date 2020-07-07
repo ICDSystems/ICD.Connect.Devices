@@ -6,6 +6,8 @@ using ICD.Common.Utils.Services.Logging;
 using ICD.Connect.API.Commands;
 using ICD.Connect.API.Nodes;
 using ICD.Connect.Devices.EventArguments;
+using ICD.Connect.Devices.Telemetry;
+using ICD.Connect.Devices.Telemetry.DeviceInfo;
 using ICD.Connect.Settings.Originators.Simpl;
 
 namespace ICD.Connect.Devices.Simpl
@@ -19,6 +21,9 @@ namespace ICD.Connect.Devices.Simpl
 		public event EventHandler<DeviceBaseOnlineStateApiEventArgs> OnIsOnlineStateChanged;
 
 		private bool m_IsOnline;
+
+		private readonly ConfiguredDeviceInfoTelemetry m_ConfiguredDeviceInfo;
+		private readonly MonitoredDeviceInfoTelemetry m_MonitoredDeviceInfo;
 
 		#region Properties
 
@@ -44,16 +49,22 @@ namespace ICD.Connect.Devices.Simpl
 			}
 		}
 
-		#endregion
+		/// <summary>
+		/// Device Info Telemetry, configured from DAV
+		/// </summary>
+		public IConfiguredDeviceInfoTelemetry ConfiguredDeviceInfo { get { return m_ConfiguredDeviceInfo; } }
 
 		/// <summary>
-		/// Release resources.
+		/// Device Info Telemetry, monitored from the device itself
 		/// </summary>
-		protected override void DisposeFinal(bool disposing)
-		{
-			OnIsOnlineStateChanged = null;
+		public IMonitoredDeviceInfoTelemetry MonitoredDeviceInfo { get { return m_MonitoredDeviceInfo; } }
 
-			base.DisposeFinal(disposing);
+		#endregion
+
+		protected AbstractSimplDeviceBase()
+		{
+			m_ConfiguredDeviceInfo = new ConfiguredDeviceInfoTelemetry();
+			m_MonitoredDeviceInfo = new MonitoredDeviceInfoTelemetry();
 		}
 
 		#region Methods
@@ -69,6 +80,16 @@ namespace ICD.Connect.Devices.Simpl
 		/// <param name="isOnline"></param>
 		protected virtual void HandleOnlineStateChange(bool isOnline)
 		{
+		}
+
+		/// <summary>
+		/// Release resources.
+		/// </summary>
+		protected override void DisposeFinal(bool disposing)
+		{
+			OnIsOnlineStateChanged = null;
+
+			base.DisposeFinal(disposing);
 		}
 
 		#endregion

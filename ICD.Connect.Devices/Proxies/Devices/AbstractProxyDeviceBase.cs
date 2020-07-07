@@ -9,6 +9,8 @@ using ICD.Connect.API.Commands;
 using ICD.Connect.API.Info;
 using ICD.Connect.API.Nodes;
 using ICD.Connect.Devices.EventArguments;
+using ICD.Connect.Devices.Telemetry.DeviceInfo;
+using ICD.Connect.Settings;
 using ICD.Connect.Settings.Proxies;
 
 namespace ICD.Connect.Devices.Proxies.Devices
@@ -18,7 +20,13 @@ namespace ICD.Connect.Devices.Proxies.Devices
 	{
 		public event EventHandler<DeviceBaseOnlineStateApiEventArgs> OnIsOnlineStateChanged;
 
+		#region Fields
+
 		private bool m_IsOnline;
+		private readonly ConfiguredDeviceInfoTelemetry m_ConfiguredDeviceInfo;
+		private readonly MonitoredDeviceInfoTelemetry m_MonitoredDeviceInfo;
+
+		#endregion
 
 		#region Properties
 
@@ -43,7 +51,25 @@ namespace ICD.Connect.Devices.Proxies.Devices
 			}
 		}
 
+		/// <summary>
+		/// Device Info Telemetry, configured from DAV
+		/// Todo: Make this work over proxy?
+		/// </summary>
+		public IConfiguredDeviceInfoTelemetry ConfiguredDeviceInfo { get { return m_ConfiguredDeviceInfo; } }
+
+		/// <summary>
+		/// Device Info Telemetry, monitored from the device itself
+		/// Todo: Make this work over proxy?
+		/// </summary>
+		public IMonitoredDeviceInfoTelemetry MonitoredDeviceInfo { get { return m_MonitoredDeviceInfo; } }
+
 		#endregion
+
+		protected AbstractProxyDeviceBase()
+		{
+			m_ConfiguredDeviceInfo = new ConfiguredDeviceInfoTelemetry();
+			m_MonitoredDeviceInfo = new MonitoredDeviceInfoTelemetry();
+		}
 
 		/// <summary>
 		/// Override to release resources.
@@ -55,6 +81,43 @@ namespace ICD.Connect.Devices.Proxies.Devices
 
 			base.DisposeFinal(disposing);
 		}
+
+		#region Settings
+
+		/// <summary>
+		/// Override to clear the instance settings.
+		/// </summary>
+		protected override void ClearSettingsFinal()
+		{
+			base.ClearSettingsFinal();
+
+			ConfiguredDeviceInfo.ClearSettings();
+		}
+
+		/// <summary>
+		/// Override to apply settings to the instance.
+		/// </summary>
+		/// <param name="settings"></param>
+		/// <param name="factory"></param>
+		protected override void ApplySettingsFinal(TSettings settings, IDeviceFactory factory)
+		{
+			base.ApplySettingsFinal(settings, factory);
+
+			ConfiguredDeviceInfo.ApplySettings(settings.ConfiguredDeviceInfo);
+		}
+
+		/// <summary>
+		/// Override to apply properties to the settings instance.
+		/// </summary>
+		/// <param name="settings"></param>
+		protected override void CopySettingsFinal(TSettings settings)
+		{
+			base.CopySettingsFinal(settings);
+
+			ConfiguredDeviceInfo.CopySettings(settings.ConfiguredDeviceInfo);
+		}
+
+		#endregion
 
 		#region Private Methods
 

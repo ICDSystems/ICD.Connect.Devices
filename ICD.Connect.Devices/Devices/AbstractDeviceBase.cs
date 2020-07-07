@@ -7,6 +7,7 @@ using ICD.Common.Utils.Services.Logging;
 using ICD.Connect.API.Commands;
 using ICD.Connect.API.Nodes;
 using ICD.Connect.Devices.EventArguments;
+using ICD.Connect.Devices.Telemetry.DeviceInfo;
 using ICD.Connect.Settings;
 using ICD.Connect.Settings.Originators;
 
@@ -23,7 +24,13 @@ namespace ICD.Connect.Devices
 		/// </summary>
 		public event EventHandler<DeviceBaseOnlineStateApiEventArgs> OnIsOnlineStateChanged;
 
+		#region Fields
+
 		private bool m_IsOnline;
+		private readonly ConfiguredDeviceInfoTelemetry m_ConfiguredDeviceInfo;
+		private readonly MonitoredDeviceInfoTelemetry m_MonitoredDeviceInfo;
+
+		#endregion
 
 		#region Properties
 
@@ -49,7 +56,23 @@ namespace ICD.Connect.Devices
 			}
 		}
 
+		/// <summary>
+		/// Device Info Telemetry, configured from DAV
+		/// </summary>
+		public IConfiguredDeviceInfoTelemetry ConfiguredDeviceInfo { get { return m_ConfiguredDeviceInfo; } }
+
+		/// <summary>
+		/// Device Info Telemetry, monitored from the device itself
+		/// </summary>
+		public IMonitoredDeviceInfoTelemetry MonitoredDeviceInfo { get { return m_MonitoredDeviceInfo; } }
+
 		#endregion
+
+		public AbstractDeviceBase()
+		{
+			m_ConfiguredDeviceInfo = new ConfiguredDeviceInfoTelemetry();
+			m_MonitoredDeviceInfo = new MonitoredDeviceInfoTelemetry();
+		}
 
 		#region Private Methods
 
@@ -97,6 +120,8 @@ namespace ICD.Connect.Devices
 		{
 			base.ClearSettingsFinal();
 
+			ConfiguredDeviceInfo.ClearSettings();
+
 			UpdateCachedOnlineStatus();
 		}
 
@@ -109,7 +134,20 @@ namespace ICD.Connect.Devices
 		{
 			base.ApplySettingsFinal(settings, factory);
 
+			ConfiguredDeviceInfo.ApplySettings(settings.ConfiguredDeviceInfo);
+
 			UpdateCachedOnlineStatus();
+		}
+
+		/// <summary>
+		/// Override to apply properties to the settings instance.
+		/// </summary>
+		/// <param name="settings"></param>
+		protected override void CopySettingsFinal(T settings)
+		{
+			base.CopySettingsFinal(settings);
+
+			ConfiguredDeviceInfo.CopySettings(settings.ConfiguredDeviceInfo);
 		}
 
 		#endregion
