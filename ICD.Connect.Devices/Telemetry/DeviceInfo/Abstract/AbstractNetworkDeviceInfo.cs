@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using ICD.Common.Utils.EventArguments;
 using ICD.Common.Utils.Extensions;
-using ICD.Connect.Devices.Telemetry.DeviceInfo.NetworkInfo.AdapterInfo;
 
-namespace ICD.Connect.Devices.Telemetry.DeviceInfo.NetworkInfo
+namespace ICD.Connect.Devices.Telemetry.DeviceInfo.Abstract
 {
-	public abstract class AbstractNetworkDeviceInfoTelemetry<TAdapterInfo> : INetworkDeviceInfoTelemetry<TAdapterInfo>
-		where TAdapterInfo : IAdapterNetworkDeviceInfoTelemetry
+	public abstract class AbstractNetworkDeviceInfo<TAdapterInfo> : INetworkDeviceInfo<TAdapterInfo>
+		where TAdapterInfo : IAdapterNetworkDeviceInfo
 	{
 
 		#region Fields
@@ -83,7 +82,7 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo.NetworkInfo
 			m_Adapters.Clear();
 		}
 
-		public AbstractNetworkDeviceInfoTelemetry()
+		public AbstractNetworkDeviceInfo()
 		{
 			m_Adapters = new Dictionary<int, TAdapterInfo>();
 		}

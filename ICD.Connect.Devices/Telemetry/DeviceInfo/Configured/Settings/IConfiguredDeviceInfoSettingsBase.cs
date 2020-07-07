@@ -1,8 +1,8 @@
 ﻿using ICD.Common.Utils.Xml;
 
-namespace ICD.Connect.Devices.Telemetry.DeviceInfo
+namespace ICD.Connect.Devices.Telemetry.DeviceInfo.Configured.Settings
 {
-	public interface IConfiguredDeviceInfoTelemetrySettingsBase
+	public interface IConfiguredDeviceInfoSettingsBase
 	{
 		/// <summary>
 		/// Write the settings out to xml

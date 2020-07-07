@@ -1,18 +1,18 @@
 ﻿using System;
 using ICD.Common.Utils.EventArguments;
 using ICD.Common.Utils.Extensions;
-using ICD.Connect.Devices.Telemetry.DeviceInfo.NetworkInfo;
+using ICD.Connect.Devices.Telemetry.DeviceInfo.Abstract;
 
-namespace ICD.Connect.Devices.Telemetry.DeviceInfo
+namespace ICD.Connect.Devices.Telemetry.DeviceInfo.Monitored
 {
-	public sealed class MonitoredDeviceInfoTelemetry : AbstractDeviceInfoTelemetry<IMonitoredNetworkDeviceInfoTelemetry>, IMonitoredDeviceInfoTelemetry
+	public sealed class MonitoredDeviceInfo : AbstractDeviceInfo<IMonitoredNetworkDeviceInfo>, IMonitoredDeviceInfo
 	{
 		private string m_FirmwareVersion;
 		private DateTime? m_FirmwareDate;
 		private DateTime? m_UptimeStart;
 		private bool m_RebootSupported;
 
-		public MonitoredDeviceInfoTelemetry() : base(new MonitoredNetworkDeviceInfoTelemetry())
+		public MonitoredDeviceInfo() : base(new MonitoredNetworkDeviceInfo())
 		{
 		}
 

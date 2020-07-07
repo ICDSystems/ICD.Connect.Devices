@@ -2,9 +2,9 @@
 using ICD.Common.Utils.EventArguments;
 using ICD.Common.Utils.Extensions;
 
-namespace ICD.Connect.Devices.Telemetry.DeviceInfo.NetworkInfo.AdapterInfo
+namespace ICD.Connect.Devices.Telemetry.DeviceInfo.Abstract
 {
-	public abstract class AbstractAdapterNetworkDeviceInfoTelemetry : IAdapterNetworkDeviceInfoTelemetry
+	public abstract class AbstractAdapterNetworkDeviceInfo : IAdapterNetworkDeviceInfo
 	{
 		private readonly int m_Address;
 		private string m_Name;
@@ -110,7 +110,7 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo.NetworkInfo.AdapterInfo
 			}
 		}
 
-		protected AbstractAdapterNetworkDeviceInfoTelemetry(int address)
+		protected AbstractAdapterNetworkDeviceInfo(int address)
 		{
 			m_Address = address;
 		}

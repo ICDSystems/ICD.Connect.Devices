@@ -1,11 +1,12 @@
 ﻿using System;
 using ICD.Common.Utils.EventArguments;
 using ICD.Common.Utils.Extensions;
-using ICD.Connect.Devices.Telemetry.DeviceInfo.NetworkInfo;
+using ICD.Connect.Devices.Telemetry.DeviceInfo.Abstract;
+using ICD.Connect.Devices.Telemetry.DeviceInfo.Configured.Settings;
 
-namespace ICD.Connect.Devices.Telemetry.DeviceInfo
+namespace ICD.Connect.Devices.Telemetry.DeviceInfo.Configured
 {
-	public sealed class ConfiguredDeviceInfoTelemetry : AbstractDeviceInfoTelemetry<IConfiguredNetworkDeviceInfoTelemetry>, IConfiguredDeviceInfoTelemetry
+	public sealed class ConfiguredDeviceInfo : AbstractDeviceInfo<IConfiguredNetworkDeviceInfo>, IConfiguredDeviceInfo
 	{
 
 
@@ -16,7 +17,7 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo
 
 		#endregion
 
-		public ConfiguredDeviceInfoTelemetry() : base(new ConfiguredNetworkDeviceInfoTelemetry())
+		public ConfiguredDeviceInfo() : base(new ConfiguredNetworkDeviceInfo())
 		{
 		}
 

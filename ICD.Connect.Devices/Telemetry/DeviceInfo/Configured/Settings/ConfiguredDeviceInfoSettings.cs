@@ -1,11 +1,10 @@
 ﻿using System;
 using ICD.Common.Properties;
 using ICD.Common.Utils.Xml;
-using ICD.Connect.Devices.Telemetry.DeviceInfo.NetworkInfo;
 
-namespace ICD.Connect.Devices.Telemetry.DeviceInfo
+namespace ICD.Connect.Devices.Telemetry.DeviceInfo.Configured.Settings
 {
-	public sealed class ConfiguredDeviceInfoSettings : IConfiguredDeviceInfoTelemetrySettingsBase
+	public sealed class ConfiguredDeviceInfoSettings : IConfiguredDeviceInfoSettingsBase
 	{
 		private const string ELEMENT_CONFIGURED_DEVICE_INFO = "ConfiguredDeviceInfo";
 		private const string ELEMENT_MAKE = "Make";
@@ -14,7 +13,7 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo
 		private const string ELEMENT_PURCHASE_DATE = "PurchaseDate";
 		
 
-		private readonly ConfiguredNetworkDeviceInfoTelemetrySettings m_NetworkInfo;
+		private readonly ConfiguredNetworkDeviceInfoSettings m_NetworkInfo;
 
 		[CanBeNull]
 		public string Make { get; set; }
@@ -26,11 +25,11 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo
 		public DateTime? PurchaseDate { get; set; }
 
 		[NotNull]
-		public ConfiguredNetworkDeviceInfoTelemetrySettings NetworkInfo { get { return m_NetworkInfo; } }
+		public ConfiguredNetworkDeviceInfoSettings NetworkInfo { get { return m_NetworkInfo; } }
 
 		public ConfiguredDeviceInfoSettings()
 		{
-			m_NetworkInfo = new ConfiguredNetworkDeviceInfoTelemetrySettings();
+			m_NetworkInfo = new ConfiguredNetworkDeviceInfoSettings();
 		}
 
 		/// <summary>

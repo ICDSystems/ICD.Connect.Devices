@@ -10,6 +10,8 @@ using ICD.Connect.API.Info;
 using ICD.Connect.API.Nodes;
 using ICD.Connect.Devices.EventArguments;
 using ICD.Connect.Devices.Telemetry.DeviceInfo;
+using ICD.Connect.Devices.Telemetry.DeviceInfo.Configured;
+using ICD.Connect.Devices.Telemetry.DeviceInfo.Monitored;
 using ICD.Connect.Settings;
 using ICD.Connect.Settings.Proxies;
 
@@ -23,8 +25,8 @@ namespace ICD.Connect.Devices.Proxies.Devices
 		#region Fields
 
 		private bool m_IsOnline;
-		private readonly ConfiguredDeviceInfoTelemetry m_ConfiguredDeviceInfo;
-		private readonly MonitoredDeviceInfoTelemetry m_MonitoredDeviceInfo;
+		private readonly ConfiguredDeviceInfo m_ConfiguredDeviceInfo;
+		private readonly MonitoredDeviceInfo m_MonitoredDeviceInfo;
 
 		#endregion
 
@@ -55,18 +57,18 @@ namespace ICD.Connect.Devices.Proxies.Devices
 		/// Device Info Telemetry, configured from DAV
 		/// Todo: Make this work over proxy?
 		/// </summary>
-		public IConfiguredDeviceInfoTelemetry ConfiguredDeviceInfo { get { return m_ConfiguredDeviceInfo; } }
+		public IConfiguredDeviceInfo ConfiguredDeviceInfo { get { return m_ConfiguredDeviceInfo; } }
 
 		/// <summary>
 		/// Device Info Telemetry, monitored from the device itself
 		/// Todo: Make this work over proxy?
 		/// </summary>
-		public IMonitoredDeviceInfoTelemetry MonitoredDeviceInfo { get { return m_MonitoredDeviceInfo; } }
+		public IMonitoredDeviceInfo MonitoredDeviceInfo { get { return m_MonitoredDeviceInfo; } }
 
 		/// <summary>
 		/// Device Info Telemetry, returns both monitored and configured telemetry
 		/// </summary>
-		public IEnumerable<IDeviceInfoTelemetry> DeviceInfo
+		public IEnumerable<IDeviceInfo> DeviceInfo
 		{
 			get
 			{
@@ -79,8 +81,8 @@ namespace ICD.Connect.Devices.Proxies.Devices
 
 		protected AbstractProxyDeviceBase()
 		{
-			m_ConfiguredDeviceInfo = new ConfiguredDeviceInfoTelemetry();
-			m_MonitoredDeviceInfo = new MonitoredDeviceInfoTelemetry();
+			m_ConfiguredDeviceInfo = new ConfiguredDeviceInfo();
+			m_MonitoredDeviceInfo = new MonitoredDeviceInfo();
 		}
 
 		/// <summary>

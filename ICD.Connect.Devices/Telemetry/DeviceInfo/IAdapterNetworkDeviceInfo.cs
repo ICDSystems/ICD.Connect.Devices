@@ -3,9 +3,9 @@ using ICD.Common.Utils.EventArguments;
 using ICD.Connect.Telemetry.Attributes;
 using ICD.Connect.Telemetry.Providers;
 
-namespace ICD.Connect.Devices.Telemetry.DeviceInfo.NetworkInfo.AdapterInfo
+namespace ICD.Connect.Devices.Telemetry.DeviceInfo
 {
-	public interface IAdapterNetworkDeviceInfoTelemetry : ITelemetryProvider
+	public interface IAdapterNetworkDeviceInfo : ITelemetryProvider
 	{
 		[EventTelemetry(DeviceTelemetryNames.DEVICE_NETWORK_ADAPTER_NAME_CHANGED)]
 		event EventHandler<StringEventArgs> OnNameChanged;

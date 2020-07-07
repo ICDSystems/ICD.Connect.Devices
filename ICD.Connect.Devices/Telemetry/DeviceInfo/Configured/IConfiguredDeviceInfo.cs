@@ -1,11 +1,12 @@
 ﻿using System;
 using ICD.Common.Properties;
 using ICD.Common.Utils.EventArguments;
+using ICD.Connect.Devices.Telemetry.DeviceInfo.Configured.Settings;
 using ICD.Connect.Telemetry.Attributes;
 
-namespace ICD.Connect.Devices.Telemetry.DeviceInfo
+namespace ICD.Connect.Devices.Telemetry.DeviceInfo.Configured
 {
-	public interface IConfiguredDeviceInfoTelemetry : IDeviceInfoTelemetry, IConfiguredDeviceInfoTelemetryBase<ConfiguredDeviceInfoSettings>
+	public interface IConfiguredDeviceInfo : IDeviceInfo, IConfiguredDeviceInfoBase<ConfiguredDeviceInfoSettings>
 	{
 		[EventTelemetry(DeviceTelemetryNames.DEVICE_PURCHASE_DATE_CHANGED)]
 		event EventHandler<DateTimeNullableEventArgs> OnPurchaseDateChanged;

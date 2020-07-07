@@ -1,7 +1,6 @@
 ﻿using System;
 using ICD.Common.Properties;
 using ICD.Common.Utils.EventArguments;
-using ICD.Connect.Devices.Telemetry.DeviceInfo.NetworkInfo;
 using ICD.Connect.Telemetry.Attributes;
 using ICD.Connect.Telemetry.Providers;
 
@@ -10,7 +9,7 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo
 	/// <summary>
 	/// Interface to hold collection of configured and monitored device info for telemetry
 	/// </summary>
-	public interface IDeviceInfoTelemetry: ITelemetryProvider
+	public interface IDeviceInfo: ITelemetryProvider
 	{
 		[EventTelemetry(DeviceTelemetryNames.DEVICE_MAKE_CHANGED)]
 		event EventHandler<StringEventArgs> OnMakeChanged;
@@ -34,7 +33,7 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo
 
 		[NotNull]
 		[CollectionTelemetry("NetworkInfo")]
-		INetworkDeviceInfoTelemetry NetworkInfo { get; }
+		INetworkDeviceInfo NetworkInfo { get; }
 
 		/// <summary>
 		/// Identifies the node for telemetry
@@ -44,8 +43,8 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo
 		string NodeIdentifier { get; }
 	}
 
-	public interface IDeviceInfoTelemetry<TNetworkInfo> : IDeviceInfoTelemetry
-		where TNetworkInfo : INetworkDeviceInfoTelemetry
+	public interface IDeviceInfo<TNetworkInfo> : IDeviceInfo
+		where TNetworkInfo : INetworkDeviceInfo
 	{
 		[NotNull]
 		TNetworkInfo NetworkInfo { get; }

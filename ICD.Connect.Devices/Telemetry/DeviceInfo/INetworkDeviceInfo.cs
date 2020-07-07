@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using ICD.Common.Properties;
 using ICD.Common.Utils.EventArguments;
-using ICD.Connect.Devices.Telemetry.DeviceInfo.NetworkInfo.AdapterInfo;
 using ICD.Connect.Telemetry.Attributes;
 using ICD.Connect.Telemetry.Providers;
 
-namespace ICD.Connect.Devices.Telemetry.DeviceInfo.NetworkInfo
+namespace ICD.Connect.Devices.Telemetry.DeviceInfo
 {
-	public interface INetworkDeviceInfoTelemetry : ITelemetryProvider
+	public interface INetworkDeviceInfo : ITelemetryProvider
 	{
 		[EventTelemetry(DeviceTelemetryNames.DEVICE_HOSTNAME_CHANGED)]
 		event EventHandler<StringEventArgs> OnHostnameChanged;
@@ -35,8 +34,8 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo.NetworkInfo
 		string NodeIdentifier { get; }
 	}
 
-	public interface INetworkDeviceInfoTelemetry<TAdapterInfo> : INetworkDeviceInfoTelemetry
-		where TAdapterInfo : IAdapterNetworkDeviceInfoTelemetry
+	public interface INetworkDeviceInfo<TAdapterInfo> : INetworkDeviceInfo
+		where TAdapterInfo : IAdapterNetworkDeviceInfo
 	{
 
 		[CollectionTelemetry("Adapters")]

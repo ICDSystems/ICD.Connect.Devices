@@ -1,7 +1,9 @@
-﻿namespace ICD.Connect.Devices.Telemetry.DeviceInfo
+﻿using ICD.Connect.Devices.Telemetry.DeviceInfo.Configured.Settings;
+
+namespace ICD.Connect.Devices.Telemetry.DeviceInfo.Configured
 {
-	public interface IConfiguredDeviceInfoTelemetryBase<TSettings>
-		where TSettings : IConfiguredDeviceInfoTelemetrySettingsBase
+	public interface IConfiguredDeviceInfoBase<TSettings>
+		where TSettings : IConfiguredDeviceInfoSettingsBase
 	{
 		/// <summary>
 		/// Apply the configuration from the settings

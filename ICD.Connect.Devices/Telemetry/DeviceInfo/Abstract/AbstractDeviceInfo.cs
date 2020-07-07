@@ -1,12 +1,11 @@
 ﻿using System;
 using ICD.Common.Utils.EventArguments;
 using ICD.Common.Utils.Extensions;
-using ICD.Connect.Devices.Telemetry.DeviceInfo.NetworkInfo;
 
-namespace ICD.Connect.Devices.Telemetry.DeviceInfo
+namespace ICD.Connect.Devices.Telemetry.DeviceInfo.Abstract
 {
-	public abstract class AbstractDeviceInfoTelemetry<TNetworkInfo> : IDeviceInfoTelemetry<TNetworkInfo>
-		where TNetworkInfo : INetworkDeviceInfoTelemetry
+	public abstract class AbstractDeviceInfo<TNetworkInfo> : IDeviceInfo<TNetworkInfo>
+		where TNetworkInfo : INetworkDeviceInfo
 	{
 		private string m_Make;
 		private string m_Model;
@@ -59,7 +58,7 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo
 			}
 		}
 
-		INetworkDeviceInfoTelemetry IDeviceInfoTelemetry.NetworkInfo
+		INetworkDeviceInfo IDeviceInfo.NetworkInfo
 		{
 			get { return NetworkInfo; }
 		}
@@ -72,7 +71,7 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo
 
 		public TNetworkInfo NetworkInfo { get { return m_NetworkInfo; } }
 
-		protected AbstractDeviceInfoTelemetry(TNetworkInfo networkInfo)
+		protected AbstractDeviceInfo(TNetworkInfo networkInfo)
 		{
 			m_NetworkInfo = networkInfo;
 		}

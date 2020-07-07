@@ -1,8 +1,8 @@
 ﻿using ICD.Common.Utils.Xml;
 
-namespace ICD.Connect.Devices.Telemetry.DeviceInfo.NetworkInfo.AdapterInfo
+namespace ICD.Connect.Devices.Telemetry.DeviceInfo.Configured.Settings
 {
-	public sealed class ConfiguredAdapterNetworkDeviceInfoTelemetrySettings : IConfiguredDeviceInfoTelemetrySettingsBase
+	public sealed class ConfiguredAdapterNetworkDeviceInfoSettings : IConfiguredDeviceInfoSettingsBase
 	{
 		private const string ELEMENT = "Adapter";
 		private const string ATTRIBUTE_ADDRESS = "address";

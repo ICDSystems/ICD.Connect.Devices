@@ -3,9 +3,9 @@ using ICD.Common.Properties;
 using ICD.Common.Utils.EventArguments;
 using ICD.Connect.Telemetry.Attributes;
 
-namespace ICD.Connect.Devices.Telemetry.DeviceInfo
+namespace ICD.Connect.Devices.Telemetry.DeviceInfo.Monitored
 {
-	public interface IMonitoredDeviceInfoTelemetry : IDeviceInfoTelemetry
+	public interface IMonitoredDeviceInfo : IDeviceInfo
 	{
 		[EventTelemetry(DeviceTelemetryNames.DEVICE_FIRMWARE_VERSION_CHANGED)]
 		event EventHandler<StringEventArgs> OnFirmwareVersionChanged;

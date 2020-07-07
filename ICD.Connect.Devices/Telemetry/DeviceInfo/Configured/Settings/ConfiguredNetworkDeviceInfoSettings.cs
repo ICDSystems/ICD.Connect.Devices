@@ -1,27 +1,26 @@
 ﻿using System.Collections.Generic;
 using ICD.Common.Utils.Xml;
-using ICD.Connect.Devices.Telemetry.DeviceInfo.NetworkInfo.AdapterInfo;
 
-namespace ICD.Connect.Devices.Telemetry.DeviceInfo.NetworkInfo
+namespace ICD.Connect.Devices.Telemetry.DeviceInfo.Configured.Settings
 {
-	public sealed class ConfiguredNetworkDeviceInfoTelemetrySettings : IConfiguredDeviceInfoTelemetrySettingsBase
+	public sealed class ConfiguredNetworkDeviceInfoSettings : IConfiguredDeviceInfoSettingsBase
 	{
 		private const string ELEMENT_NETWORK_INFO = "NetworkInfo";
 		private const string ELEMENT_HOSTNAME = "Hostname";
 		private const string ELEMENT_DNS = "Dns";
 		private const string ELEMENT_ADAPTERS = "Adapters";
 
-		private readonly List<ConfiguredAdapterNetworkDeviceInfoTelemetrySettings> m_Adapters;
+		private readonly List<ConfiguredAdapterNetworkDeviceInfoSettings> m_Adapters;
 
 		public string Hostname { get; set; }
 
 		public string Dns { get; set; }
 
-		public List<ConfiguredAdapterNetworkDeviceInfoTelemetrySettings> Adapters { get { return m_Adapters; } }
+		public List<ConfiguredAdapterNetworkDeviceInfoSettings> Adapters { get { return m_Adapters; } }
 
-		public ConfiguredNetworkDeviceInfoTelemetrySettings()
+		public ConfiguredNetworkDeviceInfoSettings()
 		{
-			m_Adapters = new List<ConfiguredAdapterNetworkDeviceInfoTelemetrySettings>();
+			m_Adapters = new List<ConfiguredAdapterNetworkDeviceInfoSettings>();
 		}
 
 		/// <summary>
@@ -71,7 +70,7 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo.NetworkInfo
 				IEnumerable<string> adaptersXml = XmlUtils.GetChildElementsAsString(adaptersElement);
 				foreach (string adapterXml in adaptersXml)
 				{
-					var adapter = new ConfiguredAdapterNetworkDeviceInfoTelemetrySettings();
+					var adapter = new ConfiguredAdapterNetworkDeviceInfoSettings();
 					adapter.ParseXml(adapterXml);
 					Adapters.Add(adapter);
 				}

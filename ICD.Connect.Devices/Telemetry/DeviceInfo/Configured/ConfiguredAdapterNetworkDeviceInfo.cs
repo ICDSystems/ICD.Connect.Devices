@@ -1,12 +1,14 @@
 ﻿using System;
+using ICD.Connect.Devices.Telemetry.DeviceInfo.Abstract;
+using ICD.Connect.Devices.Telemetry.DeviceInfo.Configured.Settings;
 
-namespace ICD.Connect.Devices.Telemetry.DeviceInfo.NetworkInfo.AdapterInfo
+namespace ICD.Connect.Devices.Telemetry.DeviceInfo.Configured
 {
-	public sealed class ConfiguredAdapterNetworkDeviceInfoTelemetry : AbstractAdapterNetworkDeviceInfoTelemetry, IConfiguredAdapterNetworkDeviceInfoTelemetry
+	public sealed class ConfiguredAdapterNetworkDeviceInfo : AbstractAdapterNetworkDeviceInfo, IConfiguredAdapterNetworkDeviceInfo
 	{
 
 
-		public ConfiguredAdapterNetworkDeviceInfoTelemetry(int address) : base(address)
+		public ConfiguredAdapterNetworkDeviceInfo(int address) : base(address)
 		{
 		}
 
@@ -14,7 +16,7 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo.NetworkInfo.AdapterInfo
 		/// Apply the configuration from the settings
 		/// </summary>
 		/// <param name="settings"></param>
-		public void ApplySettings(ConfiguredAdapterNetworkDeviceInfoTelemetrySettings settings)
+		public void ApplySettings(ConfiguredAdapterNetworkDeviceInfoSettings settings)
 		{
 			if (Address != settings.Address)
 				throw new InvalidOperationException("Cannot Apply Settings with different Addresses");
@@ -31,7 +33,7 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo.NetworkInfo.AdapterInfo
 		/// Copy the configuration to the given settings
 		/// </summary>
 		/// <param name="settings"></param>
-		public void CopySettings(ConfiguredAdapterNetworkDeviceInfoTelemetrySettings settings)
+		public void CopySettings(ConfiguredAdapterNetworkDeviceInfoSettings settings)
 		{
 			settings.Address = Address;
 			settings.Name = Name;
