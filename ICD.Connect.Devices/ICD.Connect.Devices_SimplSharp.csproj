@@ -72,7 +72,7 @@
   <ItemGroup>
     <Compile Include="Controls\ControlTelemetryNames.cs" />
     <Compile Include="Controls\DeviceControlConsole.cs" />
-    <Compile Include="Controls\IDeviceControlExternalTelemetryProvider.cs" />
+    <Compile Include="Controls\DeviceControlExternalTelemetryProvider.cs" />
     <Compile Include="Controls\PowerDeviceControlActivities.cs" />
     <Compile Include="Controls\PowerDeviceControlConsole.cs" />
     <Compile Include="Devices\DeviceBaseActivities.cs" />
