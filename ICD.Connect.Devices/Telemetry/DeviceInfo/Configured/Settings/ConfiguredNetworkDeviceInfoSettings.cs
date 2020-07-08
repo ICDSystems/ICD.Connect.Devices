@@ -31,7 +31,6 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo.Configured.Settings
 		{
 			writer.WriteStartElement(ELEMENT_NETWORK_INFO);
 			{
-				writer.WriteEndElement();
 				writer.WriteElementString(ELEMENT_HOSTNAME, Hostname);
 				writer.WriteElementString(ELEMENT_DNS, Dns);
 
