@@ -39,9 +39,9 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo.Configured.Settings
 				writer.WriteElementString(ELEMENT_NAME, Name);
 				writer.WriteElementString(ELEMENT_MAC_ADDRESS, MacAddress);
 				writer.WriteElementString(ELEMENT_DHCP, IcdXmlConvert.ToString(Dhcp));
-				writer.WriteElementString(Ipv4Address, Ipv4Address);
-				writer.WriteElementString(Ipv4SubnetMask, Ipv4SubnetMask);
-				writer.WriteElementString(Ipv4Gateway, Ipv4Gateway);
+				writer.WriteElementString(ELEMENT_IPV4_ADDRESS, Ipv4Address);
+				writer.WriteElementString(ELEMENT_IPV4_SUBNET, Ipv4SubnetMask);
+				writer.WriteElementString(ELEMENT_IPV4_GATEWAY, Ipv4Gateway);
 			}
 			writer.WriteEndElement();
 		}

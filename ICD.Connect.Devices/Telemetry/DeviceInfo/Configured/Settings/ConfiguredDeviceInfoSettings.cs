@@ -50,6 +50,7 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo.Configured.Settings
 
 				NetworkInfo.WriteElements(writer);
 			}
+			writer.WriteEndElement();
 		}
 
 		/// <summary>
