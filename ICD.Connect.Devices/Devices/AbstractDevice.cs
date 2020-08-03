@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using ICD.Common.Logging.LoggingContexts;
+using ICD.Common.Utils.EventArguments;
 using ICD.Common.Utils.Extensions;
 using ICD.Common.Utils.Services.Logging;
 using ICD.Connect.API.Commands;
@@ -23,6 +24,10 @@ namespace ICD.Connect.Devices
 		/// Raised when ControlsAvailable changes
 		/// </summary>
 		public event EventHandler<DeviceBaseControlsAvailableApiEventArgs> OnControlsAvailableChanged;
+		/// <summary>
+		/// Raised when the state of RoomCritical property changes
+		/// </summary>
+		public event EventHandler<BoolEventArgs> OnRoomCriticalChanged;
 
 		private readonly DeviceControlsCollection m_Controls;
 
@@ -30,6 +35,8 @@ namespace ICD.Connect.Devices
 
 		private readonly ConfiguredDeviceInfo m_ConfiguredDeviceInfo;
 		private readonly MonitoredDeviceInfo m_MonitoredDeviceInfo;
+
+		private bool m_RoomCritical;
 
 		#region Properties
 
@@ -61,6 +68,20 @@ namespace ICD.Connect.Devices
 				OnControlsAvailableChanged.Raise(this, new DeviceBaseControlsAvailableApiEventArgs(ControlsAvailable));
 			}
 		}
+
+		/// <summary>
+		/// Specifies that the device is critical to room operation.
+		/// </summary>
+		public bool RoomCritical { get { return m_RoomCritical; }
+			set
+			{
+				if (value == m_RoomCritical)
+					return;
+
+				m_RoomCritical = value;
+
+				OnRoomCriticalChanged.Raise(this, new BoolEventArgs(m_RoomCritical));
+			} }
 
 		/// <summary>
 		/// Gets the discovered model.
@@ -114,6 +135,7 @@ namespace ICD.Connect.Devices
 		protected override void DisposeFinal(bool disposing)
 		{
 			OnControlsAvailableChanged = null;
+			OnRoomCriticalChanged = null;
 
 			Controls.Dispose();
 
@@ -161,6 +183,7 @@ namespace ICD.Connect.Devices
 			base.ClearSettingsFinal();
 
 			ConfiguredDeviceInfo.ClearSettings();
+			RoomCritical = false;
 
 			Controls.Clear();
 		}
@@ -175,6 +198,7 @@ namespace ICD.Connect.Devices
 			base.ApplySettingsFinal(settings, factory);
 
 			ConfiguredDeviceInfo.ApplySettings(settings.ConfiguredDeviceInfo);
+			RoomCritical = settings.RoomCritical;
 
 			AddControls(settings, factory, Controls.Add);
 		}
@@ -198,6 +222,7 @@ namespace ICD.Connect.Devices
 			base.CopySettingsFinal(settings);
 
 			ConfiguredDeviceInfo.CopySettings(settings.ConfiguredDeviceInfo);
+			settings.RoomCritical = RoomCritical;
 		}
 
 		#endregion

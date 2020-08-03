@@ -1,4 +1,5 @@
 using System;
+using ICD.Common.Utils.EventArguments;
 using ICD.Connect.API.Attributes;
 using ICD.Connect.Devices.Controls;
 using ICD.Connect.Devices.EventArguments;
@@ -46,5 +47,10 @@ namespace ICD.Connect.Devices
 		/// </summary>
 		[ApiProperty(DeviceBaseApi.PROPERTY_CONTROLS_AVAILABLE, DeviceBaseApi.HELP_PROPERTY_CONTROLS_AVAILABLE)]
 		bool ControlsAvailable { get; }
+
+		/// <summary>
+		/// Specifies that the room is critical to room operation.
+		/// </summary>
+		bool RoomCritical { get; set; }
 	}
 }

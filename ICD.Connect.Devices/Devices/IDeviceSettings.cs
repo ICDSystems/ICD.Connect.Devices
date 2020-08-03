@@ -25,6 +25,14 @@ namespace ICD.Connect.Devices
 		/// </summary>
 		DateTime PurchaseDate { get; set; }
 
+		/// <summary>
+		/// Device Info Telemetry, configured from DAV
+		/// </summary>
 		ConfiguredDeviceInfoSettings ConfiguredDeviceInfo { get; }
+
+		/// <summary>
+		/// Specifies that the room is critical to room operation.
+		/// </summary>
+		bool RoomCritical { get; set; }
 	}
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using ICD.Common.Logging.LoggingContexts;
+using ICD.Common.Utils.EventArguments;
 using ICD.Common.Utils.Extensions;
 using ICD.Common.Utils.Services.Logging;
 using ICD.Connect.API.Commands;
@@ -21,9 +22,15 @@ namespace ICD.Connect.Devices.CrestronSPlus.Devices.SPlus
 		/// </summary>
 		public event EventHandler<DeviceBaseControlsAvailableApiEventArgs> OnControlsAvailableChanged;
 
+		/// <summary>
+		/// Raised when the state of RoomCritical property changes
+		/// </summary>
+		public event EventHandler<BoolEventArgs> OnRoomCriticalChanged;
+
 		private readonly DeviceControlsCollection m_Controls;
 
 		private bool m_ControlsAvailable;
+		private bool m_RoomCritical;
 		private readonly ConfiguredDeviceInfo m_ConfiguredDeviceInfo;
 		private readonly MonitoredDeviceInfo m_MonitoredDeviceInfo;
 
@@ -62,6 +69,24 @@ namespace ICD.Connect.Devices.CrestronSPlus.Devices.SPlus
 				OnControlsAvailableChanged.Raise(this, new DeviceBaseControlsAvailableApiEventArgs(ControlsAvailable));
 			}
 		}
+
+		/// <summary>
+		/// Specifies that the room is critical to room operation.
+		/// </summary>
+		public bool RoomCritical
+		{
+			get { return m_RoomCritical; }
+			set
+			{
+				if (value == m_RoomCritical)
+					return;
+
+				m_RoomCritical = value;
+
+				OnRoomCriticalChanged.Raise(this, new BoolEventArgs(m_RoomCritical));
+			}
+		}
+
 
 		/// <summary>
 		/// Gets the controls for this device.
@@ -136,6 +161,8 @@ namespace ICD.Connect.Devices.CrestronSPlus.Devices.SPlus
 			base.CopySettingsFinal(settings);
 
 			ConfiguredDeviceInfo.CopySettings(settings.ConfiguredDeviceInfo);
+			settings.RoomCritical = RoomCritical;
+
 		}
 
 		/// <summary>
@@ -148,6 +175,7 @@ namespace ICD.Connect.Devices.CrestronSPlus.Devices.SPlus
 			base.ApplySettingsFinal(settings, factory);
 
 			ConfiguredDeviceInfo.ApplySettings(settings.ConfiguredDeviceInfo);
+			RoomCritical = settings.RoomCritical;
 
 			AddControls(settings, factory, Controls.Add);
 		}
@@ -160,6 +188,7 @@ namespace ICD.Connect.Devices.CrestronSPlus.Devices.SPlus
 			base.ClearSettingsFinal();
 
 			ConfiguredDeviceInfo.ClearSettings();
+			RoomCritical = false;
 
 			Controls.Clear();
 		}

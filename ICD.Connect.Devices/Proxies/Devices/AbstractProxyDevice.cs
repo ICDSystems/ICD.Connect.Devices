@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using ICD.Common.Properties;
 using ICD.Common.Utils;
+using ICD.Common.Utils.EventArguments;
 using ICD.Common.Utils.Extensions;
 using ICD.Common.Logging.LoggingContexts;
 using ICD.Common.Utils.Services.Logging;
@@ -20,13 +21,15 @@ using ICD.Connect.Settings;
 
 namespace ICD.Connect.Devices.Proxies.Devices
 {
-    public abstract class AbstractProxyDevice<TSettings> : AbstractProxyDeviceBase<TSettings>, IProxyDevice
+	public abstract class AbstractProxyDevice<TSettings> : AbstractProxyDeviceBase<TSettings>, IProxyDevice
 		where TSettings : IProxyDeviceSettings
-    {
+	{
 		/// <summary>
 		/// Raised when control availability for the device changes.
 		/// </summary>
 		public event EventHandler<DeviceBaseControlsAvailableApiEventArgs> OnControlsAvailableChanged;
+
+		public event EventHandler<BoolEventArgs> OnRoomCriticalChanged;
 
 		private readonly DeviceControlsCollection m_Controls;
 		private readonly SafeCriticalSection m_CriticalSection;
@@ -35,15 +38,16 @@ namespace ICD.Connect.Devices.Proxies.Devices
 		private readonly MonitoredDeviceInfo m_MonitoredDeviceInfo;
 
 		private bool m_ControlsAvailable;
+		private bool m_RoomCritical;
 
-	    #region Properties
+		#region Properties
 
-	    /// <summary>
-	    /// Gets the category for this originator type (e.g. Device, Port, etc)
-	    /// </summary>
-	    public override string Category { get { return "Device"; } }
+		/// <summary>
+		/// Gets the category for this originator type (e.g. Device, Port, etc)
+		/// </summary>
+		public override string Category { get { return "Device"; } }
 
-	    /// <summary>
+		/// <summary>
 		/// Gets the controls for this device.
 		/// </summary>
 		public DeviceControlsCollection Controls { get { return m_Controls; } }
@@ -64,6 +68,22 @@ namespace ICD.Connect.Devices.Proxies.Devices
 				Logger.LogSetTo(eSeverity.Informational, "ControlsAvailable", m_ControlsAvailable);
 
 				OnControlsAvailableChanged.Raise(this, new DeviceBaseControlsAvailableApiEventArgs(ControlsAvailable));
+			}
+		}
+
+		/// <summary>
+		/// Specifies that the device is critical to room operation.
+		/// </summary>
+		public bool RoomCritical
+		{
+			get { return m_RoomCritical; }
+			set
+			{
+				if (value == m_RoomCritical)
+					return;
+
+				m_RoomCritical = value;
+				OnRoomCriticalChanged.Raise(this, new BoolEventArgs(m_RoomCritical));
 			}
 		}
 
@@ -100,6 +120,7 @@ namespace ICD.Connect.Devices.Proxies.Devices
 		protected override void DisposeFinal(bool disposing)
 		{
 			OnControlsAvailableChanged = null;
+			OnRoomCriticalChanged = null;
 
 			base.DisposeFinal(disposing);
 
@@ -263,7 +284,8 @@ namespace ICD.Connect.Devices.Proxies.Devices
 				return;
 
 			// Initialize the proxy
-			IcdConsole.PrintLine(eConsoleColor.Blue, "DeinitializeProxyControl: {0} deinitializing proxy control {1}", this, control);
+			IcdConsole.PrintLine(eConsoleColor.Blue, "DeinitializeProxyControl: {0} deinitializing proxy control {1}", this,
+			                     control);
 			Unsubscribe(control);
 			control.Deinitialize();
 		}
@@ -311,44 +333,47 @@ namespace ICD.Connect.Devices.Proxies.Devices
 
 		#region Settings
 
-	    /// <summary>
-	    /// Override to clear the instance settings.
-	    /// </summary>
-	    protected override void ClearSettingsFinal()
-	    {
-		    base.ClearSettingsFinal();
+		/// <summary>
+		/// Override to clear the instance settings.
+		/// </summary>
+		protected override void ClearSettingsFinal()
+		{
+			base.ClearSettingsFinal();
 
 			ConfiguredDeviceInfo.ClearSettings();
+			RoomCritical = false;
 
 			Controls.Clear();
-	    }
+		}
 
-	    /// <summary>
-	    /// Override to apply settings to the instance.
-	    /// </summary>
-	    /// <param name="settings"></param>
-	    /// <param name="factory"></param>
-	    protected override void ApplySettingsFinal(TSettings settings, IDeviceFactory factory)
-	    {
-		    base.ApplySettingsFinal(settings, factory);
+		/// <summary>
+		/// Override to apply settings to the instance.
+		/// </summary>
+		/// <param name="settings"></param>
+		/// <param name="factory"></param>
+		protected override void ApplySettingsFinal(TSettings settings, IDeviceFactory factory)
+		{
+			base.ApplySettingsFinal(settings, factory);
 
 			ConfiguredDeviceInfo.ApplySettings(settings.ConfiguredDeviceInfo);
+			RoomCritical = settings.RoomCritical;
 
 			AddControls(settings, factory, Controls.Add);
-	    }
+		}
 
-	    /// <summary>
-	    /// Override to apply properties to the settings instance.
-	    /// </summary>
-	    /// <param name="settings"></param>
-	    protected override void CopySettingsFinal(TSettings settings)
-	    {
-		    base.CopySettingsFinal(settings);
+		/// <summary>
+		/// Override to apply properties to the settings instance.
+		/// </summary>
+		/// <param name="settings"></param>
+		protected override void CopySettingsFinal(TSettings settings)
+		{
+			base.CopySettingsFinal(settings);
 
 			ConfiguredDeviceInfo.CopySettings(settings.ConfiguredDeviceInfo);
-	    }
+			settings.RoomCritical = RoomCritical;
+		}
 
-	    /// <summary>
+		/// <summary>
 		/// Override to add controls to the device.
 		/// </summary>
 		/// <param name="settings"></param>
@@ -358,7 +383,7 @@ namespace ICD.Connect.Devices.Proxies.Devices
 		{
 		}
 
-	    #endregion
+		#endregion
 
 		#region Console
 
@@ -418,5 +443,5 @@ namespace ICD.Connect.Devices.Proxies.Devices
 		}
 
 		#endregion
-    }
+	}
 }

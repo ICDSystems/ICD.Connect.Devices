@@ -6,6 +6,7 @@ namespace ICD.Connect.Devices.Proxies.Devices
 {
 	public abstract class AbstractProxyDeviceSettings : AbstractProxyDeviceBaseSettings, IProxyDeviceSettings
 	{
+		private const string ROOM_CRITTICAL_ELEMENT = "RoomCritical";
 		private readonly ConfiguredDeviceInfoSettings m_ConfiguredDeviceInfo;
 
 		#region Properties
@@ -48,6 +49,11 @@ namespace ICD.Connect.Devices.Proxies.Devices
 
 		public ConfiguredDeviceInfoSettings ConfiguredDeviceInfo { get { return m_ConfiguredDeviceInfo; } }
 
+		/// <summary>
+		/// Specifies that the room is critical to room operation.
+		/// </summary>
+		public bool RoomCritical { get; set; }
+
 		#endregion
 
 		protected AbstractProxyDeviceSettings()
@@ -66,6 +72,7 @@ namespace ICD.Connect.Devices.Proxies.Devices
 			base.WriteElements(writer);
 
 			ConfiguredDeviceInfo.WriteElements(writer);
+			writer.WriteElementString(ROOM_CRITTICAL_ELEMENT, IcdXmlConvert.ToString(RoomCritical));
 		}
 
 		/// <summary>
@@ -77,6 +84,7 @@ namespace ICD.Connect.Devices.Proxies.Devices
 			base.ParseXml(xml);
 
 			ConfiguredDeviceInfo.ParseXml(xml);
+			RoomCritical = XmlUtils.TryReadChildElementContentAsBoolean(xml, ROOM_CRITTICAL_ELEMENT) ?? false;
 		}
 
 		#endregion

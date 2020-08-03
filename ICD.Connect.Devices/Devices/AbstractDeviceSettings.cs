@@ -6,11 +6,18 @@ namespace ICD.Connect.Devices
 {
 	public abstract class AbstractDeviceSettings : AbstractDeviceBaseSettings, IDeviceSettings
 	{
+		private const string ROOM_CRITTICAL_ELEMENT = "RoomCritical";
+
 		private readonly ConfiguredDeviceInfoSettings m_ConfiguredDeviceInfo;
 
 		#region Properties
 
 		public ConfiguredDeviceInfoSettings ConfiguredDeviceInfo { get { return m_ConfiguredDeviceInfo; } }
+
+		/// <summary>
+		/// Specifies that the room is critical to room operation.
+		/// </summary>
+		public bool RoomCritical { get; set; }
 
 		/// <summary>
 		/// Gets/sets the manufacturer for this device.
@@ -66,6 +73,7 @@ namespace ICD.Connect.Devices
 			base.WriteElements(writer);
 
 			ConfiguredDeviceInfo.WriteElements(writer);
+			writer.WriteElementString(ROOM_CRITTICAL_ELEMENT, IcdXmlConvert.ToString(RoomCritical));
 		}
 
 		/// <summary>
@@ -77,6 +85,7 @@ namespace ICD.Connect.Devices
 			base.ParseXml(xml);
 
 			ConfiguredDeviceInfo.ParseXml(xml);
+			RoomCritical = XmlUtils.TryReadChildElementContentAsBoolean(xml, ROOM_CRITTICAL_ELEMENT) ?? false;
 		}
 
 		#endregion

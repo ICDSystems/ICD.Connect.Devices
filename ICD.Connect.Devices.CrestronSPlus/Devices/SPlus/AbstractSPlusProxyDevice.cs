@@ -4,6 +4,7 @@ using System.Linq;
 using ICD.Common.Logging.LoggingContexts;
 using ICD.Common.Properties;
 using ICD.Common.Utils;
+using ICD.Common.Utils.EventArguments;
 using ICD.Common.Utils.Extensions;
 using ICD.Common.Utils.Services.Logging;
 using ICD.Connect.API;
@@ -76,6 +77,13 @@ namespace ICD.Connect.Devices.CrestronSPlus.Devices.SPlus
 				OnControlsAvailableChanged.Raise(this, new DeviceBaseControlsAvailableApiEventArgs(ControlsAvailable));
 			}
 		}
+
+		/// <summary>
+		/// Specifies that the room is critical to room operation.
+		/// </summary>
+		public bool RoomCritical { get; set; }
+
+		public event EventHandler<BoolEventArgs> OnRoomCriticalChanged;
 
 		#endregion
 

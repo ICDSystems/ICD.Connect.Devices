@@ -6,11 +6,17 @@ namespace ICD.Connect.Devices.CrestronSPlus.Devices.SPlus
 {
 	public abstract class AbstractSPlusDeviceSettings : AbstractSPlusDeviceBaseSettings, ISPlusDeviceSettings
 	{
+		private const string ROOM_CRITTICAL_ELEMENT = "RoomCritical";
 		private readonly ConfiguredDeviceInfoSettings m_ConfiguredDeviceInfo;
 
 		#region Properties
 
 		public ConfiguredDeviceInfoSettings ConfiguredDeviceInfo { get { return m_ConfiguredDeviceInfo; } }
+
+		/// <summary>
+		/// Specifies that the room is critical to room operation.
+		/// </summary>
+		public bool RoomCritical { get; set; }
 
 		/// <summary>
 		/// Gets/sets the manufacturer for this device.
@@ -66,6 +72,7 @@ namespace ICD.Connect.Devices.CrestronSPlus.Devices.SPlus
 			base.WriteElements(writer);
 
 			ConfiguredDeviceInfo.WriteElements(writer);
+			writer.WriteElementString(ROOM_CRITTICAL_ELEMENT, IcdXmlConvert.ToString(RoomCritical));
 		}
 
 		/// <summary>
@@ -77,6 +84,7 @@ namespace ICD.Connect.Devices.CrestronSPlus.Devices.SPlus
 			base.ParseXml(xml);
 
 			ConfiguredDeviceInfo.ParseXml(xml);
+			RoomCritical = XmlUtils.TryReadChildElementContentAsBoolean(xml, ROOM_CRITTICAL_ELEMENT) ?? false;
 		}
 
 		#endregion
