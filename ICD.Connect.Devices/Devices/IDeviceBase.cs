@@ -3,6 +3,7 @@ using ICD.Common.Utils;
 using ICD.Connect.API.Attributes;
 using ICD.Connect.Devices.EventArguments;
 using ICD.Connect.Devices.Proxies.Devices;
+using ICD.Connect.Devices.Telemetry;
 using ICD.Connect.Settings.Originators;
 using ICD.Connect.Telemetry.Attributes;
 
