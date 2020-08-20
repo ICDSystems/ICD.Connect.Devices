@@ -2,8 +2,8 @@
 using ICD.Common.Utils.Extensions;
 using ICD.Connect.API;
 using ICD.Connect.API.Info;
+using ICD.Connect.Devices.EventArguments;
 using ICD.Connect.Devices.Proxies.Devices;
-using ICD.Connect.Settings.Originators.Simpl;
 
 namespace ICD.Connect.Devices.Simpl
 {
@@ -38,7 +38,7 @@ namespace ICD.Connect.Devices.Simpl
 			base.Initialize(command);
 
 			ApiCommandBuilder.UpdateCommand(command)
-			                 .SubscribeEvent(SimplOriginatorApi.EVENT_ON_REQUEST_SHIM_RESYNC)
+			                 .SubscribeEvent(SimplDeviceBaseApi.EVENT_ON_REQUEST_SHIM_RESYNC)
 			                 .Complete();
 		}
 
@@ -52,7 +52,7 @@ namespace ICD.Connect.Devices.Simpl
 			base.ParseEvent(name, result);
 			switch (name)
 			{
-				case SimplOriginatorApi.EVENT_ON_REQUEST_SHIM_RESYNC:
+				case SimplDeviceBaseApi.EVENT_ON_REQUEST_SHIM_RESYNC:
 					RaiseOnRequestShimResync(this);
 					break;
 			}

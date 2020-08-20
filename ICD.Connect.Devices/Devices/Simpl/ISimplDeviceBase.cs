@@ -1,10 +1,11 @@
-﻿using ICD.Common.Properties;
+﻿using System;
+using ICD.Common.Properties;
 using ICD.Connect.API.Attributes;
-using ICD.Connect.Settings.Originators.Simpl;
+using ICD.Connect.Devices.EventArguments;
 
 namespace ICD.Connect.Devices.Simpl
 {
-	public interface ISimplDeviceBase : ISimplOriginator, IDeviceBase
+	public interface ISimplDeviceBase : IDeviceBase
 	{
 		/// <summary>
 		/// Gets/sets the device online status.
@@ -12,5 +13,8 @@ namespace ICD.Connect.Devices.Simpl
 		[PublicAPI("S+")]
 		[ApiMethod(SimplDeviceBaseApi.METHOD_SET_IS_ONLINE, SimplDeviceBaseApi.HELP_METHOD_SET_IS_ONLINE)]
 		void SetIsOnline(bool online);
+
+		[ApiEvent(SimplDeviceBaseApi.EVENT_ON_REQUEST_SHIM_RESYNC, SimplDeviceBaseApi.EVENT_ON_REQUEST_SHIM_RESYNC_HELP)]
+		event EventHandler<RequestShimResyncEventArgs> OnRequestShimResync;
 	}
 }

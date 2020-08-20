@@ -18,6 +18,13 @@ namespace ICD.Connect.Devices.SPlusShims
 		public event EventHandler<UShortEventArgs> OnIsOnlineStateChanged;
 
 		/// <summary>
+		/// This callback is raised when the shim wants the S+ class to re-send incoming data to the shim
+		/// This is for syncronizing, for example, when an originator is attached.
+		/// </summary>
+		[PublicAPI("S+")]
+		public event EventHandler OnResyncRequested;
+
+		/// <summary>
 		/// Returns true if the device hardware is detected by the system.
 		/// </summary>
 		[PublicAPI("S+")]
@@ -44,6 +51,16 @@ namespace ICD.Connect.Devices.SPlusShims
 		#region Private/Protected Methods
 
 		/// <summary>
+		/// Called when the originator is attached.
+		/// Do any actions needed to syncronize
+		/// </summary>
+		protected override void InitializeOriginator()
+		{
+			base.InitializeOriginator();
+			RequestResync();
+		}
+
+		/// <summary>
 		/// Called when the originator is detached
 		/// Do any actions needed to desyncronize
 		/// </summary>
@@ -56,6 +73,11 @@ namespace ICD.Connect.Devices.SPlusShims
 				return;
 
 			originator.SetIsOnline(false);
+		}
+
+		protected virtual void RequestResync()
+		{
+			OnResyncRequested.Raise(this);
 		}
 
 		#endregion
@@ -74,6 +96,7 @@ namespace ICD.Connect.Devices.SPlusShims
 				return;
 
 			originator.OnIsOnlineStateChanged += OriginatorOnIsOnlineStateChanged;
+			originator.OnRequestShimResync += OriginatorOnRequestShimResync;
 		}
 
 		/// <summary>
@@ -88,11 +111,17 @@ namespace ICD.Connect.Devices.SPlusShims
 				return;
 
 			originator.OnIsOnlineStateChanged -= OriginatorOnIsOnlineStateChanged;
+			originator.OnRequestShimResync -= OriginatorOnRequestShimResync;
 		}
 
 		private void OriginatorOnIsOnlineStateChanged(object sender, DeviceBaseOnlineStateApiEventArgs eventArgs)
 		{
 			OnIsOnlineStateChanged.Raise(this, new UShortEventArgs(IsOnline));
+		}
+
+		private void OriginatorOnRequestShimResync(object sender, RequestShimResyncEventArgs requestShimResyncEventArgs)
+		{
+			RequestResync();
 		}
 
 		#endregion

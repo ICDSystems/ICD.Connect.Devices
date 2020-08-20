@@ -8,6 +8,10 @@
 
 		public const string HELP_METHOD_SET_IS_ONLINE = "Sets the online state of the device from the shim";
 
+		public const string EVENT_ON_REQUEST_SHIM_RESYNC = "OnRequestShimResync";
+
+		public const string EVENT_ON_REQUEST_SHIM_RESYNC_HELP = "Sent by the originator to request the shim to resync";
+
 		#endregion
 	}
 }

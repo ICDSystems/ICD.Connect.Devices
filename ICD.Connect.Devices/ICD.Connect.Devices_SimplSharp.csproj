@@ -88,6 +88,7 @@
     <Compile Include="Devices\Simpl\ISimplProxyDevice.cs" />
     <Compile Include="Devices\Simpl\ISimplProxyDeviceBase.cs" />
     <Compile Include="Devices\Simpl\SimplDeviceBaseApi.cs" />
+    <Compile Include="EventArguments\RequestShimResyncEventArgs.cs" />
     <Compile Include="Telemetry\DeviceInfo\Abstract\AbstractDeviceInfo.cs" />
     <Compile Include="Telemetry\DeviceInfo\Configured\Settings\ConfiguredDeviceInfoSettings.cs" />
     <Compile Include="Telemetry\DeviceInfo\Configured\ConfiguredDeviceInfo.cs" />
