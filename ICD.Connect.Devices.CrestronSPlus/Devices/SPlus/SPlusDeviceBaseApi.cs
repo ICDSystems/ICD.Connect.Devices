@@ -1,6 +1,6 @@
-﻿namespace ICD.Connect.Devices.Simpl
+﻿namespace ICD.Connect.Devices.CrestronSPlus.Devices.SPlus
 {
-	public static class SimplDeviceBaseApi
+	public static class SPlusDeviceBaseApi
 	{
 		#region Const's
 

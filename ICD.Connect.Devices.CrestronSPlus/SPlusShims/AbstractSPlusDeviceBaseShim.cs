@@ -2,14 +2,15 @@
 using ICD.Common.Properties;
 using ICD.Common.Utils.EventArguments;
 using ICD.Common.Utils.Extensions;
+using ICD.Connect.Devices.CrestronSPlus.Devices.SPlus;
+using ICD.Connect.Devices.CrestronSPlus.EventArguments;
 using ICD.Connect.Devices.EventArguments;
-using ICD.Connect.Devices.Simpl;
-using ICD.Connect.Settings.SPlusShims;
+using ICD.Connect.Settings.CrestronSPlus.SPlusShims;
 
-namespace ICD.Connect.Devices.SPlusShims
+namespace ICD.Connect.Devices.CrestronSPlus.SPlusShims
 {
 	public abstract class AbstractSPlusDeviceBaseShim<TOriginator> : AbstractSPlusOriginatorShim<TOriginator>, ISPlusDeviceBaseShim<TOriginator> 
-		where TOriginator : class, ISimplDeviceBase
+		where TOriginator : class, ISPlusDeviceBase
 	{
 		/// <summary>
 		/// Raised when the device goes online/offline.

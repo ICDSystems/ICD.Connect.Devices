@@ -1,10 +1,10 @@
 ﻿using System;
-using ICD.Connect.Devices.EventArguments;
+using ICD.Connect.Devices.CrestronSPlus.EventArguments;
 
-namespace ICD.Connect.Devices.Simpl
+namespace ICD.Connect.Devices.CrestronSPlus.Devices.SPlus
 {
-	public abstract class AbstractSimplDeviceBase<TSettings> : AbstractDeviceBase<TSettings>, ISimplDeviceBase
-		where TSettings : ISimplDeviceBaseSettings, new()
+	public abstract class AbstractSPlusDeviceBase<TSettings> : AbstractDeviceBase<TSettings>, ISPlusDeviceBase
+		where TSettings : ISPlusDeviceBaseSettings, new()
 	{
 
 		public event EventHandler<RequestShimResyncEventArgs> OnRequestShimResync;

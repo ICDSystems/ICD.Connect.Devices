@@ -1,15 +1,15 @@
 ﻿using ICD.Connect.API.EventArguments;
 using ICD.Connect.API.Info;
-using ICD.Connect.Devices.Simpl;
+using ICD.Connect.Devices.CrestronSPlus.Devices.SPlus;
 
-namespace ICD.Connect.Devices.EventArguments
+namespace ICD.Connect.Devices.CrestronSPlus.EventArguments
 {
 	public sealed class RequestShimResyncEventArgs : AbstractApiEventArgs
 	{
 		/// <summary>
 		/// Constructor.
 		/// </summary>
-		public RequestShimResyncEventArgs() : base(SimplDeviceBaseApi.EVENT_ON_REQUEST_SHIM_RESYNC)
+		public RequestShimResyncEventArgs() : base(SPlusDeviceBaseApi.EVENT_ON_REQUEST_SHIM_RESYNC)
 		{
 		}
 

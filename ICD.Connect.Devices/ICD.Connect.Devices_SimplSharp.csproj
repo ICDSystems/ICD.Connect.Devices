@@ -83,12 +83,6 @@
     <Compile Include="Devices\Mock\AbstractMockDeviceSettings.cs" />
     <Compile Include="Devices\Mock\IMockDevice.cs" />
     <Compile Include="Devices\Mock\IMockDeviceSettings.cs" />
-    <Compile Include="Devices\Simpl\AbstractSimplProxyDevice.cs" />
-    <Compile Include="Devices\Simpl\AbstractSimplProxyDeviceBase.cs" />
-    <Compile Include="Devices\Simpl\ISimplProxyDevice.cs" />
-    <Compile Include="Devices\Simpl\ISimplProxyDeviceBase.cs" />
-    <Compile Include="Devices\Simpl\SimplDeviceBaseApi.cs" />
-    <Compile Include="EventArguments\RequestShimResyncEventArgs.cs" />
     <Compile Include="Telemetry\DeviceInfo\Abstract\AbstractDeviceInfo.cs" />
     <Compile Include="Telemetry\DeviceInfo\Configured\Settings\ConfiguredDeviceInfoSettings.cs" />
     <Compile Include="Telemetry\DeviceInfo\Configured\ConfiguredDeviceInfo.cs" />
@@ -127,14 +121,6 @@
     <Compile Include="Proxies\Controls\ProxyPowerDeviceControl.cs" />
     <Compile Include="Proxies\Devices\AbstractProxyDevice.cs" />
     <Compile Include="Proxies\Devices\AbstractProxyDeviceBase.cs" />
-    <Compile Include="Devices\Simpl\AbstractSimplDevice.cs" />
-    <Compile Include="Devices\Simpl\AbstractSimplDeviceBase.cs" />
-    <Compile Include="Devices\Simpl\AbstractSimplDeviceBaseSettings.cs" />
-    <Compile Include="Devices\Simpl\AbstractSimplDeviceSettings.cs" />
-    <Compile Include="Devices\Simpl\ISimplDevice.cs" />
-    <Compile Include="Devices\Simpl\ISimplDeviceBase.cs" />
-    <Compile Include="Devices\Simpl\ISimplDeviceBaseSettings.cs" />
-    <Compile Include="Devices\Simpl\ISimplDeviceSettings.cs" />
     <Compile Include="Devices\AbstractDeviceBaseSettings.cs" />
     <Compile Include="Devices\AbstractDeviceSettings.cs" />
     <Compile Include="Controls\AbstractPowerDeviceControl.cs" />
@@ -169,9 +155,6 @@
     <Compile Include="Proxies\Devices\ProxyDevice.cs" />
     <Compile Include="Proxies\Controls\ProxyDeviceControl.cs" />
     <Compile Include="Proxies\Devices\ProxyDeviceSettings.cs" />
-    <Compile Include="SPlusShims\AbstractSPlusDeviceBaseShim.cs" />
-    <Compile Include="SPlusShims\AbstractSPlusDeviceShim.cs" />
-    <Compile Include="SPlusShims\ISPlusDeviceBaseShim.cs" />
     <Compile Include="Utils\DeviceControlUtils.cs" />
     <Compile Include="Windows\IWindowsDevice.cs" />
     <Compile Include="Windows\WindowsDevicePathInfo.cs" />
@@ -193,6 +176,10 @@
     <ProjectReference Include="..\..\ICD.Connect.API\ICD.Connect.API\ICD.Connect.API_SimplSharp.csproj">
       <Project>{727F5820-5A61-440D-8899-E454FE8238D7}</Project>
       <Name>ICD.Connect.API_SimplSharp</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ICD.Connect.Settings\ICD.Connect.Settings.CrestronSPlus\ICD.Connect.Settings.CrestronSPlus_SimplSharp.csproj">
+      <Project>{AA8E36BD-02CE-4B25-BA30-A76E990DF391}</Project>
+      <Name>ICD.Connect.Settings.CrestronSPlus_SimplSharp</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\ICD.Connect.Settings\ICD.Connect.Settings\ICD.Connect.Settings_SimplSharp.csproj">
       <Project>{5B84EB3C-1C3A-4C4D-98C2-69F67CF51D5A}</Project>

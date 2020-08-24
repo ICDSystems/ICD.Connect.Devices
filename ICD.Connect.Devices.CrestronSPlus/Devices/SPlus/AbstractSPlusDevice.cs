@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using ICD.Common.Logging.LoggingContexts;
 using ICD.Common.Utils.Extensions;
 using ICD.Common.Utils.Services.Logging;
 using ICD.Connect.API.Commands;
@@ -9,12 +10,11 @@ using ICD.Connect.Devices.EventArguments;
 using ICD.Connect.Devices.Telemetry.DeviceInfo.Configured;
 using ICD.Connect.Devices.Telemetry.DeviceInfo.Monitored;
 using ICD.Connect.Settings;
-using ICD.Common.Logging.LoggingContexts;
 
-namespace ICD.Connect.Devices.Simpl
+namespace ICD.Connect.Devices.CrestronSPlus.Devices.SPlus
 {
-	public abstract class AbstractSimplDevice<TSettings> : AbstractSimplDeviceBase<TSettings>, ISimplDevice
-		where TSettings : ISimplDeviceSettings, new()
+	public abstract class AbstractSPlusDevice<TSettings> : AbstractSPlusDeviceBase<TSettings>, ISPlusDevice
+		where TSettings : ISPlusDeviceSettings, new()
 	{
 		/// <summary>
 		/// Raised when ControlsAvailable changes
@@ -73,7 +73,7 @@ namespace ICD.Connect.Devices.Simpl
 		/// <summary>
 		/// Constructor.
 		/// </summary>
-		protected AbstractSimplDevice()
+		protected AbstractSPlusDevice()
 		{
 			m_Controls = new DeviceControlsCollection();		
 			m_ConfiguredDeviceInfo = new ConfiguredDeviceInfo();

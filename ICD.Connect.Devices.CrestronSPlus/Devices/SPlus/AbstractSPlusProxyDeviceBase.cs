@@ -2,12 +2,12 @@
 using ICD.Common.Utils.Extensions;
 using ICD.Connect.API;
 using ICD.Connect.API.Info;
-using ICD.Connect.Devices.EventArguments;
+using ICD.Connect.Devices.CrestronSPlus.EventArguments;
 using ICD.Connect.Devices.Proxies.Devices;
 
-namespace ICD.Connect.Devices.Simpl
+namespace ICD.Connect.Devices.CrestronSPlus.Devices.SPlus
 {
-	public abstract class AbstractSimplProxyDeviceBase<TSettings> : AbstractProxyDeviceBase<TSettings>, ISimplProxyDeviceBase
+	public abstract class AbstractSPlusProxyDeviceBase<TSettings> : AbstractProxyDeviceBase<TSettings>, ISPlusProxyDeviceBase
 		where TSettings : IProxyDeviceBaseSettings
 	{
 		#region Events
@@ -26,7 +26,7 @@ namespace ICD.Connect.Devices.Simpl
 		/// </summary>
 		public void SetIsOnline(bool online)
 		{
-			CallMethod(SimplDeviceBaseApi.METHOD_SET_IS_ONLINE, online);
+			CallMethod(SPlusDeviceBaseApi.METHOD_SET_IS_ONLINE, online);
 		}
 
 		/// <summary>
@@ -38,7 +38,7 @@ namespace ICD.Connect.Devices.Simpl
 			base.Initialize(command);
 
 			ApiCommandBuilder.UpdateCommand(command)
-			                 .SubscribeEvent(SimplDeviceBaseApi.EVENT_ON_REQUEST_SHIM_RESYNC)
+			                 .SubscribeEvent(SPlusDeviceBaseApi.EVENT_ON_REQUEST_SHIM_RESYNC)
 			                 .Complete();
 		}
 
@@ -52,7 +52,7 @@ namespace ICD.Connect.Devices.Simpl
 			base.ParseEvent(name, result);
 			switch (name)
 			{
-				case SimplDeviceBaseApi.EVENT_ON_REQUEST_SHIM_RESYNC:
+				case SPlusDeviceBaseApi.EVENT_ON_REQUEST_SHIM_RESYNC:
 					RaiseOnRequestShimResync(this);
 					break;
 			}

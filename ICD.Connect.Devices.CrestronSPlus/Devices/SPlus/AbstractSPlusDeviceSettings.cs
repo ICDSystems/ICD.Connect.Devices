@@ -2,9 +2,9 @@
 using ICD.Common.Utils.Xml;
 using ICD.Connect.Devices.Telemetry.DeviceInfo.Configured.Settings;
 
-namespace ICD.Connect.Devices.Simpl
+namespace ICD.Connect.Devices.CrestronSPlus.Devices.SPlus
 {
-	public abstract class AbstractSimplDeviceSettings : AbstractSimplDeviceBaseSettings, ISimplDeviceSettings
+	public abstract class AbstractSPlusDeviceSettings : AbstractSPlusDeviceBaseSettings, ISPlusDeviceSettings
 	{
 		private readonly ConfiguredDeviceInfoSettings m_ConfiguredDeviceInfo;
 
@@ -50,7 +50,7 @@ namespace ICD.Connect.Devices.Simpl
 
 		#endregion
 
-		protected AbstractSimplDeviceSettings()
+		protected AbstractSPlusDeviceSettings()
 		{
 			m_ConfiguredDeviceInfo = new ConfiguredDeviceInfoSettings();
 		}

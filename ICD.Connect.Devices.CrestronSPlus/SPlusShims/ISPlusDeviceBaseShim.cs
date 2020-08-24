@@ -1,12 +1,12 @@
 using System;
 using ICD.Common.Properties;
-using ICD.Connect.Devices.Simpl;
-using ICD.Connect.Settings.SPlusShims;
+using ICD.Connect.Devices.CrestronSPlus.Devices.SPlus;
+using ICD.Connect.Settings.CrestronSPlus.SPlusShims;
 
-namespace ICD.Connect.Devices.SPlusShims
+namespace ICD.Connect.Devices.CrestronSPlus.SPlusShims
 {
 	public interface ISPlusDeviceBaseShim<TOriginator> : ISPlusOriginatorShim<TOriginator> 
-		where TOriginator : ISimplDeviceBase
+		where TOriginator : ISPlusDeviceBase
 	{
 		/// <summary>
 		/// Gets/sets the online status of the device.

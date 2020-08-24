@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using ICD.Common.Logging.LoggingContexts;
 using ICD.Common.Properties;
 using ICD.Common.Utils;
 using ICD.Common.Utils.Extensions;
-using ICD.Common.Logging.LoggingContexts;
 using ICD.Common.Utils.Services.Logging;
 using ICD.Connect.API;
 using ICD.Connect.API.Commands;
@@ -18,9 +18,9 @@ using ICD.Connect.Devices.Proxies.Devices;
 using ICD.Connect.Devices.Telemetry.DeviceInfo.Configured;
 using ICD.Connect.Devices.Telemetry.DeviceInfo.Monitored;
 
-namespace ICD.Connect.Devices.Simpl
+namespace ICD.Connect.Devices.CrestronSPlus.Devices.SPlus
 {
-	public abstract class AbstractSimplProxyDevice<TSettings> : AbstractSimplProxyDeviceBase<TSettings>, ISimplProxyDevice
+	public abstract class AbstractSPlusProxyDevice<TSettings> : AbstractSPlusProxyDeviceBase<TSettings>, ISPlusProxyDevice
 		where TSettings : IProxyDeviceBaseSettings
 	{
 		/// <summary>
@@ -82,7 +82,7 @@ namespace ICD.Connect.Devices.Simpl
 		/// <summary>
 		/// Constructor.
 		/// </summary>
-		protected AbstractSimplProxyDevice()
+		protected AbstractSPlusProxyDevice()
 		{
 			m_ProxyBuildCommand = new Dictionary<IProxy, Func<ApiClassInfo, ApiClassInfo>>();
 			m_CriticalSection = new SafeCriticalSection();
