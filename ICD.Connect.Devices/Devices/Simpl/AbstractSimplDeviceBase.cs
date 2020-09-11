@@ -6,9 +6,6 @@ using ICD.Common.Utils.Services.Logging;
 using ICD.Connect.API.Commands;
 using ICD.Connect.API.Nodes;
 using ICD.Connect.Devices.EventArguments;
-using ICD.Connect.Devices.Telemetry.DeviceInfo;
-using ICD.Connect.Devices.Telemetry.DeviceInfo.Configured;
-using ICD.Connect.Devices.Telemetry.DeviceInfo.Monitored;
 using ICD.Connect.Settings.Originators.Simpl;
 
 namespace ICD.Connect.Devices.Simpl
@@ -33,26 +30,43 @@ namespace ICD.Connect.Devices.Simpl
 			get { return m_IsOnline; }
 			private set
 			{
-				if (value == m_IsOnline)
-					return;
+				try
+				{
+					if (value == m_IsOnline)
+						return;
 
-				m_IsOnline = value;
+					m_IsOnline = value;
 
-				Logger.LogSetTo(eSeverity.Informational, "IsOnline", m_IsOnline);
-				Activities.LogActivity(DeviceBaseActivities.GetIsOnlineActivity(m_IsOnline));
+					Logger.LogSetTo(eSeverity.Informational, "IsOnline", m_IsOnline);
 
-				HandleOnlineStateChange(m_IsOnline);
+					HandleOnlineStateChange(m_IsOnline);
 
-				OnIsOnlineStateChanged.Raise(this, new DeviceBaseOnlineStateApiEventArgs(IsOnline));
+					OnIsOnlineStateChanged.Raise(this, new DeviceBaseOnlineStateApiEventArgs(IsOnline));
+				}
+				finally
+				{
+					Activities.LogActivity(DeviceBaseActivities.GetIsOnlineActivity(m_IsOnline));
+				}
 			}
 		}
 
-		
-
 		#endregion
+
+		/// <summary>
+		/// Constructor.
+		/// </summary>
+		protected AbstractSimplDeviceBase()
+		{
+			// Initialize activities
+			SetIsOnline(false);
+		}
 
 		#region Methods
 
+		/// <summary>
+		/// Sets the online state.
+		/// </summary>
+		/// <param name="online"></param>
 		public void SetIsOnline(bool online)
 		{
 			IsOnline = online;

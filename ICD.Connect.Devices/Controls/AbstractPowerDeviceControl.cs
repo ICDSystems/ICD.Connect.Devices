@@ -42,6 +42,21 @@ namespace ICD.Connect.Devices.Controls
 		protected AbstractPowerDeviceControl(TDevice parent, int id)
 			: base(parent, id)
 		{
+			// Initialize activities
+			SetPowerState(ePowerState.Unknown, 0);
+		}
+
+		/// <summary>
+		/// Constructor.
+		/// </summary>
+		/// <param name="parent"></param>
+		/// <param name="id"></param>
+		/// <param name="uuid"></param>
+		protected AbstractPowerDeviceControl(TDevice parent, int id, Guid uuid)
+			: base(parent, id, uuid)
+		{
+			// Initialize activities
+			SetPowerState(ePowerState.Unknown, 0);
 		}
 
 		/// <summary>
@@ -120,15 +135,21 @@ namespace ICD.Connect.Devices.Controls
 		/// <param name="expectedDuration"></param>
 		protected void SetPowerState(ePowerState powerState, long expectedDuration)
 		{
-			if (powerState == m_PowerState)
-				return;
+			try
+			{
+				if (powerState == m_PowerState)
+					return;
 
-			m_PowerState = powerState;
+				m_PowerState = powerState;
 
-			Logger.LogSetTo(eSeverity.Informational, "PowerState", m_PowerState);
-			Activities.LogActivity(PowerDeviceControlActivities.GetPowerActivity(m_PowerState));
+				Logger.LogSetTo(eSeverity.Informational, "PowerState", m_PowerState);
 
-			OnPowerStateChanged.Raise(this, new PowerDeviceControlPowerStateApiEventArgs(powerState, expectedDuration));
+				OnPowerStateChanged.Raise(this, new PowerDeviceControlPowerStateApiEventArgs(powerState, expectedDuration));
+			}
+			finally
+			{
+				Activities.LogActivity(PowerDeviceControlActivities.GetPowerActivity(m_PowerState));
+			}
 		}
 
 		#endregion

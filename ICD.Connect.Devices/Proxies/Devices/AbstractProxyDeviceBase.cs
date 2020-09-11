@@ -35,22 +35,34 @@ namespace ICD.Connect.Devices.Proxies.Devices
 			[UsedImplicitly]
 			private set
 			{
-				if (value == m_IsOnline)
-					return;
+				try
+				{
+					if (value == m_IsOnline)
+						return;
 
-				m_IsOnline = value;
+					m_IsOnline = value;
 
-				Logger.LogSetTo(eSeverity.Informational, "IsOnline", m_IsOnline);
-				Activities.LogActivity(DeviceBaseActivities.GetIsOnlineActivity(m_IsOnline));
+					Logger.LogSetTo(eSeverity.Informational, "IsOnline", m_IsOnline);
 
-				OnIsOnlineStateChanged.Raise(this, new DeviceBaseOnlineStateApiEventArgs(m_IsOnline));
+					OnIsOnlineStateChanged.Raise(this, new DeviceBaseOnlineStateApiEventArgs(m_IsOnline));
+				}
+				finally
+				{
+					Activities.LogActivity(DeviceBaseActivities.GetIsOnlineActivity(m_IsOnline));
+				}
 			}
 		}
 
-
-
 		#endregion
 
+		/// <summary>
+		/// Constructor.
+		/// </summary>
+		protected AbstractProxyDeviceBase()
+		{
+			// Initialize activities
+			IsOnline = false;
+		}
 
 		/// <summary>
 		/// Override to release resources.
