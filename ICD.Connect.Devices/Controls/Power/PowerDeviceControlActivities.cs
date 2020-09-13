@@ -1,9 +1,8 @@
 ﻿using System;
 using ICD.Common.Logging.Activities;
-using ICD.Common.Logging.LoggingContexts;
 using ICD.Common.Utils.Services.Logging;
 
-namespace ICD.Connect.Devices.Controls
+namespace ICD.Connect.Devices.Controls.Power
 {
 	public static class PowerDeviceControlActivities
 	{

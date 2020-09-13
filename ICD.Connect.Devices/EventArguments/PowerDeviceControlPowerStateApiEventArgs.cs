@@ -1,5 +1,6 @@
 ﻿using ICD.Connect.API.EventArguments;
 using ICD.Connect.Devices.Controls;
+using ICD.Connect.Devices.Controls.Power;
 using ICD.Connect.Devices.Proxies.Controls;
 
 namespace ICD.Connect.Devices.EventArguments

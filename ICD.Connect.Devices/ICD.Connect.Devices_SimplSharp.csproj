@@ -73,8 +73,8 @@
     <Compile Include="Controls\ControlTelemetryNames.cs" />
     <Compile Include="Controls\DeviceControlConsole.cs" />
     <Compile Include="Controls\DeviceControlExternalTelemetryProvider.cs" />
-    <Compile Include="Controls\PowerDeviceControlActivities.cs" />
-    <Compile Include="Controls\PowerDeviceControlConsole.cs" />
+    <Compile Include="Controls\Power\PowerDeviceControlActivities.cs" />
+    <Compile Include="Controls\Power\PowerDeviceControlConsole.cs" />
     <Compile Include="Devices\DeviceBaseActivities.cs" />
     <Compile Include="Devices\DeviceConsole.cs" />
     <Compile Include="Devices\DeviceBaseConsole.cs" />
@@ -136,10 +136,10 @@
     <Compile Include="Devices\Simpl\ISimplDeviceSettings.cs" />
     <Compile Include="Devices\AbstractDeviceBaseSettings.cs" />
     <Compile Include="Devices\AbstractDeviceSettings.cs" />
-    <Compile Include="Controls\AbstractPowerDeviceControl.cs" />
-    <Compile Include="Controls\IPowerDeviceControl.cs" />
+    <Compile Include="Controls\Power\AbstractPowerDeviceControl.cs" />
+    <Compile Include="Controls\Power\IPowerDeviceControl.cs" />
     <Compile Include="Devices\IDeviceWithPower.cs" />
-    <Compile Include="Controls\PowerDeviceControl.cs" />
+    <Compile Include="Controls\Power\PowerDeviceControl.cs" />
     <Compile Include="DevicePermissable.cs" />
     <Compile Include="Extensions\CoreExtensions.cs" />
     <Compile Include="Extensions\DeviceFactoryExtensions.cs" />
