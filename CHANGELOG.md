@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [13.0.0] - 2020-09-24
+### Changed
+ - Fixed a bug where default power activities were not being initialized
+ - Changed power control namespaces
+
 ## [12.0.1] - 2020-08-13
 ### Changed
  - Telemetry namespace change
