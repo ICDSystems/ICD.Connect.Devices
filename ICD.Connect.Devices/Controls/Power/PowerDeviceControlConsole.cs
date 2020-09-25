@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using ICD.Connect.API.Commands;
 using ICD.Connect.API.Nodes;
 
-namespace ICD.Connect.Devices.Controls
+namespace ICD.Connect.Devices.Controls.Power
 {
 	public static class PowerDeviceControlConsole
 	{

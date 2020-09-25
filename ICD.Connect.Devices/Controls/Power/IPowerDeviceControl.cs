@@ -3,7 +3,7 @@ using ICD.Connect.API.Attributes;
 using ICD.Connect.Devices.EventArguments;
 using ICD.Connect.Devices.Proxies.Controls;
 
-namespace ICD.Connect.Devices.Controls
+namespace ICD.Connect.Devices.Controls.Power
 {
 
 	public enum ePowerState

@@ -1,4 +1,4 @@
-﻿namespace ICD.Connect.Devices.Controls
+﻿namespace ICD.Connect.Devices.Controls.Power
 {
 	public sealed class PowerDeviceControl<T> : AbstractPowerDeviceControl<T>
 		where T : IDeviceWithPower

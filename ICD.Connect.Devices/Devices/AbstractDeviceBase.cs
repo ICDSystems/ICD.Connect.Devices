@@ -39,23 +39,36 @@ namespace ICD.Connect.Devices
 			get { return m_IsOnline; }
 			private set
 			{
-				if (value == m_IsOnline)
-					return;
+				try
+				{
+					if (value == m_IsOnline)
+						return;
 
-				m_IsOnline = value;
+					m_IsOnline = value;
 
-				Logger.LogSetTo(m_IsOnline ? eSeverity.Informational : eSeverity.Error, "IsOnline", m_IsOnline);
-				Activities.LogActivity(DeviceBaseActivities.GetIsOnlineActivity(m_IsOnline));
+					Logger.LogSetTo(m_IsOnline ? eSeverity.Informational : eSeverity.Error, "IsOnline", m_IsOnline);
 
-				HandleOnlineStateChange(m_IsOnline);
+					HandleOnlineStateChange(m_IsOnline);
 
-				OnIsOnlineStateChanged.Raise(this, new DeviceBaseOnlineStateApiEventArgs(IsOnline));
+					OnIsOnlineStateChanged.Raise(this, new DeviceBaseOnlineStateApiEventArgs(IsOnline));
+				}
+				finally
+				{
+					Activities.LogActivity(DeviceBaseActivities.GetIsOnlineActivity(m_IsOnline));
+				}
 			}
 		}
 
-		
-
 		#endregion
+
+		/// <summary>
+		/// Constructor.
+		/// </summary>
+		protected AbstractDeviceBase()
+		{
+			// Initialize activities
+			IsOnline = false;
+		}
 
 		#region Private Methods
 

@@ -1,5 +1,5 @@
 ﻿using System;
-using ICD.Connect.Devices.Controls;
+using ICD.Connect.Devices.Controls.Power;
 using Newtonsoft.Json;
 
 namespace ICD.Connect.Devices.EventArguments
