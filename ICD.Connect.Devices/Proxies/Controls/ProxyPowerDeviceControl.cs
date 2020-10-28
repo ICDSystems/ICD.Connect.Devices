@@ -15,10 +15,23 @@ namespace ICD.Connect.Devices.Proxies.Controls
 	{
 		public event EventHandler<PowerDeviceControlPowerStateApiEventArgs> OnPowerStateChanged;
 
-		public ePowerState PowerState
-		{
-			get; private set;
-		}
+		#region Properties
+
+		public ePowerState PowerState { get; private set; }
+
+		/// <summary>
+		/// Gets/sets the delegate to execute before powering the device.
+		/// TODO - How to handle?
+		/// </summary>
+		PrePowerDelegate IPowerDeviceControl.PrePowerOn { get; set; }
+
+		/// <summary>
+		/// Gets/sets the delegate to execute before powering off the device.
+		/// TODO - How to handle?
+		/// </summary>
+		PrePowerDelegate IPowerDeviceControl.PrePowerOff { get; set; }
+
+		#endregion
 
 		/// <summary>
 		/// Constructor.

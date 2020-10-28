@@ -219,22 +219,36 @@ namespace ICD.Connect.Devices.Controls
 
 		#region Parent Callbacks
 
+		/// <summary>
+		/// Subscribe to the parent events.
+		/// </summary>
+		/// <param name="parent"></param>
 		protected virtual void Subscribe(T parent)
 		{
 			if (parent == null)
 				return;
 
-			parent.OnControlsAvailableChanged += Parent_OnControlsAvailableChanged;
+			parent.OnControlsAvailableChanged += ParentOnControlsAvailableChanged;
 		}
 
+		/// <summary>
+		/// Unsubscribe from the parent events.
+		/// </summary>
+		/// <param name="parent"></param>
 		protected virtual void Unsubscribe(T parent)
 		{
 			if (parent == null)
 				return;
-			parent.OnControlsAvailableChanged -= Parent_OnControlsAvailableChanged;
+
+			parent.OnControlsAvailableChanged -= ParentOnControlsAvailableChanged;
 		}
 
-		private void Parent_OnControlsAvailableChanged(object sender, DeviceBaseControlsAvailableApiEventArgs e)
+		/// <summary>
+		/// Called when the parent device control availability changes.
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void ParentOnControlsAvailableChanged(object sender, DeviceBaseControlsAvailableApiEventArgs e)
 		{
 			UpdateCachedControlAvailable();
 		}

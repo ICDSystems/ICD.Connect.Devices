@@ -13,17 +13,24 @@ namespace ICD.Connect.Devices.Controls.Power
 	public abstract class AbstractPowerDeviceControl<TDevice> : AbstractDeviceControl<TDevice>, IPowerDeviceControl
 		where TDevice : IDevice
 	{
-		public delegate void PrePowerDelegate(Action powerCallback);
-
-		public PrePowerDelegate PrePowerOn { get; set; }
-		public PrePowerDelegate PrePowerOff { get; set; }
-
 		/// <summary>
 		/// Raised when the powered state changes.
 		/// </summary>
 		public event EventHandler<PowerDeviceControlPowerStateApiEventArgs> OnPowerStateChanged;
 
 		private ePowerState m_PowerState;
+
+		#region Properties
+
+		/// <summary>
+		/// Gets/sets the delegate to execute before powering the device.
+		/// </summary>
+		public PrePowerDelegate PrePowerOn { get; set; }
+
+		/// <summary>
+		/// Gets/sets the delegate to execute before powering off the device.
+		/// </summary>
+		public PrePowerDelegate PrePowerOff { get; set; }
 
 		/// <summary>
 		/// Gets the powered state of the device.
@@ -33,6 +40,8 @@ namespace ICD.Connect.Devices.Controls.Power
 			get { return m_PowerState; }
 			protected set { SetPowerState(value, GetExpectedDurationForNewPowerState(m_PowerState)); }
 		}
+
+		#endregion
 
 		/// <summary>
 		/// Constructor.
@@ -66,6 +75,8 @@ namespace ICD.Connect.Devices.Controls.Power
 		protected override void DisposeFinal(bool disposing)
 		{
 			OnPowerStateChanged = null;
+			PrePowerOn = null;
+			PrePowerOff = null;
 
 			base.DisposeFinal(disposing);
 		}
@@ -84,6 +95,10 @@ namespace ICD.Connect.Devices.Controls.Power
 				PowerOnFinal();
 		}
 
+		/// <summary>
+		/// Powers on the device.
+		/// </summary>
+		/// /// <param name="bypassPrePowerOn">If true, skips the pre power on delegate.</param>
 		[PublicAPI]
 		public void PowerOn(bool bypassPrePowerOn)
 		{
@@ -93,6 +108,9 @@ namespace ICD.Connect.Devices.Controls.Power
 				PowerOn();
 		}
 
+		/// <summary>
+		/// Override to implement the power-on action.
+		/// </summary>
 		protected abstract void PowerOnFinal();
 
 		/// <summary>
@@ -107,6 +125,10 @@ namespace ICD.Connect.Devices.Controls.Power
 				PowerOffFinal();
 		}
 
+		/// <summary>
+		/// Powers off the device.
+		/// </summary>
+		/// <param name="bypassPostPowerOff">If true, skips the post power off delegate.</param>
 		[PublicAPI]
 		public void PowerOff(bool bypassPostPowerOff)
 		{
@@ -116,6 +138,9 @@ namespace ICD.Connect.Devices.Controls.Power
 				PowerOff();
 		}
 
+		/// <summary>
+		/// Override to implement the power-off action.
+		/// </summary>
 		protected abstract void PowerOffFinal();
 
 		/// <summary>

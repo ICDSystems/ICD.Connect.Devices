@@ -15,6 +15,13 @@ namespace ICD.Connect.Devices.Mock
 
 	public static class MockDeviceHelper
 	{
+		public static IEnumerable<IConsoleNodeBase> GetConsoleNodes([NotNull] IMockDevice device)
+		{
+			if (device == null)
+				throw new ArgumentNullException("device");
+
+			yield break;
+		}
 
 		public static void BuildConsoleStatus([NotNull] IMockDevice device, [NotNull] AddStatusRowDelegate addRow)
 		{
