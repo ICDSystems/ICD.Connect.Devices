@@ -2,15 +2,14 @@
 
 namespace ICD.Connect.Devices.Controls.Power
 {
-	public sealed class PowerDeviceControl<T> : AbstractPowerDeviceControl<T>
-		where T : IDeviceWithPower
+	public sealed class PowerDeviceControl : AbstractPowerDeviceControl<IDeviceWithPower>
 	{
 		/// <summary>
 		/// Constructor.
 		/// </summary>
 		/// <param name="parent"></param>
 		/// <param name="id"></param>
-		public PowerDeviceControl(T parent, int id)
+		public PowerDeviceControl(IDeviceWithPower parent, int id)
 			: base(parent, id)
 		{
 			SetPowerState(parent.PowerState, 0);
@@ -42,7 +41,7 @@ namespace ICD.Connect.Devices.Controls.Power
 		/// Subscribe to the parent events.
 		/// </summary>
 		/// <param name="parent"></param>
-		protected override void Subscribe(T parent)
+		protected override void Subscribe(IDeviceWithPower parent)
 		{
 			base.Subscribe(parent);
 
@@ -53,7 +52,7 @@ namespace ICD.Connect.Devices.Controls.Power
 		/// Unsubscribe from the parent events.
 		/// </summary>
 		/// <param name="parent"></param>
-		protected override void Unsubscribe(T parent)
+		protected override void Unsubscribe(IDeviceWithPower parent)
 		{
 			base.Unsubscribe(parent);
 
