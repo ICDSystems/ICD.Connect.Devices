@@ -110,6 +110,7 @@ namespace ICD.Connect.Devices.Controls
 			m_Parent = parent;
 
 			Subscribe(Parent);
+			UpdateCachedControlAvailable();
 		}
 
 		/// <summary>
