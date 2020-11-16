@@ -140,6 +140,7 @@ namespace ICD.Connect.Devices.Controls
 			m_Activities = new ActivityContext();
 
 			Subscribe(Parent);
+			UpdateCachedControlAvailable();
 		}
 
 		/// <summary>
