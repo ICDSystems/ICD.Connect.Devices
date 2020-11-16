@@ -50,6 +50,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
  - Fixed JSON deserialization for PowerDeviceControlPowerStateEventData
  - Controls are instantiated on ApplySettings and disposed on ClearSettings
 
+## [10.0.1] - 2020-11-16
+### Changed
+ - Fixed issue where always-online devices would never report controls available.
+
 ## [10.0.0] - 2020-03-20
 ### Added
  - Added struct for representing Windows device paths
