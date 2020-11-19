@@ -55,6 +55,11 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo.Abstract
 			}
 		}
 
+		IAdapterNetworkDeviceInfo INetworkDeviceInfo.GetOrAddAdapter(int address)
+		{
+			return GetOrAddAdapter(address);
+		}
+
 		public IEnumerable<TAdapterInfo> Adapters { get { return m_Adapters.Values.ToList(m_Adapters.Count); } }
 
 		#endregion
