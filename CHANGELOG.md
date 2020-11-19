@@ -11,6 +11,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Changed
  - Added OnRequestResync event to ISimplDeviceBase (removed from ISimplOriginator)
+ - Added non-generic GetOrAddAdapter to NetworkDeviceInfo
+ 
+### Removed
+ - Removed Reboot info/methods from MonitoredDeviceInfo
+ - Removed Model and SerialNumber properties from AbstractDevice
+ - Removed unused DeviceTelemetryNames
 
 ## [13.0.0] - 2020-09-24
 ### Changed
