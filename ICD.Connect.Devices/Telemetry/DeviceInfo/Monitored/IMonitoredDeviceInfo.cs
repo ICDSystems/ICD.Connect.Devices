@@ -16,9 +16,6 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo.Monitored
 		[EventTelemetry(DeviceTelemetryNames.DEVICE_UPTIME_CHANGED)]
 		event EventHandler<DateTimeNullableEventArgs> OnUptimeStartChanged;
 
-		[EventTelemetry(DeviceTelemetryNames.DEVICE_REBOOT_SUPPORTED_CHANGED)]
-		event EventHandler<BoolEventArgs> OnRebootSupportedChanged;
-
 		[CanBeNull]
 		[PropertyTelemetry(DeviceTelemetryNames.DEVICE_FIRMWARE_VERSION, null, DeviceTelemetryNames.DEVICE_FIRMWARE_VERSION_CHANGED)]
 		string FirmwareVersion { get; set; }
@@ -30,11 +27,5 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo.Monitored
 		[CanBeNull]
 		[PropertyTelemetry(DeviceTelemetryNames.DEVICE_UPTIME, null, DeviceTelemetryNames.DEVICE_UPTIME_CHANGED)]
 		DateTime? UptimeStart { get; set; }
-
-		[PropertyTelemetry(DeviceTelemetryNames.DEVICE_REBOOT_SUPPORTED, null, DeviceTelemetryNames.DEVICE_REBOOT_SUPPORTED_CHANGED)]
-		bool RebootSupported { get; set; }
-
-		[MethodTelemetry(DeviceTelemetryNames.DEVICE_REBOOT)]
-		void Reboot();
 	}
 }

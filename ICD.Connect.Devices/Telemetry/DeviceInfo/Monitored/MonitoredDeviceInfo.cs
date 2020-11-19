@@ -10,7 +10,6 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo.Monitored
 		private string m_FirmwareVersion;
 		private DateTime? m_FirmwareDate;
 		private DateTime? m_UptimeStart;
-		private bool m_RebootSupported;
 
 		public MonitoredDeviceInfo() : base(new MonitoredNetworkDeviceInfo())
 		{
@@ -19,7 +18,6 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo.Monitored
 		public event EventHandler<StringEventArgs> OnFirmwareVersionChanged;
 		public event EventHandler<DateTimeNullableEventArgs> OnFirmwareDateChanged;
 		public event EventHandler<DateTimeNullableEventArgs> OnUptimeStartChanged;
-		public event EventHandler<BoolEventArgs> OnRebootSupportedChanged;
 
 		public string FirmwareVersion
 		{
@@ -61,25 +59,6 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo.Monitored
 
 				OnUptimeStartChanged.Raise(this, new DateTimeNullableEventArgs(value));
 			}
-		}
-
-		public bool RebootSupported
-		{
-			get { return m_RebootSupported; }
-			set
-			{
-				if (m_RebootSupported == value)
-					return;
-
-				m_RebootSupported = value;
-
-				OnRebootSupportedChanged.Raise(this, new BoolEventArgs(value));
-			}
-		}
-
-		public void Reboot()
-		{
-			throw new NotImplementedException();
 		}
 	}
 }
