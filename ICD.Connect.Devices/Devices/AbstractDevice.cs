@@ -81,28 +81,7 @@ namespace ICD.Connect.Devices
 				m_RoomCritical = value;
 
 				OnRoomCriticalChanged.Raise(this, new BoolEventArgs(m_RoomCritical));
-			} }
-
-		/// <summary>
-		/// Gets the discovered model.
-		/// Legacy - Hooks MonitoredDeviceInfo for Convinence
-		/// </summary>
-		[Obsolete("Use MonitoredDeviceInfo Instead")]
-		protected string Model
-		{
-			get { return MonitoredDeviceInfo.Model; }
-			set { MonitoredDeviceInfo.Model = value; }
-		}
-
-		/// <summary>
-		/// Gets the discovered serial number.
-		/// Legacy - Hooks MonitoredDeviceInfo for Convinence
-		/// </summary>
-		[Obsolete("Use MonitoredDeviceInfo Instead")]
-		protected string SerialNumber
-		{
-			get { return MonitoredDeviceInfo.SerialNumber; }
-			set { MonitoredDeviceInfo.SerialNumber = value; }
+			} 
 		}
 
 		/// <summary>
