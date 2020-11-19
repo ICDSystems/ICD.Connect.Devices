@@ -2,11 +2,6 @@
 {
 	public static class DeviceTelemetryNames
 	{
-		public const string CONFIGURED_MANUFACTURER = "Configured Manufacturer";
-		public const string CONFIGURED_MODEL = "Configured Model";
-		public const string CONFIGURED_SERIAL_NUMBER = "Configured SerialNumber";
-		public const string CONFIGURED_PURCHASE_DATE = "Configured PurchaseDate";
-
 		public const string POWER_STATE = "IsPowered";
 		public const string POWER_ON = "PowerOn";
 		public const string POWER_OFF = "PowerOff";
@@ -56,33 +51,10 @@
 		public const string DEVICE_DHCP_STATUS = "DHCP Enabled";
 		public const string DEVICE_DHCP_STATUS_CHANGED = "DHCP Enabled Changed";
 
-		public const string DEVICE_MAC_ADDRESS_SECONDARY = "Secondary MAC Address";
-		public const string DEVICE_MAC_ADDRESS_SECONDARY_CHANGED = "Secondary MAC Address Changed";
-
-		public const string DEVICE_IP_ADDRESS_SECONDARY = "Secondary IP Address";
-		public const string DEVICE_IP_ADDRESS_SECONDARY_CHANGED = "Secondary IP Changed";
-
-		public const string DEVICE_IP_SUBNET_SECONDARY = "Secondary IP Subnet";
-		public const string DEVICE_IP_SUBNET_SECONDARY_CHANGED = "Secondary IP Subnet Changed";
-
-		public const string DEVICE_IP_GATEWAY_SECONDARY = "Secondary IP Gateway";
-		public const string DEVICE_IP_GATEWAY_SECONDARY_CHANGED = "Secondary IP Gateway Changed";
-
-		public const string DEVICE_HOSTNAME_SECONDARY = "Secondary Hostname";
-		public const string DEVICE_HOSTNAME_SECONDARY_CHANGED = "Secondary Hostname Changed";
-
-		public const string DEVICE_DHCP_STATUS_SECONDARY = "Secondary DHCP Enabled";
-		public const string DEVICE_DHCP_STATUS_SECONDARY_CHANGED = "Secondary DHCP Enabled Changed";
-
 		public const string DEVICE_SERIAL_NUMBER = "Serial Number";
 		public const string DEVICE_SERIAL_NUMBER_CHANGED = "Serial Number Changed";
 
 		public const string DEVICE_UPTIME = "Uptime";
 		public const string DEVICE_UPTIME_CHANGED = "Uptime Changed";
-
-		public const string DEVICE_REBOOT_SUPPORTED = "RebootSupported";
-		public const string DEVICE_REBOOT_SUPPORTED_CHANGED = "RebootSupported Changed";
-
-		public const string DEVICE_REBOOT= "Reboot";
 	}
 }
