@@ -6,6 +6,7 @@ using ICD.Connect.Devices.Proxies.Devices;
 using ICD.Connect.Devices.Telemetry;
 using ICD.Connect.Settings.Originators;
 using ICD.Connect.Telemetry.Attributes;
+using ICD.Connect.Telemetry.Debounce;
 
 namespace ICD.Connect.Devices
 {
@@ -15,7 +16,9 @@ namespace ICD.Connect.Devices
 		/// Raised when the device goes online/offline.
 		/// </summary>
 		[ApiEvent(DeviceBaseApi.EVENT_IS_ONLINE, DeviceBaseApi.HELP_EVENT_IS_ONLINE)]
-		[EventTelemetry(DeviceTelemetryNames.ONLINE_STATE_CHANGED)]
+		[EventTelemetry(DeviceTelemetryNames.ONLINE_STATE_CHANGED,
+			DebounceMode = eDebounceMode.RisingEdge,
+			DebounceInterval = 10 * 1000)]
 		event EventHandler<DeviceBaseOnlineStateApiEventArgs> OnIsOnlineStateChanged;
 
 		/// <summary>
