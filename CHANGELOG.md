@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [14.0.1] - 2021-02-04
+### Changed
+ - Device online state telemetry is debounced
+
 ## [14.0.0] - 2021-01-14
 ### Added
  - Added RoomCritical configuration item to devices for specifying that a device is critical to a rooms operation
