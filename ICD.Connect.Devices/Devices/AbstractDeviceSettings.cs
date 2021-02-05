@@ -6,7 +6,7 @@ namespace ICD.Connect.Devices
 {
 	public abstract class AbstractDeviceSettings : AbstractDeviceBaseSettings, IDeviceSettings
 	{
-		private const string ROOM_CRITTICAL_ELEMENT = "RoomCritical";
+		private const string ROOM_CRITICAL_ELEMENT = "RoomCritical";
 
 		private readonly ConfiguredDeviceInfoSettings m_ConfiguredDeviceInfo;
 
@@ -57,6 +57,9 @@ namespace ICD.Connect.Devices
 
 		#endregion
 
+		/// <summary>
+		/// Constructor.
+		/// </summary>
 		protected AbstractDeviceSettings()
 		{
 			m_ConfiguredDeviceInfo = new ConfiguredDeviceInfoSettings();
@@ -73,7 +76,7 @@ namespace ICD.Connect.Devices
 			base.WriteElements(writer);
 
 			ConfiguredDeviceInfo.WriteElements(writer);
-			writer.WriteElementString(ROOM_CRITTICAL_ELEMENT, IcdXmlConvert.ToString(RoomCritical));
+			writer.WriteElementString(ROOM_CRITICAL_ELEMENT, IcdXmlConvert.ToString(RoomCritical));
 		}
 
 		/// <summary>
@@ -85,7 +88,7 @@ namespace ICD.Connect.Devices
 			base.ParseXml(xml);
 
 			ConfiguredDeviceInfo.ParseXml(xml);
-			RoomCritical = XmlUtils.TryReadChildElementContentAsBoolean(xml, ROOM_CRITTICAL_ELEMENT) ?? false;
+			RoomCritical = XmlUtils.TryReadChildElementContentAsBoolean(xml, ROOM_CRITICAL_ELEMENT) ?? false;
 		}
 
 		#endregion
