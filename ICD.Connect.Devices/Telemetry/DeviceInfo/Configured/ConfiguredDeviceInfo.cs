@@ -1,6 +1,7 @@
 ﻿using System;
 using ICD.Common.Utils.EventArguments;
 using ICD.Common.Utils.Extensions;
+using ICD.Connect.API.Nodes;
 using ICD.Connect.Devices.Telemetry.DeviceInfo.Abstract;
 using ICD.Connect.Devices.Telemetry.DeviceInfo.Configured.Settings;
 
@@ -8,18 +9,11 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo.Configured
 {
 	public sealed class ConfiguredDeviceInfo : AbstractDeviceInfo<IConfiguredNetworkDeviceInfo>, IConfiguredDeviceInfo
 	{
-
-
-
 		#region Fields
 
 		private DateTime? m_PurchaseDate;
 
 		#endregion
-
-		public ConfiguredDeviceInfo() : base(new ConfiguredNetworkDeviceInfo())
-		{
-		}
 
 		#region Events
 
@@ -48,6 +42,20 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo.Configured
 		}
 
 		#endregion
+
+		#region Constructor
+
+		/// <summary>
+		/// Constructor.
+		/// </summary>
+		public ConfiguredDeviceInfo()
+			: base(new ConfiguredNetworkDeviceInfo())
+		{
+		}
+
+		#endregion
+
+		#region Settings
 
 		/// <summary>
 		/// Apply the configuration from the settings
@@ -88,5 +96,22 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo.Configured
 
 			NetworkInfo.ClearSettings();
 		}
+
+		#endregion
+
+		#region Console
+
+		/// <summary>
+		/// Calls the delegate for each console status item.
+		/// </summary>
+		/// <param name="addRow"></param>
+		public override void BuildConsoleStatus(AddStatusRowDelegate addRow)
+		{
+			base.BuildConsoleStatus(addRow);
+
+			addRow("Purchase Date", PurchaseDate.ToString());
+		}
+
+		#endregion
 	}
 }

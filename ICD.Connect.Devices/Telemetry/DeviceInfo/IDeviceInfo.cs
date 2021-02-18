@@ -1,6 +1,7 @@
 ﻿using System;
 using ICD.Common.Properties;
 using ICD.Common.Utils.EventArguments;
+using ICD.Connect.API.Nodes;
 using ICD.Connect.Telemetry.Attributes;
 using ICD.Connect.Telemetry.Providers;
 
@@ -9,7 +10,7 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo
 	/// <summary>
 	/// Interface to hold collection of configured and monitored device info for telemetry
 	/// </summary>
-	public interface IDeviceInfo: ITelemetryProvider
+	public interface IDeviceInfo: ITelemetryProvider, IConsoleNode
 	{
 		[EventTelemetry(DeviceTelemetryNames.DEVICE_MAKE_CHANGED)]
 		event EventHandler<StringEventArgs> OnMakeChanged;

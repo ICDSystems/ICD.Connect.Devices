@@ -1,23 +1,30 @@
 ﻿using System;
 using ICD.Common.Utils.EventArguments;
 using ICD.Common.Utils.Extensions;
+using ICD.Connect.API.Nodes;
 using ICD.Connect.Devices.Telemetry.DeviceInfo.Abstract;
 
 namespace ICD.Connect.Devices.Telemetry.DeviceInfo.Monitored
 {
 	public sealed class MonitoredDeviceInfo : AbstractDeviceInfo<IMonitoredNetworkDeviceInfo>, IMonitoredDeviceInfo
 	{
+		#region Fields
+
 		private string m_FirmwareVersion;
 		private DateTime? m_FirmwareDate;
 		private DateTime? m_UptimeStart;
 
-		public MonitoredDeviceInfo() : base(new MonitoredNetworkDeviceInfo())
-		{
-		}
+		#endregion
+
+		#region Events
 
 		public event EventHandler<StringEventArgs> OnFirmwareVersionChanged;
 		public event EventHandler<DateTimeNullableEventArgs> OnFirmwareDateChanged;
 		public event EventHandler<DateTimeNullableEventArgs> OnUptimeStartChanged;
+
+		#endregion
+
+		#region Properties
 
 		public string FirmwareVersion
 		{
@@ -59,6 +66,33 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo.Monitored
 
 				OnUptimeStartChanged.Raise(this, new DateTimeNullableEventArgs(value));
 			}
+		}
+
+		#endregion
+
+		#region Constructor
+
+		/// <summary>
+		/// Constructor.
+		/// </summary>
+		public MonitoredDeviceInfo()
+			: base(new MonitoredNetworkDeviceInfo())
+		{
+		}
+
+		#endregion
+
+		/// <summary>
+		/// Calls the delegate for each console status item.
+		/// </summary>
+		/// <param name="addRow"></param>
+		public override void BuildConsoleStatus(AddStatusRowDelegate addRow)
+		{
+			base.BuildConsoleStatus(addRow);
+
+			addRow("Firmware Version", FirmwareVersion);
+			addRow("Firmware Date", FirmwareDate);
+			addRow("Uptime Start", UptimeStart);
 		}
 	}
 }

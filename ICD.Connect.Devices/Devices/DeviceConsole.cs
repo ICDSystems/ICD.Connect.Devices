@@ -18,6 +18,8 @@ namespace ICD.Connect.Devices
 				throw new ArgumentNullException("instance");
 
 			yield return ConsoleNodeGroup.KeyNodeMap("Controls", instance.Controls, c => (uint)c.Id);
+			yield return instance.MonitoredDeviceInfo;
+			yield return instance.ConfiguredDeviceInfo;
 		}
 
 		/// <summary>
