@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using ICD.Common.Utils;
 using ICD.Common.Utils.EventArguments;
 using ICD.Common.Utils.Extensions;
 using ICD.Connect.API.Commands;
@@ -144,7 +145,28 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo.Abstract
 		/// <returns></returns>
 		public virtual IEnumerable<IConsoleCommand> GetConsoleCommands()
 		{
-			yield break;
+			yield return new ConsoleCommand("PrintNetworkAdapters",
+			                                "Prints a table of the network adapters for this device",
+			                                () =>
+			                                {
+				                                TableBuilder builder =
+					                                new TableBuilder(new string[]
+					                                {
+						                                "Address", "Name", "MacAddress", "DHCP",
+						                                "Ipv4Address", "Ipv4SubnetMask", "Ipv4Gateway"
+					                                });
+				                                foreach (IAdapterNetworkDeviceInfo networkInfo in NetworkInfo.Adapters)
+				                                {
+					                                builder.AddRow(new object[]
+					                                {
+						                                networkInfo.Address, networkInfo.Name, networkInfo.MacAddress,
+						                                networkInfo.Dhcp, networkInfo.Ipv4Address,
+						                                networkInfo.Ipv4SubnetMask, networkInfo.Ipv4Gateway
+					                                });
+				                                }
+
+				                                return builder.ToString();
+			                                });
 		}
 
 		#endregion

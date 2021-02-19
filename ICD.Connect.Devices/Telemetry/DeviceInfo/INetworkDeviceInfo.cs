@@ -23,7 +23,8 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo
 		[PropertyTelemetry(DeviceTelemetryNames.DEVICE_NETWORK_DNS, null, DeviceTelemetryNames.DEVICE_NETWORK_DNS_CHANGED)]
 		string Dns { get; set; }
 
-		IEnumerable<IAdapterNetworkDeviceInfo> GetAdapters();
+		[CollectionTelemetry("Adapters")]
+		IEnumerable<IAdapterNetworkDeviceInfo> Adapters { get; }
 
 		[NotNull]
 		IAdapterNetworkDeviceInfo GetOrAddAdapter(int address);
@@ -32,8 +33,7 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo
 	public interface INetworkDeviceInfo<TAdapterInfo> : INetworkDeviceInfo
 		where TAdapterInfo : IAdapterNetworkDeviceInfo
 	{
-		[CollectionTelemetry("Adapters")]
-		IEnumerable<TAdapterInfo> Adapters { get; }
+		new IEnumerable<TAdapterInfo> Adapters { get; }
 
 		[NotNull]
 		new TAdapterInfo GetOrAddAdapter(int address);

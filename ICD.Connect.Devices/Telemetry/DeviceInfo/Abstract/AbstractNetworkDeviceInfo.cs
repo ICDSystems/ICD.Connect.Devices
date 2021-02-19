@@ -57,6 +57,11 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo.Abstract
 			}
 		}
 
+		IEnumerable<IAdapterNetworkDeviceInfo> INetworkDeviceInfo.Adapters
+		{
+			get { return m_AdapterSection.Execute(() => Adapters.Cast<IAdapterNetworkDeviceInfo>()); }
+		}
+
 		public IEnumerable<TAdapterInfo> Adapters
 		{
 			get { return m_AdapterSection.Execute(() => m_Adapters.Values.ToList(m_Adapters.Count)); }
@@ -78,11 +83,6 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo.Abstract
 		#endregion
 
 		#region Methods
-
-		public IEnumerable<IAdapterNetworkDeviceInfo> GetAdapters()
-		{
-			return m_AdapterSection.Execute(() => Adapters.Cast<IAdapterNetworkDeviceInfo>());
-		}
 
 		public TAdapterInfo GetOrAddAdapter(int address)
 		{
