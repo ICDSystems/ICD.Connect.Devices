@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using ICD.Common.Utils;
 using ICD.Common.Utils.EventArguments;
 using ICD.Common.Utils.Extensions;
 
@@ -8,11 +10,11 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo.Abstract
 	public abstract class AbstractNetworkDeviceInfo<TAdapterInfo> : INetworkDeviceInfo<TAdapterInfo>
 		where TAdapterInfo : IAdapterNetworkDeviceInfo
 	{
-
 		#region Fields
 
 		private string m_Hostname;
 		private string m_Dns;
+		private readonly SafeCriticalSection m_AdapterSection;
 		private readonly Dictionary<int, TAdapterInfo> m_Adapters;
 
 		#endregion
@@ -55,49 +57,76 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo.Abstract
 			}
 		}
 
+		public IEnumerable<TAdapterInfo> Adapters
+		{
+			get { return m_AdapterSection.Execute(() => m_Adapters.Values.ToList(m_Adapters.Count)); }
+		}
+
+		#endregion
+
+		#region Constructor
+
+		/// <summary>
+		/// Constructor.
+		/// </summary>
+		protected AbstractNetworkDeviceInfo()
+		{
+			m_AdapterSection = new SafeCriticalSection();
+			m_Adapters = new Dictionary<int, TAdapterInfo>();
+		}
+
+		#endregion
+
+		#region Methods
+
+		public IEnumerable<IAdapterNetworkDeviceInfo> GetAdapters()
+		{
+			return m_AdapterSection.Execute(() => Adapters.Cast<IAdapterNetworkDeviceInfo>());
+		}
+
+		public TAdapterInfo GetOrAddAdapter(int address)
+		{
+			m_AdapterSection.Enter();
+
+			try
+			{
+				TAdapterInfo adapter;
+				if (!m_Adapters.TryGetValue(address, out adapter))
+				{
+					adapter = CreateNewAdapter(address);
+					m_Adapters.Add(address, adapter);
+					OnAdaptersChanged.Raise(this);
+				}
+				return adapter;
+			}
+			finally
+			{
+				m_AdapterSection.Leave();
+			}
+		}
+
 		IAdapterNetworkDeviceInfo INetworkDeviceInfo.GetOrAddAdapter(int address)
 		{
 			return GetOrAddAdapter(address);
 		}
 
-		public IEnumerable<TAdapterInfo> Adapters { get { return m_Adapters.Values.ToList(m_Adapters.Count); } }
-
-		#endregion
-
 		protected abstract TAdapterInfo CreateNewAdapter(int address);
 
-		public TAdapterInfo GetOrAddAdapter(int address)
+		protected void AdaptersAddRange(IEnumerable<TAdapterInfo> adapters)
 		{
-			TAdapterInfo adapter;
-			if (!m_Adapters.TryGetValue(address, out adapter))
-			{
-				adapter = CreateNewAdapter(address);
-				m_Adapters.Add(address, adapter);
-				OnAdaptersChanged.Raise(this);
-			}
-			return adapter;
+			m_AdapterSection.Execute(() => m_Adapters.AddRange(adapters, a => a.Address));
+		}
+
+		protected void AdaptersClear()
+		{
+			m_AdapterSection.Execute(() => m_Adapters.Clear());
 		}
 
 		public virtual void Clear()
 		{
 			Hostname = null;
 			Dns = null;
-			m_Adapters.Clear();
-		}
-
-		public AbstractNetworkDeviceInfo()
-		{
-			m_Adapters = new Dictionary<int, TAdapterInfo>();
-		}
-
-		protected void AdaptersClear()
-		{
-			m_Adapters.Clear();
-		}
-
-		protected void AdaptersAddRange(IEnumerable<TAdapterInfo> adapters)
-		{
-			m_Adapters.AddRange(adapters, a => a.Address);
+			AdaptersClear();
 		}
 
 		/// <summary>
@@ -106,5 +135,7 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo.Abstract
 		public void InitializeTelemetry()
 		{
 		}
+
+		#endregion
 	}
 }
