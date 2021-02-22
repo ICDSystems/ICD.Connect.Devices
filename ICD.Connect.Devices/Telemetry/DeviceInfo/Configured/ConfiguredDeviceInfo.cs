@@ -102,6 +102,16 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo.Configured
 		#region Console
 
 		/// <summary>
+		/// Gets the name of the node.
+		/// </summary>
+		public override string ConsoleName { get { return "ConfiguredDeviceInfo"; } }
+
+		/// <summary>
+		/// Gets the help information for the node.
+		/// </summary>
+		public override string ConsoleHelp { get { return "Configured information for the device"; } }
+
+		/// <summary>
 		/// Calls the delegate for each console status item.
 		/// </summary>
 		/// <param name="addRow"></param>

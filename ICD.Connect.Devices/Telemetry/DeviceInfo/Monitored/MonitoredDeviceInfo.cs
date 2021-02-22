@@ -83,6 +83,16 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo.Monitored
 		#endregion
 
 		/// <summary>
+		/// Gets the name of the node.
+		/// </summary>
+		public override string ConsoleName { get { return "MonitoredDeviceInfo"; } }
+
+		/// <summary>
+		/// Gets the help information for the node.
+		/// </summary>
+		public override string ConsoleHelp { get { return "Monitored information for the device"; } }
+
+		/// <summary>
 		/// Calls the delegate for each console status item.
 		/// </summary>
 		/// <param name="addRow"></param>
