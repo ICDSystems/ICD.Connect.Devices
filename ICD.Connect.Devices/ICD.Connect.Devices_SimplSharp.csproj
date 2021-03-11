@@ -85,6 +85,7 @@
     <Compile Include="Devices\Mock\IMockDevice.cs" />
     <Compile Include="Devices\Mock\IMockDeviceSettings.cs" />
     <Compile Include="Telemetry\DeviceInfo\Abstract\AbstractDeviceInfo.cs" />
+    <Compile Include="Telemetry\DeviceInfo\AdapterNetworkDeviceInfoCollection.cs" />
     <Compile Include="Telemetry\DeviceInfo\Configured\Settings\ConfiguredDeviceInfoSettings.cs" />
     <Compile Include="Telemetry\DeviceInfo\Configured\ConfiguredDeviceInfo.cs" />
     <Compile Include="Telemetry\DeviceInfo\Configured\IConfiguredDeviceInfo.cs" />

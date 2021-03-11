@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using ICD.Connect.Devices.Telemetry.DeviceInfo.Abstract;
 using ICD.Connect.Devices.Telemetry.DeviceInfo.Configured.Settings;
 
@@ -6,11 +7,6 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo.Configured
 {
 	public sealed class ConfiguredNetworkDeviceInfo : AbstractNetworkDeviceInfo<ConfiguredAdapterNetworkDeviceInfo>, IConfiguredNetworkDeviceInfo
 	{
-		protected override ConfiguredAdapterNetworkDeviceInfo CreateNewAdapter(int address)
-		{
-			return new ConfiguredAdapterNetworkDeviceInfo(address);
-		}
-
 		/// <summary>
 		/// Apply the configuration from the settings
 		/// </summary>
@@ -39,7 +35,7 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo.Configured
 		{
 			settings.Clear();
 
-			foreach (var adapter in Adapters)
+			foreach (var adapter in Adapters.Cast<ConfiguredAdapterNetworkDeviceInfo>())
 			{
 				var adapterSettings = new ConfiguredAdapterNetworkDeviceInfoSettings();
 				adapter.CopySettings(adapterSettings);
@@ -49,11 +45,12 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo.Configured
 
 		private void ApplyAdapterSettings(IEnumerable<ConfiguredAdapterNetworkDeviceInfoSettings> adaptersSettings)
 		{
-			AdaptersClear();
+			Adapters.Clear();
 
 			foreach (ConfiguredAdapterNetworkDeviceInfoSettings adapterSettings in adaptersSettings)
 			{
-				ConfiguredAdapterNetworkDeviceInfo adapter = GetOrAddAdapter(adapterSettings.Address);
+				ConfiguredAdapterNetworkDeviceInfo adapter =
+					(ConfiguredAdapterNetworkDeviceInfo)Adapters.GetOrAddAdapter(adapterSettings.Address);
 				adapter.ApplySettings(adapterSettings);
 			}
 		}
@@ -65,8 +62,12 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo.Configured
 		{
 			Hostname = null;
 			Dns = null;
-			//todo: Dispose Adapters
-			AdaptersClear();
+			Adapters.Clear();
+		}
+
+		protected override IAdapterNetworkDeviceInfo CreateNewAdapter(int address)
+		{
+			return new ConfiguredAdapterNetworkDeviceInfo(address);
 		}
 	}
 }

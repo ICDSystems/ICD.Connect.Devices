@@ -15,8 +15,6 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo
 		[EventTelemetry(DeviceTelemetryNames.DEVICE_NETWORK_DNS_CHANGED)]
 		event EventHandler<StringEventArgs> OnDnsChanged;
 
-		event EventHandler OnAdaptersChanged;
-
 		[PropertyTelemetry(DeviceTelemetryNames.DEVICE_HOSTNAME, null, DeviceTelemetryNames.DEVICE_HOSTNAME_CHANGED)]
 		string Hostname { get; set; }
 		
@@ -24,18 +22,11 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo
 		string Dns { get; set; }
 
 		[CollectionTelemetry("Adapters")]
-		IEnumerable<IAdapterNetworkDeviceInfo> Adapters { get; }
-
-		[NotNull]
-		IAdapterNetworkDeviceInfo GetOrAddAdapter(int address);
+		AdapterNetworkDeviceInfoCollection Adapters { get; }
 	}
 
 	public interface INetworkDeviceInfo<TAdapterInfo> : INetworkDeviceInfo
 		where TAdapterInfo : IAdapterNetworkDeviceInfo
 	{
-		new IEnumerable<TAdapterInfo> Adapters { get; }
-
-		[NotNull]
-		new TAdapterInfo GetOrAddAdapter(int address);
 	}
 }

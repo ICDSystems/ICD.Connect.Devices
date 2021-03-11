@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+ - Add AdapterNetworkDeviceInfoCollection so changes in network adapters are better picked up by telemetry
+
 ### Changed
  - IDeviceInfo now implements IConsoleNode
 
