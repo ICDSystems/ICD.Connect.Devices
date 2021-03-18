@@ -1,7 +1,6 @@
 ﻿using System;
 using ICD.Common.Utils.EventArguments;
 using ICD.Common.Utils.Extensions;
-using ICD.Connect.Devices.Telemetry.DeviceInfo.Monitored;
 
 namespace ICD.Connect.Devices.Telemetry.DeviceInfo.Abstract
 {

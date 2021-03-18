@@ -1,5 +1,4 @@
 using System;
-using ICD.Common.Utils.EventArguments;
 using ICD.Connect.API.Attributes;
 using ICD.Connect.Devices.Controls;
 using ICD.Connect.Devices.EventArguments;

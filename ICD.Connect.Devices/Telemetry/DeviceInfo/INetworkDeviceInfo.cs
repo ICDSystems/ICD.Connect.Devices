@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using ICD.Common.Properties;
 using ICD.Common.Utils.EventArguments;
 using ICD.Connect.Telemetry.Attributes;
 using ICD.Connect.Telemetry.Providers;
