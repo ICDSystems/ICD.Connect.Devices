@@ -1,13 +1,13 @@
 ﻿using System;
 using ICD.Common.Utils.EventArguments;
-using ICD.Common.Utils.Extensions;
+using ICD.Connect.Telemetry.Providers;
 
 namespace ICD.Connect.Devices.Telemetry.DeviceInfo.Abstract
 {
 	public abstract class AbstractAdapterNetworkDeviceInfo : IAdapterNetworkDeviceInfo
 	{
 		public event EventHandler<StringEventArgs> OnNameChanged;
-		public event EventHandler<StringEventArgs> OnMacAddressChanged;
+		public event EventHandler<GenericEventArgs<IcdPhysicalAddress>> OnMacAddressChanged;
 		public event EventHandler<GenericEventArgs<bool?>> OnDhcpChanged;
 		public event EventHandler<StringEventArgs> OnIpv4AddressChanged;
 		public event EventHandler<StringEventArgs> OnIpv4SubnetMaskChanged;
@@ -16,7 +16,7 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo.Abstract
 		private readonly int m_Address;
 
 		private string m_Name;
-		private string m_MacAddress;
+		private IcdPhysicalAddress m_MacAddress;
 		private bool? m_Dhcp;
 		private string m_Ipv4Address;
 		private string m_Ipv4SubnetMask;
@@ -37,11 +37,11 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo.Abstract
 
 				m_Name = value;
 
-				OnNameChanged.Raise(this, new StringEventArgs(value));
+				OnNameChanged.Raise(this, m_Name);
 			}
 		}
 
-		public string MacAddress
+		public IcdPhysicalAddress MacAddress
 		{
 			get { return m_MacAddress; }
 			set
@@ -51,7 +51,7 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo.Abstract
 
 				m_MacAddress = value;
 
-				OnMacAddressChanged.Raise(this, new StringEventArgs(value));
+				OnMacAddressChanged.Raise(this, m_MacAddress);
 			}
 		}
 
@@ -65,7 +65,7 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo.Abstract
 
 				m_Dhcp = value;
 
-				OnDhcpChanged.Raise(this, new GenericEventArgs<bool?>(value));
+				OnDhcpChanged.Raise(this, m_Dhcp);
 			}
 		}
 
@@ -79,7 +79,7 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo.Abstract
 
 				m_Ipv4Address = value;
 
-				OnIpv4AddressChanged.Raise(this, new StringEventArgs(value));
+				OnIpv4AddressChanged.Raise(this, m_Ipv4Address);
 			}
 		}
 
@@ -93,7 +93,7 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo.Abstract
 
 				m_Ipv4SubnetMask = value;
 
-				OnIpv4SubnetMaskChanged.Raise(this, new StringEventArgs(value));
+				OnIpv4SubnetMaskChanged.Raise(this, m_Ipv4SubnetMask);
 			}
 		}
 
@@ -107,7 +107,7 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo.Abstract
 
 				m_Ipv4Gateway = value;
 
-				OnIpv4GatewayChanged.Raise(this, new StringEventArgs(value));
+				OnIpv4GatewayChanged.Raise(this, m_Ipv4Gateway);
 			}
 		}
 
@@ -119,7 +119,7 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo.Abstract
 		/// <summary>
 		/// Initializes the current telemetry state.
 		/// </summary>
-		public void InitializeTelemetry()
+		void ITelemetryProvider.InitializeTelemetry()
 		{
 		}
 	}

@@ -6,7 +6,12 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo.Configured
 {
 	public sealed class ConfiguredAdapterNetworkDeviceInfo : AbstractAdapterNetworkDeviceInfo, IConfiguredAdapterNetworkDeviceInfo
 	{
-		public ConfiguredAdapterNetworkDeviceInfo(int address) : base(address)
+		/// <summary>
+		/// Constructor.
+		/// </summary>
+		/// <param name="address"></param>
+		public ConfiguredAdapterNetworkDeviceInfo(int address)
+			: base(address)
 		{
 		}
 
@@ -20,7 +25,7 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo.Configured
 				throw new InvalidOperationException("Cannot Apply Settings with different Addresses");
 
 			Name = settings.Name;
-			MacAddress = settings.MacAddress;
+			MacAddress = settings.MacAddress == null ? null : settings.MacAddress.Clone();
 			Dhcp = settings.Dhcp;
 			Ipv4Address = settings.Ipv4Address;
 			Ipv4SubnetMask = settings.Ipv4SubnetMask;
@@ -35,7 +40,7 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo.Configured
 		{
 			settings.Address = Address;
 			settings.Name = Name;
-			settings.MacAddress = MacAddress;
+			settings.MacAddress = MacAddress == null ? null : MacAddress.Clone();
 			settings.Dhcp = Dhcp;
 			settings.Ipv4Address = Ipv4Address;
 			settings.Ipv4SubnetMask = Ipv4SubnetMask;

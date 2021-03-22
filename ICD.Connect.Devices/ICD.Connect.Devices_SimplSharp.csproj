@@ -91,6 +91,7 @@
     <Compile Include="Telemetry\DeviceInfo\Configured\IConfiguredDeviceInfo.cs" />
     <Compile Include="Telemetry\DeviceInfo\Configured\IConfiguredDeviceInfoBase.cs" />
     <Compile Include="Telemetry\DeviceInfo\Configured\Settings\IConfiguredDeviceInfoSettingsBase.cs" />
+    <Compile Include="Telemetry\DeviceInfo\IcdPhysicalAddress.cs" />
     <Compile Include="Telemetry\DeviceInfo\IDeviceInfo.cs" />
     <Compile Include="Telemetry\DeviceInfo\Monitored\IMonitoredDeviceInfo.cs" />
     <Compile Include="Telemetry\DeviceInfo\Monitored\MonitoredDeviceInfo.cs" />

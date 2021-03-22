@@ -17,7 +17,7 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo.Configured.Settings
 
 		public string Name { get; set; }
 
-		public string MacAddress { get; set; }
+		public IcdPhysicalAddress MacAddress { get; set; }
 
 		public bool? Dhcp { get; set; }
 
@@ -37,7 +37,7 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo.Configured.Settings
 			writer.WriteAttributeString(ATTRIBUTE_ADDRESS, IcdXmlConvert.ToString(Address));
 			{
 				writer.WriteElementString(ELEMENT_NAME, Name);
-				writer.WriteElementString(ELEMENT_MAC_ADDRESS, MacAddress);
+				writer.WriteElementString(ELEMENT_MAC_ADDRESS, IcdXmlConvert.ToString(MacAddress));
 				writer.WriteElementString(ELEMENT_DHCP, IcdXmlConvert.ToString(Dhcp));
 				writer.WriteElementString(ELEMENT_IPV4_ADDRESS, Ipv4Address);
 				writer.WriteElementString(ELEMENT_IPV4_SUBNET, Ipv4SubnetMask);
@@ -52,9 +52,13 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo.Configured.Settings
 		/// <param name="xml"></param>
 		public void ParseXml(string xml)
 		{
+			string mac = XmlUtils.TryReadChildElementContentAsString(xml, ELEMENT_MAC_ADDRESS) ?? string.Empty;
+			IcdPhysicalAddress macAddress;
+			IcdPhysicalAddress.TryParse(mac, out macAddress);
+
 			Address = XmlUtils.GetAttributeAsInt(xml, ATTRIBUTE_ADDRESS);
 			Name = XmlUtils.TryReadChildElementContentAsString(xml, ELEMENT_NAME);
-			MacAddress = XmlUtils.TryReadChildElementContentAsString(xml, ELEMENT_MAC_ADDRESS);
+			MacAddress = macAddress;
 			Dhcp = XmlUtils.TryReadChildElementContentAsBoolean(xml, ELEMENT_DHCP);
 			Ipv4Address = XmlUtils.TryReadChildElementContentAsString(xml, ELEMENT_IPV4_ADDRESS);
 			Ipv4SubnetMask = XmlUtils.TryReadChildElementContentAsString(xml, ELEMENT_IPV4_SUBNET);

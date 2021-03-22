@@ -11,7 +11,7 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo
 		event EventHandler<StringEventArgs> OnNameChanged;
 
 		[EventTelemetry(DeviceTelemetryNames.DEVICE_MAC_ADDRESS_CHANGED)]
-		event EventHandler<StringEventArgs> OnMacAddressChanged;
+		event EventHandler<GenericEventArgs<IcdPhysicalAddress>> OnMacAddressChanged;
 
 		[EventTelemetry(DeviceTelemetryNames.DEVICE_DHCP_STATUS_CHANGED)]
 		event EventHandler<GenericEventArgs<bool?>> OnDhcpChanged;
@@ -33,7 +33,7 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo
 		string Name { get; set; }
 
 		[PropertyTelemetry(DeviceTelemetryNames.DEVICE_MAC_ADDRESS, null,DeviceTelemetryNames.DEVICE_MAC_ADDRESS_CHANGED )]
-		string MacAddress { get; set; }
+		IcdPhysicalAddress MacAddress { get; set; }
 
 		[PropertyTelemetry(DeviceTelemetryNames.DEVICE_DHCP_STATUS, null, DeviceTelemetryNames.DEVICE_DHCP_STATUS_CHANGED)]
 		bool? Dhcp { get; set; }
