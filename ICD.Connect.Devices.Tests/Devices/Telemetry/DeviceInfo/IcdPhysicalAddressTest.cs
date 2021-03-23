@@ -9,6 +9,7 @@ namespace ICD.Connect.Devices.Tests.Devices.Telemetry.DeviceInfo
 	{
 		[TestCase("12", new byte[] {0x12})]
 		[TestCase("12-AB-CD-34", new byte[] {0x12, 0xAB, 0xCD, 0x34})]
+		[TestCase("12ABCD34", new byte[] { 0x12, 0xAB, 0xCD, 0x34 })]
 		public void ToStringTest(string expected, byte[] bytes)
 		{
 			IcdPhysicalAddress address = new IcdPhysicalAddress(bytes);
@@ -17,6 +18,7 @@ namespace ICD.Connect.Devices.Tests.Devices.Telemetry.DeviceInfo
 
 		[TestCase("12", true, new byte[] {0x12})]
 		[TestCase("12-AB-CD-34", true, new byte[] {0x12, 0xAB, 0xCD, 0x34})]
+		[TestCase("12ABCD34", true, new byte[] { 0x12, 0xAB, 0xCD, 0x34 })]
 		[TestCase(null, false, new byte[] { })]
 		[TestCase("", false, new byte[] { })]
 		[TestCase("1", false, new byte[] { })]
