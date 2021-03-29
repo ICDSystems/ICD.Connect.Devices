@@ -14,7 +14,7 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo
 		public event EventHandler OnCollectionChanged;
 
 		private readonly SafeCriticalSection m_AdapterSection;
-		private readonly IcdOrderedDictionary<int, IAdapterNetworkDeviceInfo> m_Adapters;
+		private readonly IcdSortedDictionary<int, IAdapterNetworkDeviceInfo> m_Adapters;
 		private readonly Func<int, IAdapterNetworkDeviceInfo> m_CreateAdapter;
 
 		/// <summary>
@@ -24,7 +24,7 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo
 		public AdapterNetworkDeviceInfoCollection(Func<int, IAdapterNetworkDeviceInfo> createAdapter)
 		{
 			m_AdapterSection = new SafeCriticalSection();
-			m_Adapters = new IcdOrderedDictionary<int, IAdapterNetworkDeviceInfo>();
+			m_Adapters = new IcdSortedDictionary<int, IAdapterNetworkDeviceInfo>();
 			m_CreateAdapter = createAdapter;
 		}
 

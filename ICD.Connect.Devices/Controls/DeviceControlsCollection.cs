@@ -25,7 +25,7 @@ namespace ICD.Connect.Devices.Controls
 		public event EventHandler<DeviceControlEventArgs> OnControlRemoved;
 
 		private readonly Dictionary<Type, List<IDeviceControl>> m_TypeToControls;
-		private readonly IcdOrderedDictionary<int, IDeviceControl> m_DeviceControls;
+		private readonly IcdSortedDictionary<int, IDeviceControl> m_DeviceControls;
 		private readonly SafeCriticalSection m_DeviceControlsSection;
 
 		private static readonly PredicateComparer<IDeviceControl, int> s_ControlComparer;
@@ -60,7 +60,7 @@ namespace ICD.Connect.Devices.Controls
 		public DeviceControlsCollection()
 		{
 			m_TypeToControls = new Dictionary<Type, List<IDeviceControl>>();
-			m_DeviceControls = new IcdOrderedDictionary<int, IDeviceControl>();
+			m_DeviceControls = new IcdSortedDictionary<int, IDeviceControl>();
 			m_DeviceControlsSection = new SafeCriticalSection();
 		}
 
