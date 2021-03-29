@@ -1,4 +1,5 @@
 ﻿using System;
+using ICD.Common.Properties;
 using ICD.Common.Utils.EventArguments;
 using ICD.Connect.Telemetry.Attributes;
 using ICD.Connect.Telemetry.Providers;
@@ -35,6 +36,9 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo
 		[PropertyTelemetry(DeviceTelemetryNames.DEVICE_MAC_ADDRESS, null,DeviceTelemetryNames.DEVICE_MAC_ADDRESS_CHANGED )]
 		IcdPhysicalAddress MacAddress { get; set; }
 
+		[PublicAPI("DAV")]
+		string MacAddressString { get; set; }
+
 		[PropertyTelemetry(DeviceTelemetryNames.DEVICE_DHCP_STATUS, null, DeviceTelemetryNames.DEVICE_DHCP_STATUS_CHANGED)]
 		bool? Dhcp { get; set; }
 
@@ -46,6 +50,5 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo
 
 		[PropertyTelemetry(DeviceTelemetryNames.DEVICE_IP_GATEWAY, null, DeviceTelemetryNames.DEVICE_IP_GATEWAY_CHANGED)]
 		string Ipv4Gateway { get; set; }
-	
 	}
 }

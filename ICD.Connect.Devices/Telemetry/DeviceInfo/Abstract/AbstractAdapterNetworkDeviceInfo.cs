@@ -1,4 +1,5 @@
 ﻿using System;
+using ICD.Common.Properties;
 using ICD.Common.Utils.EventArguments;
 using ICD.Connect.Telemetry.Providers;
 
@@ -52,6 +53,18 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo.Abstract
 				m_MacAddress = value;
 
 				OnMacAddressChanged.Raise(this, m_MacAddress);
+			}
+		}
+
+		[PublicAPI("DAV")]
+		public string MacAddressString
+		{
+			get { return m_MacAddress == null ? null : m_MacAddress.ToString(); }
+			set
+			{
+				IcdPhysicalAddress mac;
+				IcdPhysicalAddress.TryParse(value, out mac);
+				MacAddress = mac;
 			}
 		}
 
