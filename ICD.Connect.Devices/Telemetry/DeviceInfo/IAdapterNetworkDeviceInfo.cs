@@ -36,9 +36,6 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo
 		[PropertyTelemetry(DeviceTelemetryNames.DEVICE_MAC_ADDRESS, null,DeviceTelemetryNames.DEVICE_MAC_ADDRESS_CHANGED )]
 		IcdPhysicalAddress MacAddress { get; set; }
 
-		[PublicAPI("DAV")]
-		string MacAddressString { get; set; }
-
 		[PropertyTelemetry(DeviceTelemetryNames.DEVICE_DHCP_STATUS, null, DeviceTelemetryNames.DEVICE_DHCP_STATUS_CHANGED)]
 		bool? Dhcp { get; set; }
 

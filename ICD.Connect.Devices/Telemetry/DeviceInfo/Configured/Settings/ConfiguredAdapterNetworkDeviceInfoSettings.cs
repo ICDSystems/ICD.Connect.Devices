@@ -1,4 +1,5 @@
-﻿using ICD.Common.Utils.Xml;
+﻿using ICD.Common.Properties;
+using ICD.Common.Utils.Xml;
 
 namespace ICD.Connect.Devices.Telemetry.DeviceInfo.Configured.Settings
 {
@@ -18,6 +19,18 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo.Configured.Settings
 		public string Name { get; set; }
 
 		public IcdPhysicalAddress MacAddress { get; set; }
+
+		[PublicAPI("DAV")]
+		public string MacAddressString
+		{
+			get { return MacAddress == null ? null : MacAddress.ToString(); }
+			set
+			{
+				IcdPhysicalAddress mac;
+				IcdPhysicalAddress.TryParse(value, out mac);
+				MacAddress = mac;
+			}
+		}
 
 		public bool? Dhcp { get; set; }
 

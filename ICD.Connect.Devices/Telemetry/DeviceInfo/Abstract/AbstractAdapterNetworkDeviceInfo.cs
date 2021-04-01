@@ -56,18 +56,6 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo.Abstract
 			}
 		}
 
-		[PublicAPI("DAV")]
-		public string MacAddressString
-		{
-			get { return m_MacAddress == null ? null : m_MacAddress.ToString(); }
-			set
-			{
-				IcdPhysicalAddress mac;
-				IcdPhysicalAddress.TryParse(value, out mac);
-				MacAddress = mac;
-			}
-		}
-
 		public bool? Dhcp
 		{
 			get { return m_Dhcp; }

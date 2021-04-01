@@ -16,10 +16,13 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo.Configured.Settings
 
 		[CanBeNull]
 		public string Make { get; set; }
+
 		[CanBeNull]
 		public string Model { get; set; }
+
 		[CanBeNull]
 		public string SerialNumber { get; set; }
+
 		[CanBeNull]
 		public DateTime? PurchaseDate { get; set; }
 
