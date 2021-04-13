@@ -26,9 +26,6 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo
 			if (bytes.Length == 0)
 				throw new ArgumentException("Byte array is empty");
 
-			if (bytes.Length % 2 != 0)
-				throw new ArgumentException("Byte array must be an even length");
-
 			m_Bytes = bytes.ToArray();
 		}
 

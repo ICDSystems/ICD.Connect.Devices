@@ -13,7 +13,6 @@ namespace ICD.Connect.Devices.Tests.Windows
 
 		[TestCase("test", "TEST")]
 		[TestCase("TEST", "TEST")]
-		[TestCase(null, null)]
 		public void TypeTest(string type, string expected)
 		{
 			Assert.AreEqual(expected, new WindowsDevicePathInfo(type, null, null).Type);
@@ -21,7 +20,6 @@ namespace ICD.Connect.Devices.Tests.Windows
 
 		[TestCase("test", "TEST")]
 		[TestCase("TEST", "TEST")]
-		[TestCase(null, null)]
 		public void DeviceIdTest(string deviceId, string expected)
 		{
 			Assert.AreEqual(expected, new WindowsDevicePathInfo(null, deviceId, null).DeviceId);
@@ -29,7 +27,6 @@ namespace ICD.Connect.Devices.Tests.Windows
 
 		[TestCase("test", "TEST")]
 		[TestCase("TEST", "TEST")]
-		[TestCase(null, null)]
 		public void InstanceIdTest(string instanceId, string expected)
 		{
 			Assert.AreEqual(expected, new WindowsDevicePathInfo(null, null, instanceId).InstanceId);
