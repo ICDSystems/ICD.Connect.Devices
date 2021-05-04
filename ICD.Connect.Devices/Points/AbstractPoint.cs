@@ -11,7 +11,7 @@ using ICD.Connect.Settings.Originators;
 
 namespace ICD.Connect.Devices.Points
 {
-	public abstract class AbstractPoint<TSettings, TControl> : AbstractOriginator<TSettings>, IPoint
+	public abstract class AbstractPoint<TSettings, TControl> : AbstractOriginator<TSettings>, IPoint<TControl>
 		where TSettings : IPointSettings, new()
 		where TControl : class, IDeviceControl
 	{
@@ -25,13 +25,11 @@ namespace ICD.Connect.Devices.Points
 		/// <summary>
 		/// Gets/sets the control for this point.
 		/// </summary>
-		[CanBeNull]
 		IDeviceControl IPoint.Control { get { return Control; } }
 
 		/// <summary>
 		/// Gets/sets the control for this point.
 		/// </summary>
-		[CanBeNull]
 		public TControl Control { get; private set; }
 
 		/// <summary>
@@ -47,15 +45,6 @@ namespace ICD.Connect.Devices.Points
 		#endregion
 
 		#region Methods
-
-		/// <summary>
-		/// Sets the wrapped control.
-		/// </summary>
-		/// <param name="control"></param>
-		void IPoint.SetControl(IDeviceControl control)
-		{
-			SetControl((TControl)control);
-		}
 
 		/// <summary>
 		/// Sets the wrapped control.

@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
  - Add AdapterNetworkDeviceInfoCollection so changes in network adapters are better picked up by telemetry
 
 ### Changed
+ - Added IPoint<T>:IPoint, AbstractPoint implements IPoint<T>
+
+### Changed
  - IDeviceInfo now implements IConsoleNode
 
 ## [14.0.1] - 2021-02-04

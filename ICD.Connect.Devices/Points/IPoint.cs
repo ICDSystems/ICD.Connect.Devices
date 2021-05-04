@@ -6,6 +6,21 @@ using ICD.Connect.Settings.Originators;
 
 namespace ICD.Connect.Devices.Points
 {
+	public interface IPoint<T> : IPoint where T : IDeviceControl
+	{
+		/// <summary>
+		/// Gets/sets the control for this point.
+		/// </summary>
+		[CanBeNull]
+		new T Control { get; }
+
+		/// <summary>
+		/// Sets the wrapped control.
+		/// </summary>
+		/// <param name="control"></param>
+		void SetControl([CanBeNull] T control);
+	}
+
 	public interface IPoint : IOriginator
 	{
 		/// <summary>
@@ -28,11 +43,5 @@ namespace ICD.Connect.Devices.Points
 		/// Gets the control ID.
 		/// </summary>
 		int ControlId { get; }
-
-		/// <summary>
-		/// Sets the wrapped control.
-		/// </summary>
-		/// <param name="control"></param>
-		void SetControl([CanBeNull] IDeviceControl control);
 	}
 }
