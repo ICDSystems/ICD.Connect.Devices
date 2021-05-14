@@ -5,13 +5,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [15.0.0] - 2021-05-14
 ### Added
  - Add AdapterNetworkDeviceInfoCollection so changes in network adapters are better picked up by telemetry
+ - Added IcdPhysicalAddress for standardizing MAC addresses
 
 ### Changed
  - Added IPoint<T>:IPoint, AbstractPoint implements IPoint<T>
-
-### Changed
  - IDeviceInfo now implements IConsoleNode
 
 ## [14.0.1] - 2021-02-04
