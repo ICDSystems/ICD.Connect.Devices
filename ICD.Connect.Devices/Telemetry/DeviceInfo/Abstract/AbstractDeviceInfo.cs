@@ -150,7 +150,7 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo.Abstract
 			                                () =>
 			                                {
 				                                TableBuilder builder =
-					                                new TableBuilder(new string[]
+					                                new TableBuilder(new[]
 					                                {
 						                                "Address", "Name", "MacAddress", "DHCP",
 						                                "Ipv4Address", "Ipv4SubnetMask", "Ipv4Gateway"
