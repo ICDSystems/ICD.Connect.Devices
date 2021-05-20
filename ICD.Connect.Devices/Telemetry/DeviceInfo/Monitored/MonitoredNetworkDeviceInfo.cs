@@ -2,7 +2,7 @@
 
 namespace ICD.Connect.Devices.Telemetry.DeviceInfo.Monitored
 {
-	public sealed class MonitoredNetworkDeviceInfo : AbstractNetworkDeviceInfo<MonitoredAdapterNetworkDeviceInfo>, IMonitoredNetworkDeviceInfo
+	public sealed class MonitoredNetworkDeviceInfo : AbstractNetworkDeviceInfo, IMonitoredNetworkDeviceInfo
 	{
 		protected override IAdapterNetworkDeviceInfo CreateNewAdapter(int address)
 		{

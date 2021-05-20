@@ -5,7 +5,7 @@ using ICD.Connect.Devices.Telemetry.DeviceInfo.Configured.Settings;
 
 namespace ICD.Connect.Devices.Telemetry.DeviceInfo.Configured
 {
-	public sealed class ConfiguredNetworkDeviceInfo : AbstractNetworkDeviceInfo<ConfiguredAdapterNetworkDeviceInfo>, IConfiguredNetworkDeviceInfo
+	public sealed class ConfiguredNetworkDeviceInfo : AbstractNetworkDeviceInfo, IConfiguredNetworkDeviceInfo
 	{
 		/// <summary>
 		/// Apply the configuration from the settings

@@ -22,9 +22,4 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo
 		[CollectionTelemetry("Adapters")]
 		AdapterNetworkDeviceInfoCollection Adapters { get; }
 	}
-
-	public interface INetworkDeviceInfo<TAdapterInfo> : INetworkDeviceInfo
-		where TAdapterInfo : IAdapterNetworkDeviceInfo
-	{
-	}
 }

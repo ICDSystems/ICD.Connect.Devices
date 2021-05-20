@@ -4,8 +4,7 @@ using ICD.Common.Utils.Extensions;
 
 namespace ICD.Connect.Devices.Telemetry.DeviceInfo.Abstract
 {
-	public abstract class AbstractNetworkDeviceInfo<TAdapterInfo> : INetworkDeviceInfo<TAdapterInfo>
-		where TAdapterInfo : IAdapterNetworkDeviceInfo
+	public abstract class AbstractNetworkDeviceInfo : INetworkDeviceInfo
 	{
 		#region Events
 
