@@ -75,11 +75,11 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo
 			if (address == null)
 				return false;
 
-			const string pattern = @"^((?:[0-9a-fA-F]{2}[\-;:]?)*(?:[0-9a-fA-F]{2}))$";
+			const string pattern = @"^((?:[0-9a-fA-F]{2}[\-\.;:]?)*(?:[0-9a-fA-F]{2}))$$";
 			if (!Regex.IsMatch(address, pattern))
 				return false;
 
-			address = Regex.Replace(address, @"[\-;:]", string.Empty);
+			address = Regex.Replace(address, @"[\-\.;:]", string.Empty);
 			byte[] bytes = StringUtils.HexToBytes(address);
 
 			physicalAddress = new IcdPhysicalAddress(bytes);
