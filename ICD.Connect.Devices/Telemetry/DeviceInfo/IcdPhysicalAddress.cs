@@ -97,6 +97,16 @@ namespace ICD.Connect.Devices.Telemetry.DeviceInfo
 		}
 
 		/// <summary>
+		/// Returns true if the physical addresses are equal.
+		/// </summary>
+		/// <param name="obj"></param>
+		/// <returns></returns>
+		public override bool Equals(object obj)
+		{
+			return Equals(obj as IcdPhysicalAddress);
+		}
+
+		/// <summary>
 		/// Gets the hash code for the physical address.
 		/// </summary>
 		/// <returns></returns>
