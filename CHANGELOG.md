@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [15.0.1] - 2021-08-03
+### Changed
+ - IcdPhysicalAddress - Allow '.' as a seperator
+ - IcdPhyiscalAddress - Override equals(object obj) method
+
 ## [15.0.0] - 2021-05-14
 ### Added
  - Add AdapterNetworkDeviceInfoCollection so changes in network adapters are better picked up by telemetry
