@@ -1,4 +1,4 @@
-﻿﻿using ICD.Connect.Settings.Proxies;
+﻿using ICD.Connect.Settings.Proxies;
 
 namespace ICD.Connect.Devices.Proxies.Devices
 {
