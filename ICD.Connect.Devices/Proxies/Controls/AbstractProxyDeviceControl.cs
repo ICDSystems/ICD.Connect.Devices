@@ -155,6 +155,7 @@ namespace ICD.Connect.Devices.Proxies.Controls
 			base.Initialize(command);
 
 			ApiCommandBuilder.UpdateCommand(command)
+			                 .SubscribeEvent(DeviceControlApi.EVENT_CONTROL_AVAILABLE)
 			                 .GetProperty(DeviceControlApi.PROPERTY_NAME)
 			                 .GetProperty(DeviceControlApi.PROPERTY_CONTROL_AVAILABLE)
 			                 .Complete();
