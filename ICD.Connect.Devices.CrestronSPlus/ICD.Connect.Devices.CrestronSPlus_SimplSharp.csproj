@@ -77,7 +77,6 @@
     <Compile Include="Devices\SPlus\SPlusDeviceBaseApi.cs" />
     <Compile Include="EventArguments\RequestShimResyncEventArgs.cs" />
     <Compile Include="KrangPlugin.cs" />
-    <Compile Include="ObfuscationSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SPlusShims\AbstractSPlusDeviceBaseShim.cs" />
     <Compile Include="SPlusShims\AbstractSPlusDeviceShim.cs" />

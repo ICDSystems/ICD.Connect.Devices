@@ -141,7 +141,6 @@
     <Compile Include="Controls\IDeviceControl.cs" />
     <Compile Include="Devices\IDevice.cs" />
     <Compile Include="Devices\IDeviceBase.cs" />
-    <Compile Include="ObfuscationSettings.cs" />
     <Compile Include="Proxies\Controls\AbstractProxyDeviceControl.cs" />
     <Compile Include="Proxies\Devices\AbstractProxyDeviceBaseSettings.cs" />
     <Compile Include="Proxies\Devices\AbstractProxyDeviceSettings.cs" />
